@@ -1,21 +1,153 @@
-# Introduction {#intro}
+# Pengantar Analisis Spasial dengan R Software
 
-You can label chapter and section titles using `{#label}` after them, e.g., we can reference Chapter \@ref(intro). If you do not manually label them, there will be automatic labels anyway, e.g., Chapter \@ref(methods).
+## Jenis Data Spasial
 
-Figures and tables with captions will be placed in `figure` and `table` environments, respectively.
-
-```{r nice-fig, fig.cap='Here is a nice figure!', out.width='80%', fig.asp=.75, fig.align='center'}
-par(mar = c(4, 4, .1, .1))
-plot(pressure, type = 'b', pch = 19)
+```{r}
+setwd("D:/Research (eksternal dept)/pelatihan spasial (adj)/modul")
 ```
 
-Reference a figure by its code chunk label with the `fig:` prefix, e.g., see Figure \@ref(fig:nice-fig). Similarly, you can reference tables generated from `knitr::kable()`, e.g., see Table \@ref(tab:nice-tab).
 
-```{r nice-tab, tidy=FALSE}
-knitr::kable(
-  head(iris, 20), caption = 'Here is a nice table!',
-  booktabs = TRUE
-)
+### Data titik
+```{r}
+library(rgdal)
+petapontianak=readOGR(dsn="Peta Pontianak", layer="Pontianak_kec")
+dataATM=read.csv("DATA ATM PONTIANAK.csv" , header=T)
+dataSPBU=read.csv("Data SPBU Pontianak.csv", sep=";",header=T)
+plot(petapontianak)
+points(dataATM$lon, dataATM$lat, col="blue", pch=3)
+points(dataSPBU$lon, dataSPBU$lat, col="red", pch=3)
+title("Lokasi ATM dan SPBU di Pontianak")
 ```
 
-You can write citations, too. For example, we are using the **bookdown** package [@R-bookdown] in this sample book, which was built on top of R Markdown and **knitr** [@xie2015].
+Data yang digunakan adalah berupa titik yang menunjukkan lokasi ATM dan SPBU. Lokasi ATM ditunjukkan dengan warna biru, sedangkan lokasi SPBU ditunjukkan dengan warna merah
+
+### Data Kontinu
+```{r}
+library(sp)
+library(gstat)
+metromanila=read.csv("metromanila.csv")
+coordinates(metromanila)<-c("lon","lat")
+spplot(metromanila,"precipitation", asp = 1,
+cex = metromanila$precipitation*0.05,
+pch = 19, main="Angka Presipitasi di Kota Metropolitan Manila")
+```
+
+Data yang digunakan adalah data presipitasi dari kota metropolitan manila dimana luasan dari lingkaran menggambarkan besaran dari presipitasi, semakin besar luas lingkaran, semakin besar pula angka presipitasinya pada daerah tersebut.
+
+### Data Area
+```{r message=F, warning=F}
+library(spdep)
+library(rgdal)
+library(raster)
+petajawa<- readOGR(dsn = "Jawamap", layer="jawa")
+plot(petajawa)
+"Peta Pulau Jawa"
+```
+
+
+## Struktur Data Spasial
+
+Tipe data spasial yang paling umum digunakan adalah *shapefile*, adapun tipe lain yang juga cukup populer adalah KML (*Keyhole Markup Language*). Data spasial tidak hanya berisi baris dan kolom, namun objek geometrik, seperti titik, garis, ataupun poligon. 
+Data *shapefile* sebenarnya terdiri dari beberapa file dengan beberapa extension, di antaranya adalah `.shp`, `.shx`, dan `.dbf`.  Beberapa package yang umum digunakan untuk bekerja dengan data spasial adalah `sp` dan `rgdal`. 
+
+## Ilustrasi Data Cholera
+
+Sebagai ilustrasi, akan digunakan data yang tersedia pada laman <http://rtwilson.com/downloads/SnowGIS_SHP.zip>. Pastikan Anda mengekstrak folder data tersebut pada direktori yang Anda inginkan. Selanjutnya, package `rgdal` akan digunakan untuk membaca data `SnowGIS` tersebut.
+
+```{r message=FALSE, warning=FALSE}
+library(rgdal)
+```
+
+Untuk melihat file apa saja yang ada di dalam folder shapefile tersebut, kita dapat menggunakan fungsi `list.files()` dan tuliskan direktori Anda masing-masing, ini dikenal sebagai **dsn**.
+
+
+```{r}
+dsn<-paste("SnowGIS_SHP/SnowGIS_SHP")
+list.files(dsn)
+```
+
+Terlihat pada output di atas bahwa folder tersebut memuat beberapa shapefile, di antaranya terdapat 6 file dengan nama `Cholera_Deaths`dan 5 file bernama `Pumps`. Kedua set data tersebut dikenal sebagai **layer**.
+
+```{r}
+ogrListLayers(dsn)
+```
+
+Kita dapat menggunakan fungsi `ogrInfo()` untuk mengetahui informasi mengenai layer tersebut.
+
+```{r message=FALSE, warning=FALSE}
+ogrInfo(dsn, layer = "Cholera_Deaths")
+```
+
+Fungsi `readOGR()` dapat digunakan untuk membaca data shapefile. 
+
+```{r warning=FALSE}
+CholeraDeaths <- readOGR(dsn, layer = "Cholera_Deaths")
+summary(CholeraDeaths)
+```
+
+Selanjutnya kita dapat memeriksa `class` dari data `CholeraDeaths` tersebut.
+
+```{r}
+class(CholeraDeaths)
+```
+
+Data tersebut merupakan `SpatialPointsDataFrame` yang termasuk `S4 class`, maka untuk mengakses data slot perlu digunakan notasi `@`.
+
+```{r}
+str(CholeraDeaths@data)
+```
+
+### Visualisasi Data Cholera
+
+Fungsi `plot()` dapat digunakan untuk membuat grafik paling sederhana dari data `CholeraDeaths`.
+
+```{r}
+par(mfrow=c(1,2))
+plot(CholeraDeaths)
+plot(CholeraDeaths, pch=20, col="steelblue")
+```
+
+Perhatikan bahwa plot di atas hanya menunjukkan sebaran titik spasial, tanpa memberikan informasi yang jelas tentang lokasi data tersebut. Jika kita memiliki peta dalam bentuk data polygon, kita dapat mengimpor data tersebut dengan cara yang sama (seandainya datanya berupa shapefile), kemudian kita plot peta baru kemudian plot data titik seperti di atas. 
+
+Alternatif lainnya jika kita tidak ingin menggunakan peta polygon dari shapefile, kita dapat menggunakan beberapa package yang tersedia di R software, seperti `ggmap`, `OpenStreetMap`, `leaflet`, atau yang lain. Namun perhatikan bahwa untuk bisa menggunakan package `OpenStreetMap`,  Anda harus memastikan bahwa jika Anda menggunakan `R` 64-bit maka `Java` yang terinstall di PC Anda juga harus sesuai, yaitu 64-bit. 
+
+Berikut ini akan ditunjukkan salah satu cara menampilkan peta dengan memanfaatkan package `leaflet`.
+
+```{r message=FALSE, warning=FALSE}
+library(leaflet)
+map <- leaflet() %>% setView(lng =  -0.13659, lat =51.51328 , zoom = 12)
+map %>% addTiles() 
+```
+
+Sebelum kedua peta dan data titik digabungkan. Pastikan terlebih dahulu apakah koordinat yang digunakan menggunakan skala yang sama.
+
+```{r}
+head(coordinates(CholeraDeaths))
+```
+
+Seperti terlihat di atas, koordinat pada data `CholeraDeaths` diukur pada skala yang berbeda dengan peta yang diambil dari package `leaflet`. Terdapat beberapa macam *coordinate reference system (CRS)*, beberapa di antaranya yang cukup populer adalah suatu set EPSG (*European Petroleum Survey Group*) berikut:
+
+* **EPSG:4326** juga dikenal sebagai WGS84, ukuran standard yang digunakan pada sistem GPS dan *Google Earth*.
+
+* **EPSG:3857** digunakan pada Google Maps, Open Street Maps, dsb.
+
+* **EPSG:27700** juga dikenal sebagai OSGB 1936, atau *British National Grid: United Kingdom Ordnance Survey*.
+
+```{r}
+cholera_latlong <- CholeraDeaths %>% 
+  spTransform(CRS("+init=epsg:4326"))
+leaflet(data = CholeraDeaths) %>% 
+  addTiles() %>%
+  addMarkers(cholera_latlong@coords[,1], cholera_latlong@coords[,2])
+```
+
+Dapat dilihat di atas, bahwa setelah koordinatnya disamakan, kita dapat menampilkan data `CholeraDeaths` pada peta yang diperoleh dari `Open Street Map` melalui package `leaflet`. 
+
+
+## Sumber Pustaka
+
+Agafonkin, V. (n.d.). Leaflet for R - Markers. rstudio.github.io. Retrieved from <https://rstudio.github.io/leaflet/markers.html>
+
+Baumer, B.S., Kaplan, D.T., Horton, N.J. 2017. Modern Data Science with R. CRC Press.
+
+UQ SLC Digital Team. (2020, April 16). Creating maps using R. Language Technology and Data Analysis Laboratory (LADAL). Retrieved from <https://slcladal.github.io/maps.html>
