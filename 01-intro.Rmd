@@ -1,56 +1,21 @@
 # Pengantar Analisis Spasial dengan R Software
 
-## Jenis Data Spasial
+## Pengenalan R Software
 
 ```{r}
 setwd("D:/Research (eksternal dept)/pelatihan spasial (adj)/modul")
 ```
 
 
-### Data titik
-```{r}
-library(rgdal)
-petapontianak=readOGR(dsn="Peta Pontianak", layer="Pontianak_kec")
-dataATM=read.csv("DATA ATM PONTIANAK.csv" , header=T)
-dataSPBU=read.csv("Data SPBU Pontianak.csv", sep=";",header=T)
-plot(petapontianak)
-points(dataATM$lon, dataATM$lat, col="blue", pch=3)
-points(dataSPBU$lon, dataSPBU$lat, col="red", pch=3)
-title("Lokasi ATM dan SPBU di Pontianak")
-```
+## Pengenalan Data Spasial
 
-Data yang digunakan adalah berupa titik yang menunjukkan lokasi ATM dan SPBU. Lokasi ATM ditunjukkan dengan warna biru, sedangkan lokasi SPBU ditunjukkan dengan warna merah
+Data spasial tidak hanya berisi baris dan kolom, namun objek geometrik, seperti titik, garis, ataupun poligon. Beberapa jenis data spasial adalah data titik, data kontinu, dan data area yang akan dibawah berikut ini. Sebelum membahas jenis data tersebut satu per satu, terlebih dulu akan dibahas struktur data spasial serta cara mengimpor data spasial ke dalam R.
 
-### Data Kontinu
-```{r}
-library(sp)
-library(gstat)
-metromanila=read.csv("metromanila.csv")
-coordinates(metromanila)<-c("lon","lat")
-spplot(metromanila,"precipitation", asp = 1,
-cex = metromanila$precipitation*0.05,
-pch = 19, main="Angka Presipitasi di Kota Metropolitan Manila")
-```
+### Struktur Data Spasial
 
-Data yang digunakan adalah data presipitasi dari kota metropolitan manila dimana luasan dari lingkaran menggambarkan besaran dari presipitasi, semakin besar luas lingkaran, semakin besar pula angka presipitasinya pada daerah tersebut.
+Tipe data spasial yang paling umum digunakan adalah *shapefile*, adapun tipe lain yang juga cukup populer adalah KML (*Keyhole Markup Language*). Data *shapefile* sebenarnya terdiri dari beberapa file dengan beberapa extension, di antaranya adalah `.shp`, `.shx`, dan `.dbf`.  Beberapa package yang umum digunakan untuk bekerja dengan data spasial adalah `sp` dan `rgdal`. 
 
-### Data Area
-```{r message=F, warning=F}
-library(spdep)
-library(rgdal)
-library(raster)
-petajawa<- readOGR(dsn = "Jawamap", layer="jawa")
-plot(petajawa)
-"Peta Pulau Jawa"
-```
-
-
-## Struktur Data Spasial
-
-Tipe data spasial yang paling umum digunakan adalah *shapefile*, adapun tipe lain yang juga cukup populer adalah KML (*Keyhole Markup Language*). Data spasial tidak hanya berisi baris dan kolom, namun objek geometrik, seperti titik, garis, ataupun poligon. 
-Data *shapefile* sebenarnya terdiri dari beberapa file dengan beberapa extension, di antaranya adalah `.shp`, `.shx`, dan `.dbf`.  Beberapa package yang umum digunakan untuk bekerja dengan data spasial adalah `sp` dan `rgdal`. 
-
-## Ilustrasi Data Cholera
+### Ilustrasi Data Cholera
 
 Sebagai ilustrasi, akan digunakan data yang tersedia pada laman <http://rtwilson.com/downloads/SnowGIS_SHP.zip>. Pastikan Anda mengekstrak folder data tersebut pada direktori yang Anda inginkan. Selanjutnya, package `rgdal` akan digunakan untuk membaca data `SnowGIS` tersebut.
 
@@ -143,6 +108,271 @@ leaflet(data = CholeraDeaths) %>%
 
 Dapat dilihat di atas, bahwa setelah koordinatnya disamakan, kita dapat menampilkan data `CholeraDeaths` pada peta yang diperoleh dari `Open Street Map` melalui package `leaflet`. 
 
+## Tipe Data Spasial
+
+
+### Tipe Data titik
+
+Data spasial dapat berupa titik pengamatan pada lokasi tertentu, yang umumnya menyimpan koordinat lokasi *longitude* dan *latitude*. Data jenis ini hanya memiliki nilai pada titik tertentu saja, misalnya data kejadian kecelakaan, data rumah sakit, data kejadian kriminal, dan lain-lain. Sebagai ilustrasi, akan diperlihatkan data atm dan SPBU berikut ini.
+
+
+```{r}
+library(rgdal)
+petapontianak=readOGR(dsn="Peta Pontianak", layer="Pontianak_kec")
+dataATM=read.csv("DATA ATM PONTIANAK.csv" , header=T)
+dataSPBU=read.csv("Data SPBU Pontianak.csv", sep=";",header=T)
+plot(petapontianak)
+points(dataATM$lon, dataATM$lat, col="blue", pch=3)
+points(dataSPBU$lon, dataSPBU$lat, col="red", pch=3)
+title("Lokasi ATM dan SPBU di Pontianak")
+```
+
+Data yang digunakan adalah berupa titik yang menunjukkan lokasi ATM dan SPBU. Lokasi ATM ditunjukkan dengan warna biru, sedangkan lokasi SPBU ditunjukkan dengan warna merah
+
+### Tipe Data Kontinu
+
+Tipe data ini merupakan pengamatan yang memiliki nilai tidak hanya pada titik yang tersampel saja, namun nilai pengamatan sebenarnya kontinu untuk semua area. Artinya, di luar dari titik yang tersampel pun memiliki nilai untuk peubah yang diamati tersebut. Misalnya polusi udara, temperatur, kelembapan udara, presipitasi, dan sebagainya. Sebagai ilustrai, berikut ini adalah contoh data presipitasi di daerah Metro Manila.
+
+```{r}
+library(sp)
+library(gstat)
+metromanila=read.csv("metromanila.csv")
+coordinates(metromanila)<-c("lon","lat")
+spplot(metromanila,"precipitation", asp = 1,
+       cex=0.5, pch = 19, main="Angka Presipitasi di Metro Manila")
+```
+
+### Tipe Data Area
+
+Pada tipe data ini, pengamatan dilakukan pada level area. Area dapat mengacu pada sistem administrasi misalnya desa, kelurahan, kecamatan, kota, bahkan negara. Berikut ini adalah contoh data area yang diukur pada level kabupaten/kota. Untuk selanjutnya, pengamatan pada berbagai peubah dapat ditambahkan ke dalam data agar dapat diolah pada tahap analisis berikutnya. 
+
+```{r message=F, warning=F}
+library(spdep)
+library(rgdal)
+library(raster)
+petajawa<- readOGR(dsn = "Jawamap", layer="jawa")
+plot(petajawa)
+
+```
+
+## Matriks Bobot dan Autokorelasi Spasial
+
+Pada analisis data spasial, informasi ketergantungan antar lokasi dapat diukur dengan autokorelasi spasial. Untuk dapat menghitung nilai autokorelasi tersebut, terdapat beberapa tahap yang perlu dilakukan, yaitu:
+
+(1) menentukan kriteria kebertentanggaan antar lokasi pengamatan
+
+(2) menyusun matriks bobot spasial
+
+(3) matriks bobot spasial selanjutnya dapat dimanfaatkan baik untuk mengukur autokorelasi spasial maupun untuk menyusun pemodelan spasial.
+
+### Kriteria Kebertetanggaan
+
+Ilustrasi yang akan digunakan pada bagian ini adalah data yang tersedia di dalam R. Data tersebut dapat dipanggil dengan fungsi berikut.
+
+```{r}
+library(raster)
+p <- shapefile(system.file("external/lux.shp", package="raster"))
+p <- p[p$NAME_1=="Diekirch", ]
+
+```
+
+Selanjutnya kita akan tentukan sembarang nilai yang akan disimpan pada setiap lokasi untuk mengilustrasikan nilai peubah yang diamati.
+
+```{r}
+p$value <- c(10, 6, 4, 11, 6)
+data.frame(p)
+```
+
+Berikut adalah visualisasi dari data yang telah kita persiapkan.
+```{r}
+par(mai=c(0,0,0,0))
+plot(p, col=2:7)
+coords <- coordinates(p)
+points(coords, cex=6, pch=20, col='white')
+text(p, 'ID_2', cex=1.5)
+```
+
+
+#### *Contiguity Based*
+
+Kriteria yang umum digunakan pada ketetanggaan berbasis *contiguity* adalah *queen contiguity*, *rook contiguity*, dan *bishop contiguity*, seperti yang terlihat pada ilustrasi berikut ini.
+
+![](D:/Research (eksternal dept)/pelatihan spasial (adj)/Modul Pelatihan Spasial/gambar 1.png)
+
+Program berikut ini dapat diguakan untuk dapat memperoleh matriks bobot berdasarkan kriteria *queen contiguity*. 
+```{r}
+library(spdep)
+w <- poly2nb(p)
+
+#lebih lengkap dapat dituliskan seperti berikut ini:
+w <- poly2nb(p, queen=TRUE)
+
+plot(p)
+plot(w, coords, add=T)
+```
+
+Jika yang ingin digunakan adalah kriteria *rook contiguity*, maka kita dapat mengganti argumen pada program sebelumnya menjadi `queen=FALSE`.
+
+```{r}
+w.rook <- poly2nb(p, queen=FALSE)
+coords<-coordinates(p)
+plot(p)
+plot(w, coords, add=T)
+```
+
+Perhatikan bahwa pada kasus ini, kedua kriteria memperlihatkan hasil yang sama. Hal ini terjadi karena semua area pada ilustrasi ini bersinggungan sudut.
+
+
+#### *Distance Based*
+
+Kriteria kebertetanggaan dapat pula ditentukan berdasarkan jarak antar lokasi, beberapa pendekatan jarak yang dapat digunakan adalah $k$ tetangga terdekat (*k nearest neighbours (KNN)*), *radial distance*, *power distance*, dan *exponential distance*. Ilustrasi KNN dan *radial distance* dapat dilihat pada subbab berikutnya dalam modul ini. 
+
+Pendekatan *power distance* dan *exponential distance* tidak diberikan ilustrasi pada modul ini, namun berikut adalah penjelasan singkat mengenai keduanya.  Apabila bobot antara lokasi ke-$i$ dan lokasi ke-$j$ dinotasikan dengan $w_{ij}$, dan jarak antara kedua lokasi tersebut dinotasikan dengan $d_{ij}$,   formula untuk memperoleh bobot jarak dengan pendekatan *power distance* adalah:
+$$
+w_{ij}=d_{ij}^{-\alpha}
+$$
+
+Sedangkan bobot jarak berdasarkan *exponential distance* dapat diperoleh dengan formula: 
+$$
+w_{ij}=e^{{-\alpha}d_{ij}}
+$$
+
+##### *K-Nearest Neighbours*
+
+Pada pendekatan ini, kita mendefinisikan lokasi yang merupakan tetangga dari lokasi ke-$i$ adalah sejumlah $k$ lokasi yang memiliki jarak terdekat dengan lokasi $i$.
+
+![](D:/Research (eksternal dept)/pelatihan spasial (adj)/Modul Pelatihan Spasial/knn.png)
+
+Berikut ini adalah ilustrasi untuk memperoleh ketetanggaan dengan pendekatan KNN menggunakan program R.
+
+```{r warning = F}
+coords<-coordinates(p)
+IDs<-row.names(as(p, "data.frame"))
+p_kn1<-knn2nb(knearneigh(coords, k=1), row.names=IDs)
+p_kn2<-knn2nb(knearneigh(coords, k=2), row.names=IDs)
+p_kn4<-knn2nb(knearneigh(coords, k=4), row.names=IDs)
+
+par(mfrow=c(1,3))
+plot(p, main = "k=1")
+plot(p_kn1, coords, add=T)
+
+plot(p, main = "k=2")
+plot(p_kn2, coords, add=T)
+
+plot(p, main = "k=4")
+plot(p_kn4, coords, add=T)
+```
+
+##### *Radial Distance*
+
+Pada pendekatan ini,kita mendefinisikan lokasi yang merupakan tetangga dari lokasi ke-$i$ adalah sejumlah $k$ lokasi yang berada batas batas jarak (radius) antara $d1$ dan $d2$, diukur dari lokasi $i$.
+
+![](D:/Research (eksternal dept)/pelatihan spasial (adj)/Modul Pelatihan Spasial/radial_distance.png)
+
+Berikut ini adalah ilustrasi untuk memperoleh ketetanggaan dengan pendekatan KNN menggunakan program R.
+
+```{r warning = F}
+
+dist<-unlist(nbdists(p_kn1, coords))
+summary(dist)
+sort(dist)
+max_k1<-max(dist)
+p_kd1<-dnearneigh(coords, d1=0, d2=0.75*max_k1, row.names=IDs)
+p_kd2<-dnearneigh(coords, d1=0, d2=1*max_k1, row.names=IDs)
+p_kd3<-dnearneigh(coords, d1=0, d2=1.5*max_k1, row.names=IDs)
+
+par(mfrow=c(1,3))
+plot(p, main = "Distance=0.75*max_k1")
+plot(p_kd1,coords, add=T)
+
+plot(p, main = "Distance=1*max_k1")
+plot(p_kd2,coords, add=T)
+
+plot(p, main = "Distance=1.5*max_k1")
+plot(p_kd3,coords, add=T)
+```
+
+### Matriks Pembobot Spasial
+
+Matriks pembobot spasial dapat berisi elemen biner (1 atau 0) untuk menunjukkan ketetanggaan setiap lokasi, atau berupa matriks yang sudah distandardisasi. Umumnya, matriks pembobot spasial merupakan matriks yang terstandardisasi baris (*row standardized*).
+
+```{r}
+nb2mat(w, style="B")  #matriks pembobot biner
+```
+```{r}
+nb2mat(w) # matriks pembobot row standardized
+```
+
+### Autokorelasi Spasial
+
+#### Indeks Moran Global
+
+Sebagai ilustrasi, akan digunakan data persentase kemiskinan kabupaten/kota di Pulau Jawa. Berikut adalah syntax untuk membaca peta Pulau Jawa dan data persentase kemiskinan Kabupaten/Kota di Pulau Jawa
+```{r message=F}
+library(rgdal)
+library(spdep)
+library(sp)
+petajawa=readOGR(dsn="Jawamap", layer="jawa")
+datajawa=read.csv("Pulau Jawa.csv", header=T, sep=";")
+petajawa$Kemiskinan<- datajawa$Kemiskinan
+k=9
+colfunc <- colorRampPalette(c("green", "yellow","red"))
+color <- colfunc(k)
+spplot(petajawa, "Kemiskinan", col.regions=color)
+```
+
+Seandainya kita akan menggunakan kriteria queen contiguity, maka dapat dilakukan dengan syntax berikut untuk mendefinisikan matriks pembobotnya
+```{r}
+w.queen <- poly2nb(petajawa)
+w.queen
+```
+
+Terlihat pada output tersebut, bahwa terdapat 1 wilayah yang tidak memiliki tetangga, sehingga untuk syntax selanjutnya perlu ditambahkan `zero.policy=T`.
+
+```{r}
+wqueen <- nb2listw(w.queen, zero.policy=T)
+```
+
+Seandainya kita ingin menguji autokorelasi menggunakan pendekatan indeks moran, maka kita dapat menggunakan fungsi `moran.test()`.
+```{r}
+I1 <- moran.test(petajawa$Kemiskinan, wqueen, zero.policy=T, alternative="greater")
+
+#alternative hyptohesis could be either of "two.sided", "greater", or "less"
+
+I1
+```
+Berdasarkan output di atas, diperoleh nilai p-value yang sangat kecil, artinya kita dapat menolak hipotesis nol yang menyatakan bahwa tidak terdapat autokorelasi.Artinya kita dapat menyimpulkan bahwa terdapat cukup bukti untuk menyatakan bahwa terdapat autokorelasi pada taraf nyata 5%.
+
+Uji moran dapat pula dilakukan dengan melibatkan simulasi monte carlo.
+
+```{r}
+set.seed(123)
+MC<- moran.mc(petajawa$Kemiskinan, wqueen, nsim=99, zero.policy=T, alternative="greater")
+
+# View results (including p-value)
+MC
+```
+
+#### Indeks Moran Lokal
+
+Pendekatan ini termasuk ke dalam *Local Indicators for Spatial Association (LISA)*, yang mengindentifikasi autokorelasi pada tingkat lokal.
+
+```{r}
+oid <- order(petajawa$Kemiskinan)
+resI <- localmoran(petajawa$Kemiskinan, wqueen)
+head(resI)
+```
+```{r}
+petajawa$z.li <- resI[,4]
+petajawa$pvalue <- resI[,5]
+lm.palette <- colorRampPalette(c("white","orange", "red"), space = "rgb")
+spplot(petajawa, zcol="z.li", col.regions=lm.palette(20), main="Local Moran")
+```
+
+
+```{r}
+moran.plot(petajawa$Kemiskinan, wqueen, zero.policy=T, labels=petajawa$KABKOT)
+```
 
 ## Sumber Pustaka
 
