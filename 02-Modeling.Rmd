@@ -1,0 +1,299 @@
+# Pemodelan Dependensi Spasial
+
+
+## Model Spasial Global 
+
+![](D:/Research (eksternal dept)/pelatihan spasial (adj)/Modul Pelatihan Spasial/gambar 2.PNG)
+
+
+Secara umum, tahapan pemodelan regresi spasial adalah sebagai berikut:
+
+(1) Eksplorasi Data
+
+(2) Regresi Klasik & Uji Asumsi
+
+(3) Matriks Pembobot Spasial
+
+(4) Uji Lagrange Multiplier
+
+(5) Regresi Spasial & Uji Asumsi
+
+(6) Kebaikan Model
+
+
+Sebagai ilustrasi untuk menjelaskan tahapan tersebut, kita akan menggunakan data kemiskinan dan kependudukan di Pulau Jawa berikut ini:
+
+1. Data polygon (peta Pulau Jawa, dengan extension .shp)
+
+2. Data frame (data persentase kemiskinan, PDRB, pendidikan Angka Melek Huruf, Pengeluaran perkapita, Ruta Penerima Raskin, Penduduk berusia 15-64, Harapan Lama Sekolah, dan Rata-Rata Lama Sekolah, diperoleh dari BPS)
+
+Seperti yang telah dijelaskan pada modul sebelumnya, impor data dapat dilakukan dengan program berikut ini.
+
+```{r}
+datajawa = datajawa=read.csv("Pulau Jawa.csv", header=T, sep=";")
+head(datajawa)
+```
+
+Pada ilustrasi ini, pemodelan dilakukan untuk mengkaji peubah respon **persentase penduduk miskin tahun 2018 di pulau Jawa ($Y$)** dengan menggunakan peubah **persentase Pendidikan yang ditamatkan di Bawah SD Tahun 2018($X$)**.
+
+```{r eval = F}
+library(spdep)
+library(rgdal)
+library(raster)
+
+petajawa<-readOGR(dsn=“directory tempat folder utk file .shp", layer=“nama file shp")
+```
+
+```{r echo = F, warning= F, message= F, results='hide'}
+library(spdep)
+library(rgdal)
+library(raster)
+petajawa<- readOGR(dsn = "Jawamap", layer="jawa")
+```
+
+## Eksplorasi Data
+
+
+```{r warning=F, message = F}
+plot(datajawa$Pendidikan, datajawa$Kemiskinan,
+  xlab="Persentase Pendidikan yang ditamatkan di bawah SD Thn.2018", 
+  ylab="Persentase Penduduk Miskin Thn.2018",
+  pch=20, col="orange", cex=2)
+```
+
+Plot tersebut memperlihatkan adanya pola hubungan linear positif antara persentase pendidikan yang ditamatkan di bawah SD terhadap persentase penduduk miskin di Pulau Jawa pada tahun 2018.
+
+```{r}
+petajawa$Kemiskinan<- datajawa$Kemiskinan
+k=16
+colfunc <- colorRampPalette(c("green", "yellow","red"))
+color <- colfunc(k)
+spplot(petajawa, "Kemiskinan", col.regions=color, main="Persentase Penduduk Miskin Tahun 2018")
+```
+
+Berdasarkan plot di atas, dapat dilihat adanya kecenderungan pola bergerombol pada data persentase kemiskinan di kabupaten/kota di Pulau Jawa. Hal ini tampak dari gradasi warna yang cenderung mengumpul, seperti pada warna hijau, merah dan oranye.
+
+### Identifikasi Autokorelasi pada Data
+
+```{r}
+w<-poly2nb(petajawa)
+ww<-nb2listw(w, zero.policy=T)
+moran(datajawa$Kemiskinan, ww, n=length(ww$neighbours), 
+      S0=Szero(ww), zero.policy=T)
+moran.test(datajawa$Kemiskinan, ww,randomisation=T, 
+           alternative="greater", zero.policy=T)
+```
+
+
+```{r}
+moran.plot(datajawa$Kemiskinan, ww, labels=petajawa$KABKOT, zero.policy=T)
+```
+
+## Pemodelan Regresi Klasik
+
+Pemodelan regresi dapat dilakukan menggunakan fungsi `lm` berikut.
+
+```{r}
+reg.klasik = lm(Kemiskinan~Pendidikan, data = datajawa)
+err.regklasik<-residuals(reg.klasik)
+summary(reg.klasik)
+
+cor(datajawa$Kemiskinan, fitted(reg.klasik))^2
+```
+
+## Diagnostik Model 
+
+### Kenormalan Sisaan
+
+```{r warning = F, message = F}
+library(nortest)
+library(car)
+library(DescTools)
+library(lmtest)
+shapiro.test(err.regklasik)
+
+par(mfrow=c(1,2))
+hist(err.regklasik)
+car::qqPlot(residuals(reg.klasik))
+```
+
+> H0: galat model menyebar normal
+
+> H1: galat model tidak menyebar normal
+
+
+### Kehomogenan Ragam Sisaan
+
+```{r warning = F, message=F}
+plot(fitted(reg.klasik), residuals(reg.klasik))
+bptest(reg.klasik)
+```
+
+> H0: ragam galat homogen
+
+> H1: ragam galat tidak homogen
+
+### Kebebasan Sisaan
+
+Uji kebebasan sisaan pada data spasial dapat dilakukan dengan uji moran menggunakan fungsi berikut.
+
+```{r warning = F, message=F}
+w<-poly2nb(petajawa)
+ww<-nb2listw(w, zero.policy =T)
+lm.morantest(reg.klasik, ww, alternative="two.sided", zero.policy = T)
+```
+
+Selain menggunakan fungsi `lm.morantest`, uji moran dapat dilakukan menggunakan fungsi `moran.test` seperti yang dibahas pada modul pertemuan sebelumnya. Perbedaannya adalah pada fungsi pertama, input yang digunakan adalah objek `lm`, sedangkan pada fungsi kedua, yang digunakan sebagai input adalah data sisaan model.
+
+```{r warning = F, message=F}
+moran.test(err.regklasik, ww,randomisation=F, alternative="two.sided", zero.policy=T)
+```
+
+Terlihat pada output bahwa hasil kedua tes menunjukkan kesimpulan yang sama, yaitu tolak H0 yang menyatakan bahwa tidak terdapat autokorelasi pada sisaan model regresi klasik pada taraf nyata 5%. Oleh karenanya, untuk mencari model yang lebih baik, kita dapat melakukan uji LM (lagrange multiplier) untuk mengidentifikasi model dependensi spasial yang dapat digunakan pada kasus ini.
+
+## Uji Lagrange Multiplier
+
+
+```{r warning = F, message=F}
+LM<-lm.LMtests(reg.klasik, nb2listw(w, style="W", zero.policy=T),
+               test=c("LMerr", "LMlag","RLMerr","RLMlag","SARMA"), zero.policy=T)
+summary(LM)
+```
+
+Output memperlihatkan bahwa hasil uji model SEM dan SAR sama-sama signifikan pada taraf 5%. Selanjutnya, hasil uji robust keduanya ternyata sama-sama tidak signifikan. Berdasarkan skema tersebut, kita dapat mencoba kandidat model SARMA atau GSM. Namun demikian, ada pula pendapat yang menyarankan agar kita mengambil kandidat model dengan p-value terkecil, pada kasus ini p-value terkecil juga terdapat pada model SARMA atau GSM.
+
+Mohon diingat bahwa pada ilustrasi yang kita lakukan saat ini, kita hanya menggunakan satu peubah bebas sehingga kita tidak perlu mengkhawatirkan masalah multikolinieritas. Pada saat Anda memiliki lebih dari satu peubah bebas, pastikan Anda juga memperhatikan multikolinieritas pada model. Pemeriksaan dapat dilakukan dengan fungsi `vif()` pada package `car`.
+
+## Pemodelan Regresi Spasial
+
+Pada modul ini, untuk kepentingan pembelajaran, kita akan mencoba ketiga model, SEM, SAR, dan SARMA, meskipun pada prakteknya, Anda hanya perlu memodelkan yang menurut Anda terbaik saja.
+
+
+```{r}
+w<-poly2nb(petajawa)
+ww<-nb2listw(w, zero.policy=T)
+```
+
+### Model SEM
+```{r warning = F, message=F}
+library(spatialreg)
+
+sem<-errorsarlm(Kemiskinan~Pendidikan,data=datajawa,ww, zero.policy=T)
+summary(sem)
+
+pseudoR2.sem<-cor(datajawa$Kemiskinan, fitted(sem))^2
+pseudoR2.sem
+```
+
+Output di atas menunjukkan bahwa koefisien Lambda signifikan pada taraf nyata 5% ( p-value = 5.2937e-08 ). AIC model SEM adalah sebesar 623.58, dengan pseudo-$R^2=0.4787$ Selanjutnya kita akan coba memeriksa sisaan model SEM ini.
+
+```{r}
+library(nortest)
+err.sem<-residuals(sem)
+shapiro.test(err.sem)
+bptest.sarlm(sem)
+moran.test(err.sem, ww, alternative="two.sided", zero.policy=T)
+
+```
+
+Terlihat pada output di atas bahwa sisaan memenuhi asumsi kenormalan dan asumsi kebebasan.
+
+
+### Model SAR
+
+```{r warning = F, message=F}
+sar<-lagsarlm(Kemiskinan~Pendidikan,data=datajawa,ww, zero.policy=T)
+summary(sar)
+pseudoR2.sar<-cor(datajawa$Kemiskinan, fitted(sar))^2
+pseudoR2.sar
+```
+
+Output di atas memperlihatkan bahwa koefisien Rho pada model SAR signifikan, dengan nilai AIC sebesar 627.56 dengan pseudo-$R^2=0.4292$ . Selain itu, terlihat pula hasil uji autokorelasi pada sisaan model memperlihatkan nilai p-value sebesar 0.90492, artinya tidak terdapat autokorelasi pada sisaan.
+
+```{r}
+err.sar<-residuals(sar)
+shapiro.test(err.sar)
+bptest.sarlm(sar)
+moran.test(err.sar, ww, alternative="two.sided", zero.policy=T)
+```
+
+Berdasarkan output di atas, pada taraf 5% dapat disimpulkan bahwa sisaan model memenuhi asumsi kenormalan, kehomogenan ragam, dan kebebasan.
+
+
+### Model GSM/SARMA
+```{r warning = F, message=F}
+gsm<-sacsarlm(Kemiskinan~Pendidikan,data=datajawa,ww, zero.policy=T)
+summary(gsm)
+
+pseudoR2.gsm<-cor(datajawa$Kemiskinan, fitted(gsm))^2
+pseudoR2.gsm
+```
+
+Output di atas memperlihatkan bahwa kedua koefisien dependensi spasial, Rho dan Lambda signifikan. AIC model SARMA adalah sebesar 620.86 dengan pseudo-$R^2=0.5934$
+
+```{r}
+err.gsm<-residuals(gsm)
+shapiro.test(err.gsm)
+bptest.sarlm(gsm)
+moran.test(err.gsm, ww, alternative="two.sided", zero.policy=T)
+```
+
+Berdasarkan output di atas, terlihat bahwa sisaan model SARMA telah memenuhi asumsi kenormalan, kehomogenan ragam, dan kebebasan. 
+
+
+
+### Penentuan Model Terbaik
+
+Akhirnya, kita akan coba merangkum hasil pemodelan yang telah dilakukan sepanjang ilustrasi pada modul ini.
+
+
+```{r echo = F,message = F, warning= F}
+library(tidyverse); library(gt)
+dataset = openxlsx::read.xlsx('P9 Dataset 1.xlsx')
+tb<-as.tibble(dataset)
+tb %>% 
+   mutate(OLS = sprintf("%0.3f", OLS)) %>%
+   mutate(SEM = sprintf("%0.3f", SEM)) %>%
+  mutate(SAR = sprintf("%0.3f", SAR)) %>%
+  mutate(SARMA = sprintf("%0.3f", SARMA)) %>%
+  gt() %>%
+  cols_align(
+    align = "right",
+    columns = vars(OLS, SEM, SAR, SARMA)
+  )
+```
+
+
+Ilustrasi pada kasus ini memperlihatkan bahwa ternyata GSM merupakan model terbaik berdasarkan nilai AIC dan pseudo-$R^2$. Hal ini ternyata konsisten dengan p-value nya yang juga terkecil pada uji-LM.
+
+## Efek Marginal
+
+Efek marginal atau limpahan (*spill-over*) adalah besarnya dampak perubahan pada peubah dependen pada wilayah-$i$, akibat perubahan prediktor di wilayah-$j$.
+
+Efek marginal terdapat pada model dependensi spasial SAR, GSM, SDM, SDEM, dan SLX. Efek ini dapat dibedakan menjadi tiga, yaitu efek langsung (*direct effect*), efek tidak langsung (*indirect effect*), dan efek total (*total effect*).
+
+```{r}
+impacts(gsm, listw=ww)
+
+```
+
+Output di atas menunjukkan bahwa pertambahan satu satuan pada pendidikan di suatu wilayah akan diikuti oleh peningkatan kemiskinan di wilayah tersebut sebesar rata-rata 0.1938916 (pengaruh langsung), sedangkan pada wilayah tetangganya akan mengalami penurunan kemiskinan rata-rata sebesar 0.03386839 (pengaruh tak langsung). 
+
+
+## Latihan
+
+Sebagai latihan, silahkan lakukan pemodelan menggunakan  data `Kemiskinan` di Pulau Jawa dengan peubah bebas ruta penerima raskin dan persentase pendidikan yang ditamatkan di bawah SD.
+
++ periksa multikolineritas antar peubah bebas yang digunakan berdasarkan VIF
+
++ eksplorasi autokorelasi spasial pada model menggunakan jarak `W_dist`
+
++ lakukan pemodelan yang menurut Anda paling tepat, interpretasikan.
+
+## Sumber Pustaka
+
+Guliyev, H. (2020). Determining the spatial effects of COVID-19 using the spatial panel data model. Spatial Statistics, 100443. doi:10.1016/j.spasta.2020.100443. Retrieved from: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7139267/
+
+Sarmiento-Barbieri, I. (2016, April 24). An introduction to spatial econometrics in R. Spatial Econometric Workshop, University of Illinois. Retrieved from: https://www.econ.uiuc.edu/~lab/workshop/Spatial_in_R.html#modeling-spatial-dependence
+
+Zhukov, Y. M. (2010, January 19). Applied Spatial Statistics in R, Section 6, Spatial Regression [PDF slides.]. IQSS, Harvard University. Retrieved from: http://www.people.fas.harvard.edu/~zhukov/Spatial6.pdf
