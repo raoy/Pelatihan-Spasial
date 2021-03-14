@@ -1,0 +1,228 @@
+# Geographically Weighted Regression (GWR)
+
+Suatu pemodelan dapat bersifat global maupun lokal. Regresi linier klasik merupakan salah satu model global. Dikatakan global karena terdapat satu model yang berlaku umum untuk semua pengamatan. 
+
+Suatu model lokal bersifat lebih fleksibel, yang dalam konteks spasial, artinya setiap daerah/lokasi dapat memiliki model masing-masing. 
+
+Geographically Weighted Regression (GWR) merupakan salah satu model yang bersifat lokal. Beberapa keuntungan dengen menggunakan model ini, diantaranya adalah kita dapat:
+
++ menduga galat baku lokal
+
++ menghitung ukuran leverage lokal
+
++ melakukan pengujian terhadap signifikansi keragaman spasial pada penduga parameter lokal
+
++ menguji apakah model lokal lebih baik daripada model global
+
+Terdapat salah satu *stand-alone software* untuk melakukan GWR, yaitu software GWR yang dapat diakses melalui <http://ncg.nuim.ie/ncg/GWR/>. Selain itu, pada R software, terdapat beberapa package yang dapat digunakan untuk membangun model GWR, yaitu:
+
++ GWmodel
+
++ spgwr
+
++ gwrr
+
+Pada modul ini akan dibahas pemodelan GWR menggunakan package `spgwr`.
+
+## Eksplorasi Data
+
+```{r}
+library(rgdal)
+petajawa=readOGR(dsn="Jawamap", layer="jawa")
+datajawa=read.csv("Pulau Jawa.csv", header=T, sep=";")
+petajawa$Kemiskinan<- datajawa$Kemiskinan
+
+```
+
+Plot berikut ini dapat dimanfaatkan untuk mengeksplorasi hubungan antar peubah.
+
+```{r}
+corr<-cor(datajawa[,-(1:4)])
+corrplot::corrplot(corr, is.corr=T)
+```
+
+Sebagai ilustrasi, peubah rata-rata lama sekolah akan digunakan untuk memodelkan kemiskinan di pulau Jawa. Sebagai langkah awal, kita akan terlebih dulu memodelkannya menggunakan regresi linear.
+
+```{r}
+fit.lm<-lm(Kemiskinan~Rata.Rata.Lama.Sekolah, data=datajawa)
+summary(fit.lm)
+```
+
+Selanjutnya, diagnostik model dilakukan untuk memeriksa pemenuhan asumsi pada model regresi linear.
+
+```{r}
+err.lm<-residuals(fit.lm)
+shapiro.test(err.lm)
+
+par(mfrow=c(1,2))
+hist(err.lm)
+car::qqPlot(residuals(fit.lm))
+
+plot(fit.lm,which=1)
+lmtest::bptest(fit.lm)
+```
+
+Terlihat pada output di atas bahwa sisaan model cenderung memiliki ragam yang tidak konstan. Selanjutnya juga akan diperiksa kebebasan sisaan menggunakan uji moran.
+
+```{r warning=FALSE}
+library(spdep)
+w<-poly2nb(petajawa)
+ww<-nb2listw(w, zero.policy=T)
+
+lm.morantest(fit.lm, ww, alternative="two.sided", zero.policy = T)
+```
+
+Terlihat pada output bahwa terdapat autokorelasi spasial pada sisaan model regresi linier. Dengan mempertimbangkan bahwa sisaan model memiliki ragam yang tidak homogen, serta memiliki autokorelasi spasial, kita selanjutnya dapat mencoba memodelkannya dengan model regresi terboboti geografis atau GWR. Namun pada modul pembelajaran ini, kami akan perlihatkan pula bahwa pada pemodelan regresi spasial pun ternyata tetap menghasilkan sisaan dengan ragam yang heterogen. 
+
+```{r}
+LM<-lm.LMtests(fit.lm, ww,test=c("LMerr", "LMlag","RLMerr","RLMlag","SARMA"), zero.policy=T)
+summary(LM)
+
+```
+
+```{r message=FALSE, warning=FALSE}
+
+library(spatialreg)
+sem<-errorsarlm(Kemiskinan~Rata.Rata.Lama.Sekolah,data=datajawa,ww, zero.policy=T)
+sar<-lagsarlm(Kemiskinan~Rata.Rata.Lama.Sekolah,data=datajawa,ww, zero.policy=T)
+gsm<-sacsarlm(Kemiskinan~Rata.Rata.Lama.Sekolah,data=datajawa,ww, zero.policy=T)
+
+bptest.sarlm(sem)
+bptest.sarlm(sar)
+bptest.sarlm(gsm)
+
+```
+
+## Basic GWR
+
+Kita dapat menggunakan fungsi `gwr` pada package `spgwr` untuk menyusun model GWR pada R software, seperti pada program berikut ini.
+
+```{r}
+library(spgwr)
+coordinates(datajawa)<-c("Longitude","Latitude")
+gwr20 <- gwr(Kemiskinan~Rata.Rata.Lama.Sekolah,data=datajawa,bandwidth=20)
+gwr20
+```
+
+Kita dapat pula mengganti bandwidth sesuai dengan yang diinginkan. Selanjutnya kita akan bandingkan perbedaan akibat penentuan bandwidth yang berbeda-beda tersebut.
+
+```{r}
+gwr3 <- gwr(Kemiskinan~Rata.Rata.Lama.Sekolah,data=datajawa, bandwidth=3)
+gwr3
+
+```
+
+```{r}
+gwr2 <- gwr(Kemiskinan~Rata.Rata.Lama.Sekolah,data=datajawa,bandwidth=2)
+gwr2
+```
+
+```{r}
+betabw20 <- gwr20$SDF$Rata.Rata.Lama.Sekolah
+betabw3 <- gwr3$SDF$Rata.Rata.Lama.Sekolah
+betabw2 <- gwr2$SDF$Rata.Rata.Lama.Sekolah
+boxplot(betabw20, betabw3, betabw2,	names=c("bw=20","bw=3","bw=2"))
+
+```
+
+Output di atas memperlihatkan bahwa bandwidth yang lebih besar cenderung menghasilkan penduga koefisien model dengan rentang nilai  yang lebih sempit. Sebaliknya, jika bandwidth yang digunakan lebih kecil, maka penduga koefisien model cenderung memiliki rentang nilai yang lebih lebar.
+
+## Menentukan Bandwidth Optimal
+
+Penentuan bandwidth yang optimal dapat ditentukan berdasarkan kriteria AIC atau CV. Selain itu, kita juga dapat memilih fungsi pembobot kernel yang ingin digunakan pada pemodelan GWR.
+
+```{r}
+bw1 <- gwr.sel(Kemiskinan~Rata.Rata.Lama.Sekolah,data=datajawa) # default method is CV
+gwr01 <- gwr(Kemiskinan~Rata.Rata.Lama.Sekolah,data=datajawa,bandwidth=bw1)
+
+bw2 <- gwr.sel(Kemiskinan~Rata.Rata.Lama.Sekolah,data=datajawa,method="aic")
+gwr02 <- gwr(Kemiskinan~Rata.Rata.Lama.Sekolah,data=datajawa,bandwidth=bw2)
+
+bwbs1 <- gwr.sel(Kemiskinan~Rata.Rata.Lama.Sekolah,data=datajawa,gweight=gwr.bisquare)
+gwr03 <- gwr(Kemiskinan~Rata.Rata.Lama.Sekolah,data=datajawa,gweight=gwr.bisquare,
+	bandwidth=bwbs1)
+
+bwbs2 <- gwr.sel(Kemiskinan~Rata.Rata.Lama.Sekolah,data=datajawa,
+                 gweight=gwr.bisquare,method="aic")
+gwr04 <- gwr(Kemiskinan~Rata.Rata.Lama.Sekolah,data=datajawa,gweight=gwr.bisquare,
+	bandwidth=bwbs2)
+```
+
+## Menentukan Model Terbaik
+
+Penentuan model terbaik dapat ditentukan berdasarkan beberapa kriteria tertentu. Fungsi `gwr` memungkinkan kita untuk mengevaluasi model berdasarkan AIC dan global quasi-$R^2$, dengan terlebih dulu menambahkan argumen `hatmatrix=TRUE`. 
+
+```{r}
+gwr01 <- gwr(Kemiskinan~Rata.Rata.Lama.Sekolah,data=datajawa,
+             hatmatrix=T, bandwidth=bw1)
+gwr01
+```
+
+Fungsi `gwr` memberikan nilai AIC dengan tiga pendekatan, sehingga kita memperoleh AICc, AICb, dan AICh.
+```{r}
+gwr01$results$AICc
+gwr01$results$AICb
+gwr01$results$AICh
+```
+
+Model terbaik adalah yang memiliki nilai AIC terkecil (bisa juga negatif) dan nilai global quasi-$R^2$ yang terbesar. Namun demikian, kriteria tersebut tidak memberikan informasi inferensia apapun terkait siginifikansi model GWR.
+
+Beberapa pendekatan uji dapat dilakukan untuk menguji $H_0$ yang menyatakan bahwa model GWR tidak lebih baik daripada model OLS (regresi linier klasik), seperti yang dapat dilihat pada program-program berikut ini.
+
+```{r}
+BFC02.gwr.test(gwr01)
+```
+
+```{r}
+BFC99.gwr.test(gwr01)
+```
+
+```{r}
+LMZ.F1GWR.test(gwr01)
+```
+
+```{r}
+LMZ.F2GWR.test(gwr01)
+```
+
+Berdasarkan output di atas, seluruh uji menunjukkan nilai $p$-value yang lebih kecil daripada taraf nyata 0.05, artinya $H_0$ dapat ditolak, dan kita dapat menyimpulkan bahwa model GWR lebih baik daripada OLS, pada taraf nyata 5%.
+
+```{r}
+LMZ.F3GWR.test(gwr01)
+```
+
+
+
+## Menginterpretasikan Hasil Pemodelan GWR
+
+
+Koefisien model GWR bersifat lokal, sehingga nilai penduga koefisien akan diperoleh pada setiap titik pengamatan. Oleh karenanya, interpretasi model GWR seringkali dilakukan dengan membuat visualisasi dalam bentuk peta, baru kemudian menginterpretasikannya.
+
+```{r}
+str(gwr01$SDF)
+```
+
+
+Beberapa nilai dapat diperoleh langsung dari output fungsi `gwr`, yaitu penduga koefisien, hasil prediksi model, serta *local*-$R^2$. Selanjutnya, interpretasi dapat disesuaikan dengan konteks penelitian.
+
+```{r}
+petajawa$beta<-gwr01$SDF$Rata.Rata.Lama.Sekolah
+petajawa$pred<-gwr01$SDF$pred
+petajawa$localR2<-gwr01$SDF$localR2
+
+spplot(petajawa, "beta", main="Penduga Koefisien Model GWR")
+spplot(petajawa, "pred", main="Prediksi Kemiskinan")
+spplot(petajawa, "localR2", main="Local R-square")
+
+
+```
+
+## Sumber Pustaka
+
+Brazil, N. (n.d.). Geographically weighted regression. CRD 230: Spatial Methods in Community Research. https://crd230.github.io/gwr.html#ordinary_least_squares_regression
+
+Brunsdon, C. 2015. Geographically Weighted Regression. https://rstudio-pubs-static.s3.amazonaws.com/176883_06a3fa1fc77444be85e94dcd97ba9a34.html
+
+Dennett, A. (2014, November 17). An introduction to geographically weighted regression in R. https://rstudio-pubs-static.s3.amazonaws.com/44975_0342ec49f925426fa16ebcdc28210118.html
+
+

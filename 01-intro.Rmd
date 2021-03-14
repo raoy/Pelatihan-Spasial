@@ -2,7 +2,19 @@
 
 ## Pengenalan R Software
 
-```{r}
+Apabila Anda belum memiliki R dan RStudio pada perangkat PC atau laptop Anda, silahkan ikut langkah berikut:
+
+1. Download base R sesuai dengan *operating system* Anda pada laman <https://cran.r-project.org>.
+
+2. Install software tersebut pada system Anda.
+
+3. Silahkan download versi desktop untuk RStudio pada system Anda pada laman berikut: <https://www.rstudio.com/products/RStudio/>.
+
+4. Install RStudio pada system Anda.
+
+
+
+```{r echo=F}
 setwd("D:/Research (eksternal dept)/pelatihan spasial (adj)/modul")
 ```
 
