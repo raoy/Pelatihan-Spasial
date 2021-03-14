@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Modul 2 Pemodelan Dependensi Spasial | Modul Praktikum - Pelatihan Analisis Spasial</title>
+  <meta name="description" content="Modul 2 Pemodelan Dependensi Spasial | Modul Praktikum - Pelatihan Analisis Spasial" />
+  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Modul 2 Pemodelan Dependensi Spasial | Modul Praktikum - Pelatihan Analisis Spasial" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Modul 2 Pemodelan Dependensi Spasial | Modul Praktikum - Pelatihan Analisis Spasial" />
+  
+  
+  
+
+<meta name="author" content="Anik Djuraidah, Rahma Anisa, Gerry Alfa Dito" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="pengantar-analisis-spasial-dengan-r-software.html"/>
+<link rel="next" href="geographically-weighted-regression-gwr.html"/>
+<script src="libs/header-attrs-2.7/header-attrs.js"></script>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.0.4.1/leaflet.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">A Minimal Book Example</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="pengantar-analisis-spasial-dengan-r-software.html"><a href="pengantar-analisis-spasial-dengan-r-software.html"><i class="fa fa-check"></i><b>1</b> Pengantar Analisis Spasial dengan R Software</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="pengantar-analisis-spasial-dengan-r-software.html"><a href="pengantar-analisis-spasial-dengan-r-software.html#pengenalan-r-software"><i class="fa fa-check"></i><b>1.1</b> Pengenalan R Software</a></li>
+<li class="chapter" data-level="1.2" data-path="pengantar-analisis-spasial-dengan-r-software.html"><a href="pengantar-analisis-spasial-dengan-r-software.html#pengenalan-data-spasial"><i class="fa fa-check"></i><b>1.2</b> Pengenalan Data Spasial</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="pengantar-analisis-spasial-dengan-r-software.html"><a href="pengantar-analisis-spasial-dengan-r-software.html#struktur-data-spasial"><i class="fa fa-check"></i><b>1.2.1</b> Struktur Data Spasial</a></li>
+<li class="chapter" data-level="1.2.2" data-path="pengantar-analisis-spasial-dengan-r-software.html"><a href="pengantar-analisis-spasial-dengan-r-software.html#ilustrasi-data-cholera"><i class="fa fa-check"></i><b>1.2.2</b> Ilustrasi Data Cholera</a></li>
+<li class="chapter" data-level="1.2.3" data-path="pengantar-analisis-spasial-dengan-r-software.html"><a href="pengantar-analisis-spasial-dengan-r-software.html#visualisasi-data-cholera"><i class="fa fa-check"></i><b>1.2.3</b> Visualisasi Data Cholera</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="pengantar-analisis-spasial-dengan-r-software.html"><a href="pengantar-analisis-spasial-dengan-r-software.html#tipe-data-spasial"><i class="fa fa-check"></i><b>1.3</b> Tipe Data Spasial</a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="pengantar-analisis-spasial-dengan-r-software.html"><a href="pengantar-analisis-spasial-dengan-r-software.html#tipe-data-titik"><i class="fa fa-check"></i><b>1.3.1</b> Tipe Data titik</a></li>
+<li class="chapter" data-level="1.3.2" data-path="pengantar-analisis-spasial-dengan-r-software.html"><a href="pengantar-analisis-spasial-dengan-r-software.html#tipe-data-kontinu"><i class="fa fa-check"></i><b>1.3.2</b> Tipe Data Kontinu</a></li>
+<li class="chapter" data-level="1.3.3" data-path="pengantar-analisis-spasial-dengan-r-software.html"><a href="pengantar-analisis-spasial-dengan-r-software.html#tipe-data-area"><i class="fa fa-check"></i><b>1.3.3</b> Tipe Data Area</a></li>
+</ul></li>
+<li class="chapter" data-level="1.4" data-path="pengantar-analisis-spasial-dengan-r-software.html"><a href="pengantar-analisis-spasial-dengan-r-software.html#matriks-bobot-dan-autokorelasi-spasial"><i class="fa fa-check"></i><b>1.4</b> Matriks Bobot dan Autokorelasi Spasial</a>
+<ul>
+<li class="chapter" data-level="1.4.1" data-path="pengantar-analisis-spasial-dengan-r-software.html"><a href="pengantar-analisis-spasial-dengan-r-software.html#kriteria-kebertetanggaan"><i class="fa fa-check"></i><b>1.4.1</b> Kriteria Kebertetanggaan</a></li>
+<li class="chapter" data-level="1.4.2" data-path="pengantar-analisis-spasial-dengan-r-software.html"><a href="pengantar-analisis-spasial-dengan-r-software.html#matriks-pembobot-spasial"><i class="fa fa-check"></i><b>1.4.2</b> Matriks Pembobot Spasial</a></li>
+<li class="chapter" data-level="1.4.3" data-path="pengantar-analisis-spasial-dengan-r-software.html"><a href="pengantar-analisis-spasial-dengan-r-software.html#autokorelasi-spasial"><i class="fa fa-check"></i><b>1.4.3</b> Autokorelasi Spasial</a></li>
+</ul></li>
+<li class="chapter" data-level="1.5" data-path="pengantar-analisis-spasial-dengan-r-software.html"><a href="pengantar-analisis-spasial-dengan-r-software.html#sumber-pustaka"><i class="fa fa-check"></i><b>1.5</b> Sumber Pustaka</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="pemodelan-dependensi-spasial.html"><a href="pemodelan-dependensi-spasial.html"><i class="fa fa-check"></i><b>2</b> Pemodelan Dependensi Spasial</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="pemodelan-dependensi-spasial.html"><a href="pemodelan-dependensi-spasial.html#model-spasial-global"><i class="fa fa-check"></i><b>2.1</b> Model Spasial Global</a></li>
+<li class="chapter" data-level="2.2" data-path="pemodelan-dependensi-spasial.html"><a href="pemodelan-dependensi-spasial.html#eksplorasi-data"><i class="fa fa-check"></i><b>2.2</b> Eksplorasi Data</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="pemodelan-dependensi-spasial.html"><a href="pemodelan-dependensi-spasial.html#identifikasi-autokorelasi-pada-data"><i class="fa fa-check"></i><b>2.2.1</b> Identifikasi Autokorelasi pada Data</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="pemodelan-dependensi-spasial.html"><a href="pemodelan-dependensi-spasial.html#pemodelan-regresi-klasik"><i class="fa fa-check"></i><b>2.3</b> Pemodelan Regresi Klasik</a></li>
+<li class="chapter" data-level="2.4" data-path="pemodelan-dependensi-spasial.html"><a href="pemodelan-dependensi-spasial.html#diagnostik-model"><i class="fa fa-check"></i><b>2.4</b> Diagnostik Model</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="pemodelan-dependensi-spasial.html"><a href="pemodelan-dependensi-spasial.html#kenormalan-sisaan"><i class="fa fa-check"></i><b>2.4.1</b> Kenormalan Sisaan</a></li>
+<li class="chapter" data-level="2.4.2" data-path="pemodelan-dependensi-spasial.html"><a href="pemodelan-dependensi-spasial.html#kehomogenan-ragam-sisaan"><i class="fa fa-check"></i><b>2.4.2</b> Kehomogenan Ragam Sisaan</a></li>
+<li class="chapter" data-level="2.4.3" data-path="pemodelan-dependensi-spasial.html"><a href="pemodelan-dependensi-spasial.html#kebebasan-sisaan"><i class="fa fa-check"></i><b>2.4.3</b> Kebebasan Sisaan</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="pemodelan-dependensi-spasial.html"><a href="pemodelan-dependensi-spasial.html#uji-lagrange-multiplier"><i class="fa fa-check"></i><b>2.5</b> Uji Lagrange Multiplier</a></li>
+<li class="chapter" data-level="2.6" data-path="pemodelan-dependensi-spasial.html"><a href="pemodelan-dependensi-spasial.html#pemodelan-regresi-spasial"><i class="fa fa-check"></i><b>2.6</b> Pemodelan Regresi Spasial</a>
+<ul>
+<li class="chapter" data-level="2.6.1" data-path="pemodelan-dependensi-spasial.html"><a href="pemodelan-dependensi-spasial.html#model-sem"><i class="fa fa-check"></i><b>2.6.1</b> Model SEM</a></li>
+<li class="chapter" data-level="2.6.2" data-path="pemodelan-dependensi-spasial.html"><a href="pemodelan-dependensi-spasial.html#model-sar"><i class="fa fa-check"></i><b>2.6.2</b> Model SAR</a></li>
+<li class="chapter" data-level="2.6.3" data-path="pemodelan-dependensi-spasial.html"><a href="pemodelan-dependensi-spasial.html#model-gsmsarma"><i class="fa fa-check"></i><b>2.6.3</b> Model GSM/SARMA</a></li>
+<li class="chapter" data-level="2.6.4" data-path="pemodelan-dependensi-spasial.html"><a href="pemodelan-dependensi-spasial.html#penentuan-model-terbaik"><i class="fa fa-check"></i><b>2.6.4</b> Penentuan Model Terbaik</a></li>
+</ul></li>
+<li class="chapter" data-level="2.7" data-path="pemodelan-dependensi-spasial.html"><a href="pemodelan-dependensi-spasial.html#efek-marginal"><i class="fa fa-check"></i><b>2.7</b> Efek Marginal</a></li>
+<li class="chapter" data-level="2.8" data-path="pemodelan-dependensi-spasial.html"><a href="pemodelan-dependensi-spasial.html#latihan"><i class="fa fa-check"></i><b>2.8</b> Latihan</a></li>
+<li class="chapter" data-level="2.9" data-path="pemodelan-dependensi-spasial.html"><a href="pemodelan-dependensi-spasial.html#sumber-pustaka-1"><i class="fa fa-check"></i><b>2.9</b> Sumber Pustaka</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="geographically-weighted-regression-gwr.html"><a href="geographically-weighted-regression-gwr.html"><i class="fa fa-check"></i><b>3</b> Geographically Weighted Regression (GWR)</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="geographically-weighted-regression-gwr.html"><a href="geographically-weighted-regression-gwr.html#eksplorasi-data-1"><i class="fa fa-check"></i><b>3.1</b> Eksplorasi Data</a></li>
+<li class="chapter" data-level="3.2" data-path="geographically-weighted-regression-gwr.html"><a href="geographically-weighted-regression-gwr.html#basic-gwr"><i class="fa fa-check"></i><b>3.2</b> Basic GWR</a></li>
+<li class="chapter" data-level="3.3" data-path="geographically-weighted-regression-gwr.html"><a href="geographically-weighted-regression-gwr.html#menentukan-bandwidth-optimal"><i class="fa fa-check"></i><b>3.3</b> Menentukan Bandwidth Optimal</a></li>
+<li class="chapter" data-level="3.4" data-path="geographically-weighted-regression-gwr.html"><a href="geographically-weighted-regression-gwr.html#menentukan-model-terbaik"><i class="fa fa-check"></i><b>3.4</b> Menentukan Model Terbaik</a></li>
+<li class="chapter" data-level="3.5" data-path="geographically-weighted-regression-gwr.html"><a href="geographically-weighted-regression-gwr.html#menginterpretasikan-hasil-pemodelan-gwr"><i class="fa fa-check"></i><b>3.5</b> Menginterpretasikan Hasil Pemodelan GWR</a></li>
+<li class="chapter" data-level="3.6" data-path="geographically-weighted-regression-gwr.html"><a href="geographically-weighted-regression-gwr.html#sumber-pustaka-2"><i class="fa fa-check"></i><b>3.6</b> Sumber Pustaka</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="applications.html"><a href="applications.html"><i class="fa fa-check"></i><b>4</b> Applications</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="applications.html"><a href="applications.html#example-one"><i class="fa fa-check"></i><b>4.1</b> Example one</a></li>
+<li class="chapter" data-level="4.2" data-path="applications.html"><a href="applications.html#example-two"><i class="fa fa-check"></i><b>4.2</b> Example two</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Modul Praktikum - Pelatihan Analisis Spasial</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="pemodelan-dependensi-spasial" class="section level1" number="2">
+<h1><span class="header-section-number">Modul 2</span> Pemodelan Dependensi Spasial</h1>
+<div id="model-spasial-global" class="section level2" number="2.1">
+<h2><span class="header-section-number">2.1</span> Model Spasial Global</h2>
+<p><img src="D:/Research%20(eksternal%20dept)/pelatihan%20spasial%20(adj)/Modul%20Pelatihan%20Spasial/gambar%202.png" /></p>
+<p>Secara umum, tahapan pemodelan regresi spasial adalah sebagai berikut:</p>
+<ol style="list-style-type: decimal">
+<li><p>Eksplorasi Data</p></li>
+<li><p>Regresi Klasik &amp; Uji Asumsi</p></li>
+<li><p>Matriks Pembobot Spasial</p></li>
+<li><p>Uji Lagrange Multiplier</p></li>
+<li><p>Regresi Spasial &amp; Uji Asumsi</p></li>
+<li><p>Kebaikan Model</p></li>
+</ol>
+<p>Sebagai ilustrasi untuk menjelaskan tahapan tersebut, kita akan menggunakan data kemiskinan dan kependudukan di Pulau Jawa berikut ini:</p>
+<ol style="list-style-type: decimal">
+<li><p>Data polygon (peta Pulau Jawa, dengan extension .shp)</p></li>
+<li><p>Data frame (data persentase kemiskinan, PDRB, pendidikan Angka Melek Huruf, Pengeluaran perkapita, Ruta Penerima Raskin, Penduduk berusia 15-64, Harapan Lama Sekolah, dan Rata-Rata Lama Sekolah, diperoleh dari BPS)</p></li>
+</ol>
+<p>Seperti yang telah dijelaskan pada modul sebelumnya, impor data dapat dilakukan dengan program berikut ini.</p>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="pemodelan-dependensi-spasial.html#cb62-1" aria-hidden="true"></a>datajawa =<span class="st"> </span>datajawa=<span class="kw">read.csv</span>(<span class="st">&quot;Pulau Jawa.csv&quot;</span>, <span class="dt">header=</span>T, <span class="dt">sep=</span><span class="st">&quot;;&quot;</span>)</span>
+<span id="cb62-2"><a href="pemodelan-dependensi-spasial.html#cb62-2" aria-hidden="true"></a><span class="kw">head</span>(datajawa)</span></code></pre></div>
+<pre><code>##      Provinsi       Kabupaten.kota Longitude Latitude Kemiskinan   PDRB
+## 1 DKI Jakarta     Kepulauan Seribu  106.5072  -5.7985      11.98 338.80
+## 2             Kota Jakarta Selatan  106.8079  -6.2627       2.83 261.58
+## 3               Kota Jakarta Timur  106.8995  -6.2249       3.14 155.53
+## 4               Kota Jakarta Pusat  106.8279  -6.1801       3.59 692.24
+## 5               Kota Jakarta Barat  106.7633  -6.1675       3.39 168.68
+## 6               Kota Jakarta Utara  106.8926  -6.1555       5.35 271.85
+##   Pendidikan    AMH Pengeluaran.Perkapita Ruta.Penerima.Raskin Penduduk.15.64
+## 1       5.29 100.00                 68.80                55.34        86.2882
+## 2       7.96 100.00                 46.63                 0.00        86.8031
+## 3       2.91 100.00                 50.39                 0.00        86.9343
+## 4       3.62 100.00                 50.87                 0.00        86.2032
+## 5      25.02 100.00                 53.29                 0.00        87.4070
+## 6      18.59  98.98                 51.12                 0.00        87.3943
+##     HLS Rata.Rata.Lama.Sekolah
+## 1 12.48                   8.46
+## 2 13.31                  11.57
+## 3 13.43                  11.64
+## 4 13.23                  11.24
+## 5 12.78                  10.38
+## 6 12.61                  10.69</code></pre>
+<p>Pada ilustrasi ini, pemodelan dilakukan untuk mengkaji peubah respon <strong>persentase penduduk miskin tahun 2018 di pulau Jawa (<span class="math inline">\(Y\)</span>)</strong> dengan menggunakan peubah <strong>persentase Pendidikan yang ditamatkan di Bawah SD Tahun 2018(<span class="math inline">\(X\)</span>)</strong>.</p>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="pemodelan-dependensi-spasial.html#cb64-1" aria-hidden="true"></a><span class="kw">library</span>(spdep)</span>
+<span id="cb64-2"><a href="pemodelan-dependensi-spasial.html#cb64-2" aria-hidden="true"></a><span class="kw">library</span>(rgdal)</span>
+<span id="cb64-3"><a href="pemodelan-dependensi-spasial.html#cb64-3" aria-hidden="true"></a><span class="kw">library</span>(raster)</span>
+<span id="cb64-4"><a href="pemodelan-dependensi-spasial.html#cb64-4" aria-hidden="true"></a></span>
+<span id="cb64-5"><a href="pemodelan-dependensi-spasial.html#cb64-5" aria-hidden="true"></a>petajawa&lt;-<span class="kw">readOGR</span>(<span class="dt">dsn=</span>“directory tempat folder utk file .shp<span class="st">&quot;, layer=“nama file shp&quot;</span>)</span></code></pre></div>
+</div>
+<div id="eksplorasi-data" class="section level2" number="2.2">
+<h2><span class="header-section-number">2.2</span> Eksplorasi Data</h2>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="pemodelan-dependensi-spasial.html#cb65-1" aria-hidden="true"></a><span class="kw">plot</span>(datajawa<span class="op">$</span>Pendidikan, datajawa<span class="op">$</span>Kemiskinan,</span>
+<span id="cb65-2"><a href="pemodelan-dependensi-spasial.html#cb65-2" aria-hidden="true"></a>  <span class="dt">xlab=</span><span class="st">&quot;Persentase Pendidikan yang ditamatkan di bawah SD Thn.2018&quot;</span>, </span>
+<span id="cb65-3"><a href="pemodelan-dependensi-spasial.html#cb65-3" aria-hidden="true"></a>  <span class="dt">ylab=</span><span class="st">&quot;Persentase Penduduk Miskin Thn.2018&quot;</span>,</span>
+<span id="cb65-4"><a href="pemodelan-dependensi-spasial.html#cb65-4" aria-hidden="true"></a>  <span class="dt">pch=</span><span class="dv">20</span>, <span class="dt">col=</span><span class="st">&quot;orange&quot;</span>, <span class="dt">cex=</span><span class="dv">2</span>)</span></code></pre></div>
+<p><img src="modul_files/figure-html/unnamed-chunk-36-1.png" width="672" /></p>
+<p>Plot tersebut memperlihatkan adanya pola hubungan linear positif antara persentase pendidikan yang ditamatkan di bawah SD terhadap persentase penduduk miskin di Pulau Jawa pada tahun 2018.</p>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="pemodelan-dependensi-spasial.html#cb66-1" aria-hidden="true"></a>petajawa<span class="op">$</span>Kemiskinan&lt;-<span class="st"> </span>datajawa<span class="op">$</span>Kemiskinan</span>
+<span id="cb66-2"><a href="pemodelan-dependensi-spasial.html#cb66-2" aria-hidden="true"></a>k=<span class="dv">16</span></span>
+<span id="cb66-3"><a href="pemodelan-dependensi-spasial.html#cb66-3" aria-hidden="true"></a>colfunc &lt;-<span class="st"> </span><span class="kw">colorRampPalette</span>(<span class="kw">c</span>(<span class="st">&quot;green&quot;</span>, <span class="st">&quot;yellow&quot;</span>,<span class="st">&quot;red&quot;</span>))</span>
+<span id="cb66-4"><a href="pemodelan-dependensi-spasial.html#cb66-4" aria-hidden="true"></a>color &lt;-<span class="st"> </span><span class="kw">colfunc</span>(k)</span>
+<span id="cb66-5"><a href="pemodelan-dependensi-spasial.html#cb66-5" aria-hidden="true"></a><span class="kw">spplot</span>(petajawa, <span class="st">&quot;Kemiskinan&quot;</span>, <span class="dt">col.regions=</span>color, <span class="dt">main=</span><span class="st">&quot;Persentase Penduduk Miskin Tahun 2018&quot;</span>)</span></code></pre></div>
+<p><img src="modul_files/figure-html/unnamed-chunk-37-1.png" width="672" /></p>
+<p>Berdasarkan plot di atas, dapat dilihat adanya kecenderungan pola bergerombol pada data persentase kemiskinan di kabupaten/kota di Pulau Jawa. Hal ini tampak dari gradasi warna yang cenderung mengumpul, seperti pada warna hijau, merah dan oranye.</p>
+<div id="identifikasi-autokorelasi-pada-data" class="section level3" number="2.2.1">
+<h3><span class="header-section-number">2.2.1</span> Identifikasi Autokorelasi pada Data</h3>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="pemodelan-dependensi-spasial.html#cb67-1" aria-hidden="true"></a>w&lt;-<span class="kw">poly2nb</span>(petajawa)</span>
+<span id="cb67-2"><a href="pemodelan-dependensi-spasial.html#cb67-2" aria-hidden="true"></a>ww&lt;-<span class="kw">nb2listw</span>(w, <span class="dt">zero.policy=</span>T)</span>
+<span id="cb67-3"><a href="pemodelan-dependensi-spasial.html#cb67-3" aria-hidden="true"></a><span class="kw">moran</span>(datajawa<span class="op">$</span>Kemiskinan, ww, <span class="dt">n=</span><span class="kw">length</span>(ww<span class="op">$</span>neighbours), </span>
+<span id="cb67-4"><a href="pemodelan-dependensi-spasial.html#cb67-4" aria-hidden="true"></a>      <span class="dt">S0=</span><span class="kw">Szero</span>(ww), <span class="dt">zero.policy=</span>T)</span></code></pre></div>
+<pre><code>## $I
+## [1] 0.5214426
+## 
+## $K
+## [1] 2.853193</code></pre>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="pemodelan-dependensi-spasial.html#cb69-1" aria-hidden="true"></a><span class="kw">moran.test</span>(datajawa<span class="op">$</span>Kemiskinan, ww,<span class="dt">randomisation=</span>T, </span>
+<span id="cb69-2"><a href="pemodelan-dependensi-spasial.html#cb69-2" aria-hidden="true"></a>           <span class="dt">alternative=</span><span class="st">&quot;greater&quot;</span>, <span class="dt">zero.policy=</span>T)</span></code></pre></div>
+<pre><code>## 
+##  Moran I test under randomisation
+## 
+## data:  datajawa$Kemiskinan  
+## weights: ww  n reduced by no-neighbour observations
+##   
+## 
+## Moran I statistic standard deviate = 7.7638, p-value = 4.12e-15
+## alternative hypothesis: greater
+## sample estimates:
+## Moran I statistic       Expectation          Variance 
+##       0.517060772      -0.008547009       0.004583226</code></pre>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="pemodelan-dependensi-spasial.html#cb71-1" aria-hidden="true"></a><span class="kw">moran.plot</span>(datajawa<span class="op">$</span>Kemiskinan, ww, <span class="dt">labels=</span>petajawa<span class="op">$</span>KABKOT, <span class="dt">zero.policy=</span>T)</span></code></pre></div>
+<p><img src="modul_files/figure-html/unnamed-chunk-39-1.png" width="672" /></p>
+</div>
+</div>
+<div id="pemodelan-regresi-klasik" class="section level2" number="2.3">
+<h2><span class="header-section-number">2.3</span> Pemodelan Regresi Klasik</h2>
+<p>Pemodelan regresi dapat dilakukan menggunakan fungsi <code>lm</code> berikut.</p>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="pemodelan-dependensi-spasial.html#cb72-1" aria-hidden="true"></a>reg.klasik =<span class="st"> </span><span class="kw">lm</span>(Kemiskinan<span class="op">~</span>Pendidikan, <span class="dt">data =</span> datajawa)</span>
+<span id="cb72-2"><a href="pemodelan-dependensi-spasial.html#cb72-2" aria-hidden="true"></a>err.regklasik&lt;-<span class="kw">residuals</span>(reg.klasik)</span>
+<span id="cb72-3"><a href="pemodelan-dependensi-spasial.html#cb72-3" aria-hidden="true"></a><span class="kw">summary</span>(reg.klasik)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = Kemiskinan ~ Pendidikan, data = datajawa)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -9.3117 -2.6659 -0.3763  2.2998  8.8844 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  4.50549    0.89314   5.045 1.68e-06 ***
+## Pendidikan   0.18965    0.03066   6.186 9.37e-09 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 3.671 on 117 degrees of freedom
+## Multiple R-squared:  0.2464, Adjusted R-squared:   0.24 
+## F-statistic: 38.26 on 1 and 117 DF,  p-value: 9.373e-09</code></pre>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="pemodelan-dependensi-spasial.html#cb74-1" aria-hidden="true"></a><span class="kw">cor</span>(datajawa<span class="op">$</span>Kemiskinan, <span class="kw">fitted</span>(reg.klasik))<span class="op">^</span><span class="dv">2</span></span></code></pre></div>
+<pre><code>## [1] 0.2464408</code></pre>
+</div>
+<div id="diagnostik-model" class="section level2" number="2.4">
+<h2><span class="header-section-number">2.4</span> Diagnostik Model</h2>
+<div id="kenormalan-sisaan" class="section level3" number="2.4.1">
+<h3><span class="header-section-number">2.4.1</span> Kenormalan Sisaan</h3>
+<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="pemodelan-dependensi-spasial.html#cb76-1" aria-hidden="true"></a><span class="kw">library</span>(nortest)</span>
+<span id="cb76-2"><a href="pemodelan-dependensi-spasial.html#cb76-2" aria-hidden="true"></a><span class="kw">library</span>(car)</span>
+<span id="cb76-3"><a href="pemodelan-dependensi-spasial.html#cb76-3" aria-hidden="true"></a><span class="kw">library</span>(DescTools)</span>
+<span id="cb76-4"><a href="pemodelan-dependensi-spasial.html#cb76-4" aria-hidden="true"></a><span class="kw">library</span>(lmtest)</span>
+<span id="cb76-5"><a href="pemodelan-dependensi-spasial.html#cb76-5" aria-hidden="true"></a><span class="kw">shapiro.test</span>(err.regklasik)</span></code></pre></div>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  err.regklasik
+## W = 0.98607, p-value = 0.2608</code></pre>
+<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="pemodelan-dependensi-spasial.html#cb78-1" aria-hidden="true"></a><span class="kw">par</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb78-2"><a href="pemodelan-dependensi-spasial.html#cb78-2" aria-hidden="true"></a><span class="kw">hist</span>(err.regklasik)</span>
+<span id="cb78-3"><a href="pemodelan-dependensi-spasial.html#cb78-3" aria-hidden="true"></a>car<span class="op">::</span><span class="kw">qqPlot</span>(<span class="kw">residuals</span>(reg.klasik))</span></code></pre></div>
+<p><img src="modul_files/figure-html/unnamed-chunk-41-1.png" width="672" /></p>
+<pre><code>## [1] 119  69</code></pre>
+<blockquote>
+<p>H0: galat model menyebar normal</p>
+</blockquote>
+<blockquote>
+<p>H1: galat model tidak menyebar normal</p>
+</blockquote>
+</div>
+<div id="kehomogenan-ragam-sisaan" class="section level3" number="2.4.2">
+<h3><span class="header-section-number">2.4.2</span> Kehomogenan Ragam Sisaan</h3>
+<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="pemodelan-dependensi-spasial.html#cb80-1" aria-hidden="true"></a><span class="kw">plot</span>(<span class="kw">fitted</span>(reg.klasik), <span class="kw">residuals</span>(reg.klasik))</span></code></pre></div>
+<p><img src="modul_files/figure-html/unnamed-chunk-42-1.png" width="672" /></p>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="pemodelan-dependensi-spasial.html#cb81-1" aria-hidden="true"></a><span class="kw">bptest</span>(reg.klasik)</span></code></pre></div>
+<pre><code>## 
+##  studentized Breusch-Pagan test
+## 
+## data:  reg.klasik
+## BP = 3.979, df = 1, p-value = 0.04607</code></pre>
+<blockquote>
+<p>H0: ragam galat homogen</p>
+</blockquote>
+<blockquote>
+<p>H1: ragam galat tidak homogen</p>
+</blockquote>
+</div>
+<div id="kebebasan-sisaan" class="section level3" number="2.4.3">
+<h3><span class="header-section-number">2.4.3</span> Kebebasan Sisaan</h3>
+<p>Uji kebebasan sisaan pada data spasial dapat dilakukan dengan uji moran menggunakan fungsi berikut.</p>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="pemodelan-dependensi-spasial.html#cb83-1" aria-hidden="true"></a>w&lt;-<span class="kw">poly2nb</span>(petajawa)</span>
+<span id="cb83-2"><a href="pemodelan-dependensi-spasial.html#cb83-2" aria-hidden="true"></a>ww&lt;-<span class="kw">nb2listw</span>(w, <span class="dt">zero.policy =</span>T)</span>
+<span id="cb83-3"><a href="pemodelan-dependensi-spasial.html#cb83-3" aria-hidden="true"></a><span class="kw">lm.morantest</span>(reg.klasik, ww, <span class="dt">alternative=</span><span class="st">&quot;two.sided&quot;</span>, <span class="dt">zero.policy =</span> T)</span></code></pre></div>
+<pre><code>## 
+##  Global Moran I for regression residuals
+## 
+## data:  
+## model: lm(formula = Kemiskinan ~ Pendidikan, data = datajawa)
+## weights: ww
+## 
+## Moran I statistic standard deviate = 5.3932, p-value = 6.922e-08
+## alternative hypothesis: two.sided
+## sample estimates:
+## Observed Moran I      Expectation         Variance 
+##      0.351747300     -0.011502703      0.004536512</code></pre>
+<p>Selain menggunakan fungsi <code>lm.morantest</code>, uji moran dapat dilakukan menggunakan fungsi <code>moran.test</code> seperti yang dibahas pada modul pertemuan sebelumnya. Perbedaannya adalah pada fungsi pertama, input yang digunakan adalah objek <code>lm</code>, sedangkan pada fungsi kedua, yang digunakan sebagai input adalah data sisaan model.</p>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="pemodelan-dependensi-spasial.html#cb85-1" aria-hidden="true"></a><span class="kw">moran.test</span>(err.regklasik, ww,<span class="dt">randomisation=</span>F, <span class="dt">alternative=</span><span class="st">&quot;two.sided&quot;</span>, <span class="dt">zero.policy=</span>T)</span></code></pre></div>
+<pre><code>## 
+##  Moran I test under normality
+## 
+## data:  err.regklasik  
+## weights: ww  n reduced by no-neighbour observations
+##   
+## 
+## Moran I statistic standard deviate = 5.3242, p-value = 1.014e-07
+## alternative hypothesis: two.sided
+## sample estimates:
+## Moran I statistic       Expectation          Variance 
+##       0.351747300      -0.008547009       0.004579345</code></pre>
+<p>Terlihat pada output bahwa hasil kedua tes menunjukkan kesimpulan yang sama, yaitu tolak H0 yang menyatakan bahwa tidak terdapat autokorelasi pada sisaan model regresi klasik pada taraf nyata 5%. Oleh karenanya, untuk mencari model yang lebih baik, kita dapat melakukan uji LM (lagrange multiplier) untuk mengidentifikasi model dependensi spasial yang dapat digunakan pada kasus ini.</p>
+</div>
+</div>
+<div id="uji-lagrange-multiplier" class="section level2" number="2.5">
+<h2><span class="header-section-number">2.5</span> Uji Lagrange Multiplier</h2>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="pemodelan-dependensi-spasial.html#cb87-1" aria-hidden="true"></a>LM&lt;-<span class="kw">lm.LMtests</span>(reg.klasik, <span class="kw">nb2listw</span>(w, <span class="dt">style=</span><span class="st">&quot;W&quot;</span>, <span class="dt">zero.policy=</span>T),</span>
+<span id="cb87-2"><a href="pemodelan-dependensi-spasial.html#cb87-2" aria-hidden="true"></a>               <span class="dt">test=</span><span class="kw">c</span>(<span class="st">&quot;LMerr&quot;</span>, <span class="st">&quot;LMlag&quot;</span>,<span class="st">&quot;RLMerr&quot;</span>,<span class="st">&quot;RLMlag&quot;</span>,<span class="st">&quot;SARMA&quot;</span>), <span class="dt">zero.policy=</span>T)</span>
+<span id="cb87-3"><a href="pemodelan-dependensi-spasial.html#cb87-3" aria-hidden="true"></a><span class="kw">summary</span>(LM)</span></code></pre></div>
+<pre><code>##  Lagrange multiplier diagnostics for spatial dependence
+## data:  
+## model: lm(formula = Kemiskinan ~ Pendidikan, data = datajawa)
+## weights: nb2listw(w, style = &quot;W&quot;, zero.policy = T)
+##  
+##        statistic parameter   p.value    
+## LMerr    26.4886         1 2.651e-07 ***
+## LMlag    27.2100         1 1.825e-07 ***
+## RLMerr    1.4217         1    0.2331    
+## RLMlag    2.1431         1    0.1432    
+## SARMA    28.6317         2 6.063e-07 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Output memperlihatkan bahwa hasil uji model SEM dan SAR sama-sama signifikan pada taraf 5%. Selanjutnya, hasil uji robust keduanya ternyata sama-sama tidak signifikan. Berdasarkan skema tersebut, kita dapat mencoba kandidat model SARMA atau GSM. Namun demikian, ada pula pendapat yang menyarankan agar kita mengambil kandidat model dengan p-value terkecil, pada kasus ini p-value terkecil juga terdapat pada model SARMA atau GSM.</p>
+<p>Mohon diingat bahwa pada ilustrasi yang kita lakukan saat ini, kita hanya menggunakan satu peubah bebas sehingga kita tidak perlu mengkhawatirkan masalah multikolinieritas. Pada saat Anda memiliki lebih dari satu peubah bebas, pastikan Anda juga memperhatikan multikolinieritas pada model. Pemeriksaan dapat dilakukan dengan fungsi <code>vif()</code> pada package <code>car</code>.</p>
+</div>
+<div id="pemodelan-regresi-spasial" class="section level2" number="2.6">
+<h2><span class="header-section-number">2.6</span> Pemodelan Regresi Spasial</h2>
+<p>Pada modul ini, untuk kepentingan pembelajaran, kita akan mencoba ketiga model, SEM, SAR, dan SARMA, meskipun pada prakteknya, Anda hanya perlu memodelkan yang menurut Anda terbaik saja.</p>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="pemodelan-dependensi-spasial.html#cb89-1" aria-hidden="true"></a>w&lt;-<span class="kw">poly2nb</span>(petajawa)</span>
+<span id="cb89-2"><a href="pemodelan-dependensi-spasial.html#cb89-2" aria-hidden="true"></a>ww&lt;-<span class="kw">nb2listw</span>(w, <span class="dt">zero.policy=</span>T)</span></code></pre></div>
+<div id="model-sem" class="section level3" number="2.6.1">
+<h3><span class="header-section-number">2.6.1</span> Model SEM</h3>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="pemodelan-dependensi-spasial.html#cb90-1" aria-hidden="true"></a><span class="kw">library</span>(spatialreg)</span>
+<span id="cb90-2"><a href="pemodelan-dependensi-spasial.html#cb90-2" aria-hidden="true"></a></span>
+<span id="cb90-3"><a href="pemodelan-dependensi-spasial.html#cb90-3" aria-hidden="true"></a>sem&lt;-<span class="kw">errorsarlm</span>(Kemiskinan<span class="op">~</span>Pendidikan,<span class="dt">data=</span>datajawa,ww, <span class="dt">zero.policy=</span>T)</span>
+<span id="cb90-4"><a href="pemodelan-dependensi-spasial.html#cb90-4" aria-hidden="true"></a><span class="kw">summary</span>(sem)</span></code></pre></div>
+<pre><code>## 
+## Call:errorsarlm(formula = Kemiskinan ~ Pendidikan, data = datajawa, 
+##     listw = ww, zero.policy = T)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -7.04950 -1.86484 -0.43797  1.87675  8.14992 
+## 
+## Type: error 
+## Regions with no neighbours included:
+##  0 
+## Coefficients: (asymptotic standard errors) 
+##             Estimate Std. Error z value  Pr(&gt;|z|)
+## (Intercept) 6.359121   0.958495  6.6345 3.256e-11
+## Pendidikan  0.114932   0.029332  3.9183 8.918e-05
+## 
+## Lambda: 0.57487, LR test value: 29.606, p-value: 5.2937e-08
+## Asymptotic standard error: 0.083992
+##     z-value: 6.8443, p-value: 7.6856e-12
+## Wald statistic: 46.844, p-value: 7.6857e-12
+## 
+## Log likelihood: -307.7876 for error model
+## ML residual variance (sigma squared): 9.4425, (sigma: 3.0729)
+## Number of observations: 119 
+## Number of parameters estimated: 4 
+## AIC: 623.58, (AIC for lm: 651.18)</code></pre>
+<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="pemodelan-dependensi-spasial.html#cb92-1" aria-hidden="true"></a>pseudoR2.sem&lt;-<span class="kw">cor</span>(datajawa<span class="op">$</span>Kemiskinan, <span class="kw">fitted</span>(sem))<span class="op">^</span><span class="dv">2</span></span>
+<span id="cb92-2"><a href="pemodelan-dependensi-spasial.html#cb92-2" aria-hidden="true"></a>pseudoR2.sem</span></code></pre></div>
+<pre><code>## [1] 0.4786585</code></pre>
+<p>Output di atas menunjukkan bahwa koefisien Lambda signifikan pada taraf nyata 5% ( p-value = 5.2937e-08 ). AIC model SEM adalah sebesar 623.58, dengan pseudo-<span class="math inline">\(R^2=0.4787\)</span> Selanjutnya kita akan coba memeriksa sisaan model SEM ini.</p>
+<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="pemodelan-dependensi-spasial.html#cb94-1" aria-hidden="true"></a><span class="kw">library</span>(nortest)</span>
+<span id="cb94-2"><a href="pemodelan-dependensi-spasial.html#cb94-2" aria-hidden="true"></a>err.sem&lt;-<span class="kw">residuals</span>(sem)</span>
+<span id="cb94-3"><a href="pemodelan-dependensi-spasial.html#cb94-3" aria-hidden="true"></a><span class="kw">shapiro.test</span>(err.sem)</span></code></pre></div>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  err.sem
+## W = 0.98234, p-value = 0.1208</code></pre>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="pemodelan-dependensi-spasial.html#cb96-1" aria-hidden="true"></a><span class="kw">bptest.sarlm</span>(sem)</span></code></pre></div>
+<pre><code>## 
+##  studentized Breusch-Pagan test
+## 
+## data:  
+## BP = 4.1883, df = 1, p-value = 0.0407</code></pre>
+<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="pemodelan-dependensi-spasial.html#cb98-1" aria-hidden="true"></a><span class="kw">moran.test</span>(err.sem, ww, <span class="dt">alternative=</span><span class="st">&quot;two.sided&quot;</span>, <span class="dt">zero.policy=</span>T)</span></code></pre></div>
+<pre><code>## 
+##  Moran I test under randomisation
+## 
+## data:  err.sem  
+## weights: ww  n reduced by no-neighbour observations
+##   
+## 
+## Moran I statistic standard deviate = -0.53535, p-value = 0.5924
+## alternative hypothesis: two.sided
+## sample estimates:
+## Moran I statistic       Expectation          Variance 
+##      -0.044773446      -0.008547009       0.004579087</code></pre>
+<p>Terlihat pada output di atas bahwa sisaan memenuhi asumsi kenormalan dan asumsi kebebasan.</p>
+</div>
+<div id="model-sar" class="section level3" number="2.6.2">
+<h3><span class="header-section-number">2.6.2</span> Model SAR</h3>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="pemodelan-dependensi-spasial.html#cb100-1" aria-hidden="true"></a>sar&lt;-<span class="kw">lagsarlm</span>(Kemiskinan<span class="op">~</span>Pendidikan,<span class="dt">data=</span>datajawa,ww, <span class="dt">zero.policy=</span>T)</span>
+<span id="cb100-2"><a href="pemodelan-dependensi-spasial.html#cb100-2" aria-hidden="true"></a><span class="kw">summary</span>(sar)</span></code></pre></div>
+<pre><code>## 
+## Call:lagsarlm(formula = Kemiskinan ~ Pendidikan, data = datajawa, 
+##     listw = ww, zero.policy = T)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -7.17361 -1.97250 -0.56646  1.82449  9.57815 
+## 
+## Type: lag 
+## Regions with no neighbours included:
+##  0 
+## Coefficients: (asymptotic standard errors) 
+##             Estimate Std. Error z value  Pr(&gt;|z|)
+## (Intercept) 1.779095   0.992235  1.7930   0.07297
+## Pendidikan  0.117724   0.027717  4.2473 2.164e-05
+## 
+## Rho: 0.46783, LR test value: 25.624, p-value: 4.1491e-07
+## Asymptotic standard error: 0.087013
+##     z-value: 5.3766, p-value: 7.5901e-08
+## Wald statistic: 28.908, p-value: 7.5901e-08
+## 
+## Log likelihood: -309.7788 for lag model
+## ML residual variance (sigma squared): 10.098, (sigma: 3.1777)
+## Number of observations: 119 
+## Number of parameters estimated: 4 
+## AIC: 627.56, (AIC for lm: 651.18)
+## LM test for residual autocorrelation
+## test value: 0.014268, p-value: 0.90492</code></pre>
+<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="pemodelan-dependensi-spasial.html#cb102-1" aria-hidden="true"></a>pseudoR2.sar&lt;-<span class="kw">cor</span>(datajawa<span class="op">$</span>Kemiskinan, <span class="kw">fitted</span>(sar))<span class="op">^</span><span class="dv">2</span></span>
+<span id="cb102-2"><a href="pemodelan-dependensi-spasial.html#cb102-2" aria-hidden="true"></a>pseudoR2.sar</span></code></pre></div>
+<pre><code>## [1] 0.4292466</code></pre>
+<p>Output di atas memperlihatkan bahwa koefisien Rho pada model SAR signifikan, dengan nilai AIC sebesar 627.56 dengan pseudo-<span class="math inline">\(R^2=0.4292\)</span> . Selain itu, terlihat pula hasil uji autokorelasi pada sisaan model memperlihatkan nilai p-value sebesar 0.90492, artinya tidak terdapat autokorelasi pada sisaan.</p>
+<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="pemodelan-dependensi-spasial.html#cb104-1" aria-hidden="true"></a>err.sar&lt;-<span class="kw">residuals</span>(sar)</span>
+<span id="cb104-2"><a href="pemodelan-dependensi-spasial.html#cb104-2" aria-hidden="true"></a><span class="kw">shapiro.test</span>(err.sar)</span></code></pre></div>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  err.sar
+## W = 0.98005, p-value = 0.07421</code></pre>
+<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="pemodelan-dependensi-spasial.html#cb106-1" aria-hidden="true"></a><span class="kw">bptest.sarlm</span>(sar)</span></code></pre></div>
+<pre><code>## 
+##  studentized Breusch-Pagan test
+## 
+## data:  
+## BP = 1.6725, df = 1, p-value = 0.1959</code></pre>
+<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="pemodelan-dependensi-spasial.html#cb108-1" aria-hidden="true"></a><span class="kw">moran.test</span>(err.sar, ww, <span class="dt">alternative=</span><span class="st">&quot;two.sided&quot;</span>, <span class="dt">zero.policy=</span>T)</span></code></pre></div>
+<pre><code>## 
+##  Moran I test under randomisation
+## 
+## data:  err.sar  
+## weights: ww  n reduced by no-neighbour observations
+##   
+## 
+## Moran I statistic standard deviate = 0.18303, p-value = 0.8548
+## alternative hypothesis: two.sided
+## sample estimates:
+## Moran I statistic       Expectation          Variance 
+##       0.003823646      -0.008547009       0.004567919</code></pre>
+<p>Berdasarkan output di atas, pada taraf 5% dapat disimpulkan bahwa sisaan model memenuhi asumsi kenormalan, kehomogenan ragam, dan kebebasan.</p>
+</div>
+<div id="model-gsmsarma" class="section level3" number="2.6.3">
+<h3><span class="header-section-number">2.6.3</span> Model GSM/SARMA</h3>
+<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="pemodelan-dependensi-spasial.html#cb110-1" aria-hidden="true"></a>gsm&lt;-<span class="kw">sacsarlm</span>(Kemiskinan<span class="op">~</span>Pendidikan,<span class="dt">data=</span>datajawa,ww, <span class="dt">zero.policy=</span>T)</span>
+<span id="cb110-2"><a href="pemodelan-dependensi-spasial.html#cb110-2" aria-hidden="true"></a><span class="kw">summary</span>(gsm)</span></code></pre></div>
+<pre><code>## 
+## Call:sacsarlm(formula = Kemiskinan ~ Pendidikan, data = datajawa, 
+##     listw = ww, zero.policy = T)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -6.20932 -1.69855 -0.38001  1.70634  7.26252 
+## 
+## Type: sac 
+## Coefficients: (asymptotic standard errors) 
+##              Estimate Std. Error z value Pr(&gt;|z|)
+## (Intercept) 10.338070   1.750226  5.9067 3.49e-09
+## Pendidikan   0.099813   0.027137  3.6781 0.000235
+## 
+## Rho: -0.43058
+## Asymptotic standard error: 0.14723
+##     z-value: -2.9246, p-value: 0.0034494
+## Lambda: 0.79882
+## Asymptotic standard error: 0.069513
+##     z-value: 11.492, p-value: &lt; 2.22e-16
+## 
+## LR test value: 34.317, p-value: 3.5325e-08
+## 
+## Log likelihood: -305.432 for sac model
+## ML residual variance (sigma squared): 7.7401, (sigma: 2.7821)
+## Number of observations: 119 
+## Number of parameters estimated: 5 
+## AIC: 620.86, (AIC for lm: 651.18)</code></pre>
+<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="pemodelan-dependensi-spasial.html#cb112-1" aria-hidden="true"></a>pseudoR2.gsm&lt;-<span class="kw">cor</span>(datajawa<span class="op">$</span>Kemiskinan, <span class="kw">fitted</span>(gsm))<span class="op">^</span><span class="dv">2</span></span>
+<span id="cb112-2"><a href="pemodelan-dependensi-spasial.html#cb112-2" aria-hidden="true"></a>pseudoR2.gsm</span></code></pre></div>
+<pre><code>## [1] 0.5933811</code></pre>
+<p>Output di atas memperlihatkan bahwa kedua koefisien dependensi spasial, Rho dan Lambda signifikan. AIC model SARMA adalah sebesar 620.86 dengan pseudo-<span class="math inline">\(R^2=0.5934\)</span></p>
+<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="pemodelan-dependensi-spasial.html#cb114-1" aria-hidden="true"></a>err.gsm&lt;-<span class="kw">residuals</span>(gsm)</span>
+<span id="cb114-2"><a href="pemodelan-dependensi-spasial.html#cb114-2" aria-hidden="true"></a><span class="kw">shapiro.test</span>(err.gsm)</span></code></pre></div>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  err.gsm
+## W = 0.98527, p-value = 0.2219</code></pre>
+<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="pemodelan-dependensi-spasial.html#cb116-1" aria-hidden="true"></a><span class="kw">bptest.sarlm</span>(gsm)</span></code></pre></div>
+<pre><code>## 
+##  studentized Breusch-Pagan test
+## 
+## data:  
+## BP = 2.3236, df = 1, p-value = 0.1274</code></pre>
+<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="pemodelan-dependensi-spasial.html#cb118-1" aria-hidden="true"></a><span class="kw">moran.test</span>(err.gsm, ww, <span class="dt">alternative=</span><span class="st">&quot;two.sided&quot;</span>, <span class="dt">zero.policy=</span>T)</span></code></pre></div>
+<pre><code>## 
+##  Moran I test under randomisation
+## 
+## data:  err.gsm  
+## weights: ww  n reduced by no-neighbour observations
+##   
+## 
+## Moran I statistic standard deviate = -0.17988, p-value = 0.8572
+## alternative hypothesis: two.sided
+## sample estimates:
+## Moran I statistic       Expectation          Variance 
+##      -0.020720135      -0.008547009       0.004579838</code></pre>
+<p>Berdasarkan output di atas, terlihat bahwa sisaan model SARMA telah memenuhi asumsi kenormalan, kehomogenan ragam, dan kebebasan.</p>
+</div>
+<div id="penentuan-model-terbaik" class="section level3" number="2.6.4">
+<h3><span class="header-section-number">2.6.4</span> Penentuan Model Terbaik</h3>
+<p>Akhirnya, kita akan coba merangkum hasil pemodelan yang telah dilakukan sepanjang ilustrasi pada modul ini.</p>
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#tgamzvjswn .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#tgamzvjswn .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#tgamzvjswn .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#tgamzvjswn .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 4px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#tgamzvjswn .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#tgamzvjswn .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#tgamzvjswn .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#tgamzvjswn .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#tgamzvjswn .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#tgamzvjswn .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#tgamzvjswn .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#tgamzvjswn .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#tgamzvjswn .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#tgamzvjswn .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#tgamzvjswn .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#tgamzvjswn .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#tgamzvjswn .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#tgamzvjswn .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#tgamzvjswn .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#tgamzvjswn .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#tgamzvjswn .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#tgamzvjswn .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#tgamzvjswn .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#tgamzvjswn .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#tgamzvjswn .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#tgamzvjswn .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#tgamzvjswn .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#tgamzvjswn .gt_left {
+  text-align: left;
+}
+
+#tgamzvjswn .gt_center {
+  text-align: center;
+}
+
+#tgamzvjswn .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#tgamzvjswn .gt_font_normal {
+  font-weight: normal;
+}
+
+#tgamzvjswn .gt_font_bold {
+  font-weight: bold;
+}
+
+#tgamzvjswn .gt_font_italic {
+  font-style: italic;
+}
+
+#tgamzvjswn .gt_super {
+  font-size: 65%;
+}
+
+#tgamzvjswn .gt_footnote_marks {
+  font-style: italic;
+  font-size: 65%;
+}
+</style>
+<div id="tgamzvjswn" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
+  
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">Rincian</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">OLS</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">SEM</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">SAR</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">SARMA</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr>
+      <td class="gt_row gt_left">AIC</td>
+      <td class="gt_row gt_right">651.180</td>
+      <td class="gt_row gt_right">623.580</td>
+      <td class="gt_row gt_right">627.560</td>
+      <td class="gt_row gt_right">620.860</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">pseudo-R2</td>
+      <td class="gt_row gt_right">0.246</td>
+      <td class="gt_row gt_right">0.479</td>
+      <td class="gt_row gt_right">0.429</td>
+      <td class="gt_row gt_right">0.593</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">p-value of Rho</td>
+      <td class="gt_row gt_right">NA</td>
+      <td class="gt_row gt_right">NA</td>
+      <td class="gt_row gt_right">0.000</td>
+      <td class="gt_row gt_right">0.000</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">p-value of Lambda</td>
+      <td class="gt_row gt_right">NA</td>
+      <td class="gt_row gt_right">0.000</td>
+      <td class="gt_row gt_right">NA</td>
+      <td class="gt_row gt_right">0.003</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">Kenormalan(p-value)</td>
+      <td class="gt_row gt_right">0.261</td>
+      <td class="gt_row gt_right">0.121</td>
+      <td class="gt_row gt_right">0.074</td>
+      <td class="gt_row gt_right">0.222</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">Homoskedastisitas (p-value)</td>
+      <td class="gt_row gt_right">0.046</td>
+      <td class="gt_row gt_right">0.041</td>
+      <td class="gt_row gt_right">0.196</td>
+      <td class="gt_row gt_right">0.127</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">Kebebasan Sisaan(p-value)</td>
+      <td class="gt_row gt_right">0.000</td>
+      <td class="gt_row gt_right">0.592</td>
+      <td class="gt_row gt_right">0.855</td>
+      <td class="gt_row gt_right">0.857</td>
+    </tr>
+  </tbody>
+  
+  
+</table></div>
+<p>Ilustrasi pada kasus ini memperlihatkan bahwa ternyata GSM merupakan model terbaik berdasarkan nilai AIC dan pseudo-<span class="math inline">\(R^2\)</span>. Hal ini ternyata konsisten dengan p-value nya yang juga terkecil pada uji-LM.</p>
+</div>
+</div>
+<div id="efek-marginal" class="section level2" number="2.7">
+<h2><span class="header-section-number">2.7</span> Efek Marginal</h2>
+<p>Efek marginal atau limpahan (<em>spill-over</em>) adalah besarnya dampak perubahan pada peubah dependen pada wilayah-<span class="math inline">\(i\)</span>, akibat perubahan prediktor di wilayah-<span class="math inline">\(j\)</span>.</p>
+<p>Efek marginal terdapat pada model dependensi spasial SAR, GSM, SDM, SDEM, dan SLX. Efek ini dapat dibedakan menjadi tiga, yaitu efek langsung (<em>direct effect</em>), efek tidak langsung (<em>indirect effect</em>), dan efek total (<em>total effect</em>).</p>
+<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="pemodelan-dependensi-spasial.html#cb120-1" aria-hidden="true"></a><span class="kw">impacts</span>(gsm, <span class="dt">listw=</span>ww)</span></code></pre></div>
+<pre><code>## Impact measures (sac, exact):
+##               Direct    Indirect      Total
+## Pendidikan 0.1038916 -0.03386839 0.07002321</code></pre>
+<p>Output di atas menunjukkan bahwa pertambahan satu satuan pada pendidikan di suatu wilayah akan diikuti oleh peningkatan kemiskinan di wilayah tersebut sebesar rata-rata 0.1938916 (pengaruh langsung), sedangkan pada wilayah tetangganya akan mengalami penurunan kemiskinan rata-rata sebesar 0.03386839 (pengaruh tak langsung).</p>
+</div>
+<div id="latihan" class="section level2" number="2.8">
+<h2><span class="header-section-number">2.8</span> Latihan</h2>
+<p>Sebagai latihan, silahkan lakukan pemodelan menggunakan data <code>Kemiskinan</code> di Pulau Jawa dengan peubah bebas ruta penerima raskin dan persentase pendidikan yang ditamatkan di bawah SD.</p>
+<ul>
+<li><p>periksa multikolineritas antar peubah bebas yang digunakan berdasarkan VIF</p></li>
+<li><p>eksplorasi autokorelasi spasial pada model menggunakan jarak <code>W_dist</code></p></li>
+<li><p>lakukan pemodelan yang menurut Anda paling tepat, interpretasikan.</p></li>
+</ul>
+</div>
+<div id="sumber-pustaka-1" class="section level2" number="2.9">
+<h2><span class="header-section-number">2.9</span> Sumber Pustaka</h2>
+<p>Guliyev, H. (2020). Determining the spatial effects of COVID-19 using the spatial panel data model. Spatial Statistics, 100443. <a href="doi:10.1016/j.spasta.2020.100443" class="uri">doi:10.1016/j.spasta.2020.100443</a>. Retrieved from: <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7139267/" class="uri">https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7139267/</a></p>
+<p>Sarmiento-Barbieri, I. (2016, April 24). An introduction to spatial econometrics in R. Spatial Econometric Workshop, University of Illinois. Retrieved from: <a href="https://www.econ.uiuc.edu/~lab/workshop/Spatial_in_R.html#modeling-spatial-dependence" class="uri">https://www.econ.uiuc.edu/~lab/workshop/Spatial_in_R.html#modeling-spatial-dependence</a></p>
+<p>Zhukov, Y. M. (2010, January 19). Applied Spatial Statistics in R, Section 6, Spatial Regression [PDF slides.]. IQSS, Harvard University. Retrieved from: <a href="http://www.people.fas.harvard.edu/~zhukov/Spatial6.pdf" class="uri">http://www.people.fas.harvard.edu/~zhukov/Spatial6.pdf</a></p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="pengantar-analisis-spasial-dengan-r-software.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="geographically-weighted-regression-gwr.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["modul.pdf", "modul.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

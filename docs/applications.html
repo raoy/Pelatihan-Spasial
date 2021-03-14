@@ -4,35 +4,34 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 5 Applications | A Minimal Book Example</title>
-  <meta name="description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
+  <title>Modul 4 Applications | Modul Praktikum - Pelatihan Analisis Spasial</title>
+  <meta name="description" content="Modul 4 Applications | Modul Praktikum - Pelatihan Analisis Spasial" />
   <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 5 Applications | A Minimal Book Example" />
+  <meta property="og:title" content="Modul 4 Applications | Modul Praktikum - Pelatihan Analisis Spasial" />
   <meta property="og:type" content="book" />
   
   
-  <meta property="og:description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
+  
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 5 Applications | A Minimal Book Example" />
+  <meta name="twitter:title" content="Modul 4 Applications | Modul Praktikum - Pelatihan Analisis Spasial" />
   
-  <meta name="twitter:description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
+  
   
 
-<meta name="author" content="Yihui Xie" />
+<meta name="author" content="Anik Djuraidah, Rahma Anisa, Gerry Alfa Dito" />
 
 
-<meta name="date" content="2021-03-12" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="methods.html"/>
-<link rel="next" href="final-words.html"/>
+<link rel="prev" href="geographically-weighted-regression-gwr.html"/>
+
 <script src="libs/header-attrs-2.7/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -51,6 +50,14 @@
 
 
 
+<script src="libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.0.4.1/leaflet.js"></script>
 
 
 <style type="text/css">
@@ -133,17 +140,69 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="./">A Minimal Book Example</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Prerequisites</a></li>
-<li class="chapter" data-level="2" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>2</b> Introduction</a></li>
-<li class="chapter" data-level="3" data-path="literature.html"><a href="literature.html"><i class="fa fa-check"></i><b>3</b> Literature</a></li>
-<li class="chapter" data-level="4" data-path="methods.html"><a href="methods.html"><i class="fa fa-check"></i><b>4</b> Methods</a></li>
-<li class="chapter" data-level="5" data-path="applications.html"><a href="applications.html"><i class="fa fa-check"></i><b>5</b> Applications</a>
+<li class="chapter" data-level="1" data-path="pengantar-analisis-spasial-dengan-r-software.html"><a href="pengantar-analisis-spasial-dengan-r-software.html"><i class="fa fa-check"></i><b>1</b> Pengantar Analisis Spasial dengan R Software</a>
 <ul>
-<li class="chapter" data-level="5.1" data-path="applications.html"><a href="applications.html#example-one"><i class="fa fa-check"></i><b>5.1</b> Example one</a></li>
-<li class="chapter" data-level="5.2" data-path="applications.html"><a href="applications.html#example-two"><i class="fa fa-check"></i><b>5.2</b> Example two</a></li>
+<li class="chapter" data-level="1.1" data-path="pengantar-analisis-spasial-dengan-r-software.html"><a href="pengantar-analisis-spasial-dengan-r-software.html#pengenalan-r-software"><i class="fa fa-check"></i><b>1.1</b> Pengenalan R Software</a></li>
+<li class="chapter" data-level="1.2" data-path="pengantar-analisis-spasial-dengan-r-software.html"><a href="pengantar-analisis-spasial-dengan-r-software.html#pengenalan-data-spasial"><i class="fa fa-check"></i><b>1.2</b> Pengenalan Data Spasial</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="pengantar-analisis-spasial-dengan-r-software.html"><a href="pengantar-analisis-spasial-dengan-r-software.html#struktur-data-spasial"><i class="fa fa-check"></i><b>1.2.1</b> Struktur Data Spasial</a></li>
+<li class="chapter" data-level="1.2.2" data-path="pengantar-analisis-spasial-dengan-r-software.html"><a href="pengantar-analisis-spasial-dengan-r-software.html#ilustrasi-data-cholera"><i class="fa fa-check"></i><b>1.2.2</b> Ilustrasi Data Cholera</a></li>
+<li class="chapter" data-level="1.2.3" data-path="pengantar-analisis-spasial-dengan-r-software.html"><a href="pengantar-analisis-spasial-dengan-r-software.html#visualisasi-data-cholera"><i class="fa fa-check"></i><b>1.2.3</b> Visualisasi Data Cholera</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="final-words.html"><a href="final-words.html"><i class="fa fa-check"></i><b>6</b> Final Words</a></li>
-<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="chapter" data-level="1.3" data-path="pengantar-analisis-spasial-dengan-r-software.html"><a href="pengantar-analisis-spasial-dengan-r-software.html#tipe-data-spasial"><i class="fa fa-check"></i><b>1.3</b> Tipe Data Spasial</a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="pengantar-analisis-spasial-dengan-r-software.html"><a href="pengantar-analisis-spasial-dengan-r-software.html#tipe-data-titik"><i class="fa fa-check"></i><b>1.3.1</b> Tipe Data titik</a></li>
+<li class="chapter" data-level="1.3.2" data-path="pengantar-analisis-spasial-dengan-r-software.html"><a href="pengantar-analisis-spasial-dengan-r-software.html#tipe-data-kontinu"><i class="fa fa-check"></i><b>1.3.2</b> Tipe Data Kontinu</a></li>
+<li class="chapter" data-level="1.3.3" data-path="pengantar-analisis-spasial-dengan-r-software.html"><a href="pengantar-analisis-spasial-dengan-r-software.html#tipe-data-area"><i class="fa fa-check"></i><b>1.3.3</b> Tipe Data Area</a></li>
+</ul></li>
+<li class="chapter" data-level="1.4" data-path="pengantar-analisis-spasial-dengan-r-software.html"><a href="pengantar-analisis-spasial-dengan-r-software.html#matriks-bobot-dan-autokorelasi-spasial"><i class="fa fa-check"></i><b>1.4</b> Matriks Bobot dan Autokorelasi Spasial</a>
+<ul>
+<li class="chapter" data-level="1.4.1" data-path="pengantar-analisis-spasial-dengan-r-software.html"><a href="pengantar-analisis-spasial-dengan-r-software.html#kriteria-kebertetanggaan"><i class="fa fa-check"></i><b>1.4.1</b> Kriteria Kebertetanggaan</a></li>
+<li class="chapter" data-level="1.4.2" data-path="pengantar-analisis-spasial-dengan-r-software.html"><a href="pengantar-analisis-spasial-dengan-r-software.html#matriks-pembobot-spasial"><i class="fa fa-check"></i><b>1.4.2</b> Matriks Pembobot Spasial</a></li>
+<li class="chapter" data-level="1.4.3" data-path="pengantar-analisis-spasial-dengan-r-software.html"><a href="pengantar-analisis-spasial-dengan-r-software.html#autokorelasi-spasial"><i class="fa fa-check"></i><b>1.4.3</b> Autokorelasi Spasial</a></li>
+</ul></li>
+<li class="chapter" data-level="1.5" data-path="pengantar-analisis-spasial-dengan-r-software.html"><a href="pengantar-analisis-spasial-dengan-r-software.html#sumber-pustaka"><i class="fa fa-check"></i><b>1.5</b> Sumber Pustaka</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="pemodelan-dependensi-spasial.html"><a href="pemodelan-dependensi-spasial.html"><i class="fa fa-check"></i><b>2</b> Pemodelan Dependensi Spasial</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="pemodelan-dependensi-spasial.html"><a href="pemodelan-dependensi-spasial.html#model-spasial-global"><i class="fa fa-check"></i><b>2.1</b> Model Spasial Global</a></li>
+<li class="chapter" data-level="2.2" data-path="pemodelan-dependensi-spasial.html"><a href="pemodelan-dependensi-spasial.html#eksplorasi-data"><i class="fa fa-check"></i><b>2.2</b> Eksplorasi Data</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="pemodelan-dependensi-spasial.html"><a href="pemodelan-dependensi-spasial.html#identifikasi-autokorelasi-pada-data"><i class="fa fa-check"></i><b>2.2.1</b> Identifikasi Autokorelasi pada Data</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="pemodelan-dependensi-spasial.html"><a href="pemodelan-dependensi-spasial.html#pemodelan-regresi-klasik"><i class="fa fa-check"></i><b>2.3</b> Pemodelan Regresi Klasik</a></li>
+<li class="chapter" data-level="2.4" data-path="pemodelan-dependensi-spasial.html"><a href="pemodelan-dependensi-spasial.html#diagnostik-model"><i class="fa fa-check"></i><b>2.4</b> Diagnostik Model</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="pemodelan-dependensi-spasial.html"><a href="pemodelan-dependensi-spasial.html#kenormalan-sisaan"><i class="fa fa-check"></i><b>2.4.1</b> Kenormalan Sisaan</a></li>
+<li class="chapter" data-level="2.4.2" data-path="pemodelan-dependensi-spasial.html"><a href="pemodelan-dependensi-spasial.html#kehomogenan-ragam-sisaan"><i class="fa fa-check"></i><b>2.4.2</b> Kehomogenan Ragam Sisaan</a></li>
+<li class="chapter" data-level="2.4.3" data-path="pemodelan-dependensi-spasial.html"><a href="pemodelan-dependensi-spasial.html#kebebasan-sisaan"><i class="fa fa-check"></i><b>2.4.3</b> Kebebasan Sisaan</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="pemodelan-dependensi-spasial.html"><a href="pemodelan-dependensi-spasial.html#uji-lagrange-multiplier"><i class="fa fa-check"></i><b>2.5</b> Uji Lagrange Multiplier</a></li>
+<li class="chapter" data-level="2.6" data-path="pemodelan-dependensi-spasial.html"><a href="pemodelan-dependensi-spasial.html#pemodelan-regresi-spasial"><i class="fa fa-check"></i><b>2.6</b> Pemodelan Regresi Spasial</a>
+<ul>
+<li class="chapter" data-level="2.6.1" data-path="pemodelan-dependensi-spasial.html"><a href="pemodelan-dependensi-spasial.html#model-sem"><i class="fa fa-check"></i><b>2.6.1</b> Model SEM</a></li>
+<li class="chapter" data-level="2.6.2" data-path="pemodelan-dependensi-spasial.html"><a href="pemodelan-dependensi-spasial.html#model-sar"><i class="fa fa-check"></i><b>2.6.2</b> Model SAR</a></li>
+<li class="chapter" data-level="2.6.3" data-path="pemodelan-dependensi-spasial.html"><a href="pemodelan-dependensi-spasial.html#model-gsmsarma"><i class="fa fa-check"></i><b>2.6.3</b> Model GSM/SARMA</a></li>
+<li class="chapter" data-level="2.6.4" data-path="pemodelan-dependensi-spasial.html"><a href="pemodelan-dependensi-spasial.html#penentuan-model-terbaik"><i class="fa fa-check"></i><b>2.6.4</b> Penentuan Model Terbaik</a></li>
+</ul></li>
+<li class="chapter" data-level="2.7" data-path="pemodelan-dependensi-spasial.html"><a href="pemodelan-dependensi-spasial.html#efek-marginal"><i class="fa fa-check"></i><b>2.7</b> Efek Marginal</a></li>
+<li class="chapter" data-level="2.8" data-path="pemodelan-dependensi-spasial.html"><a href="pemodelan-dependensi-spasial.html#latihan"><i class="fa fa-check"></i><b>2.8</b> Latihan</a></li>
+<li class="chapter" data-level="2.9" data-path="pemodelan-dependensi-spasial.html"><a href="pemodelan-dependensi-spasial.html#sumber-pustaka-1"><i class="fa fa-check"></i><b>2.9</b> Sumber Pustaka</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="geographically-weighted-regression-gwr.html"><a href="geographically-weighted-regression-gwr.html"><i class="fa fa-check"></i><b>3</b> Geographically Weighted Regression (GWR)</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="geographically-weighted-regression-gwr.html"><a href="geographically-weighted-regression-gwr.html#eksplorasi-data-1"><i class="fa fa-check"></i><b>3.1</b> Eksplorasi Data</a></li>
+<li class="chapter" data-level="3.2" data-path="geographically-weighted-regression-gwr.html"><a href="geographically-weighted-regression-gwr.html#basic-gwr"><i class="fa fa-check"></i><b>3.2</b> Basic GWR</a></li>
+<li class="chapter" data-level="3.3" data-path="geographically-weighted-regression-gwr.html"><a href="geographically-weighted-regression-gwr.html#menentukan-bandwidth-optimal"><i class="fa fa-check"></i><b>3.3</b> Menentukan Bandwidth Optimal</a></li>
+<li class="chapter" data-level="3.4" data-path="geographically-weighted-regression-gwr.html"><a href="geographically-weighted-regression-gwr.html#menentukan-model-terbaik"><i class="fa fa-check"></i><b>3.4</b> Menentukan Model Terbaik</a></li>
+<li class="chapter" data-level="3.5" data-path="geographically-weighted-regression-gwr.html"><a href="geographically-weighted-regression-gwr.html#menginterpretasikan-hasil-pemodelan-gwr"><i class="fa fa-check"></i><b>3.5</b> Menginterpretasikan Hasil Pemodelan GWR</a></li>
+<li class="chapter" data-level="3.6" data-path="geographically-weighted-regression-gwr.html"><a href="geographically-weighted-regression-gwr.html#sumber-pustaka-2"><i class="fa fa-check"></i><b>3.6</b> Sumber Pustaka</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="applications.html"><a href="applications.html"><i class="fa fa-check"></i><b>4</b> Applications</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="applications.html"><a href="applications.html#example-one"><i class="fa fa-check"></i><b>4.1</b> Example one</a></li>
+<li class="chapter" data-level="4.2" data-path="applications.html"><a href="applications.html#example-two"><i class="fa fa-check"></i><b>4.2</b> Example two</a></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -156,7 +215,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">A Minimal Book Example</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Modul Praktikum - Pelatihan Analisis Spasial</a>
           </h1>
         </div>
 
@@ -164,14 +223,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="applications" class="section level1" number="5">
-<h1><span class="header-section-number">Chapter 5</span> Applications</h1>
+<div id="applications" class="section level1" number="4">
+<h1><span class="header-section-number">Modul 4</span> Applications</h1>
 <p>Some <em>significant</em> applications are demonstrated in this chapter.</p>
-<div id="example-one" class="section level2" number="5.1">
-<h2><span class="header-section-number">5.1</span> Example one</h2>
+<div id="example-one" class="section level2" number="4.1">
+<h2><span class="header-section-number">4.1</span> Example one</h2>
 </div>
-<div id="example-two" class="section level2" number="5.2">
-<h2><span class="header-section-number">5.2</span> Example two</h2>
+<div id="example-two" class="section level2" number="4.2">
+<h2><span class="header-section-number">4.2</span> Example two</h2>
 
 </div>
 </div>
@@ -180,8 +239,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           </div>
         </div>
       </div>
-<a href="methods.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="final-words.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="geographically-weighted-regression-gwr.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

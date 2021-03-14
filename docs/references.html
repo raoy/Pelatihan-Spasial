@@ -4,27 +4,26 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>References | A Minimal Book Example</title>
-  <meta name="description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
+  <title>References | Modul Praktikum - Pelatihan Analisis Spasial</title>
+  <meta name="description" content="References | Modul Praktikum - Pelatihan Analisis Spasial" />
   <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="References | A Minimal Book Example" />
+  <meta property="og:title" content="References | Modul Praktikum - Pelatihan Analisis Spasial" />
   <meta property="og:type" content="book" />
   
   
-  <meta property="og:description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
+  
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="References | A Minimal Book Example" />
+  <meta name="twitter:title" content="References | Modul Praktikum - Pelatihan Analisis Spasial" />
   
-  <meta name="twitter:description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
+  
   
 
-<meta name="author" content="Yihui Xie" />
+<meta name="author" content="Anik Djuraidah, Rahma Anisa, Gerry Alfa Dito" />
 
 
-<meta name="date" content="2021-03-12" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -51,6 +50,14 @@
 
 
 
+<script src="libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.0.4.1/leaflet.js"></script>
 
 
 <style type="text/css">
@@ -133,16 +140,37 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="./">A Minimal Book Example</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Prerequisites</a></li>
-<li class="chapter" data-level="2" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>2</b> Introduction</a></li>
-<li class="chapter" data-level="3" data-path="literature.html"><a href="literature.html"><i class="fa fa-check"></i><b>3</b> Literature</a></li>
-<li class="chapter" data-level="4" data-path="methods.html"><a href="methods.html"><i class="fa fa-check"></i><b>4</b> Methods</a></li>
-<li class="chapter" data-level="5" data-path="applications.html"><a href="applications.html"><i class="fa fa-check"></i><b>5</b> Applications</a>
+<li class="chapter" data-level="1" data-path="pengantar-analisis-spasial-dengan-r-software.html"><a href="pengantar-analisis-spasial-dengan-r-software.html"><i class="fa fa-check"></i><b>1</b> Pengantar Analisis Spasial dengan R Software</a>
 <ul>
-<li class="chapter" data-level="5.1" data-path="applications.html"><a href="applications.html#example-one"><i class="fa fa-check"></i><b>5.1</b> Example one</a></li>
-<li class="chapter" data-level="5.2" data-path="applications.html"><a href="applications.html#example-two"><i class="fa fa-check"></i><b>5.2</b> Example two</a></li>
+<li class="chapter" data-level="1.1" data-path="pengantar-analisis-spasial-dengan-r-software.html"><a href="pengantar-analisis-spasial-dengan-r-software.html#pengenalan-r-software"><i class="fa fa-check"></i><b>1.1</b> Pengenalan R Software</a></li>
+<li class="chapter" data-level="1.2" data-path="pengantar-analisis-spasial-dengan-r-software.html"><a href="pengantar-analisis-spasial-dengan-r-software.html#pengenalan-data-spasial"><i class="fa fa-check"></i><b>1.2</b> Pengenalan Data Spasial</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="pengantar-analisis-spasial-dengan-r-software.html"><a href="pengantar-analisis-spasial-dengan-r-software.html#struktur-data-spasial"><i class="fa fa-check"></i><b>1.2.1</b> Struktur Data Spasial</a></li>
+<li class="chapter" data-level="1.2.2" data-path="pengantar-analisis-spasial-dengan-r-software.html"><a href="pengantar-analisis-spasial-dengan-r-software.html#ilustrasi-data-cholera"><i class="fa fa-check"></i><b>1.2.2</b> Ilustrasi Data Cholera</a></li>
+<li class="chapter" data-level="1.2.3" data-path="pengantar-analisis-spasial-dengan-r-software.html"><a href="pengantar-analisis-spasial-dengan-r-software.html#visualisasi-data-cholera"><i class="fa fa-check"></i><b>1.2.3</b> Visualisasi Data Cholera</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="final-words.html"><a href="final-words.html"><i class="fa fa-check"></i><b>6</b> Final Words</a></li>
+<li class="chapter" data-level="1.3" data-path="pengantar-analisis-spasial-dengan-r-software.html"><a href="pengantar-analisis-spasial-dengan-r-software.html#tipe-data-spasial"><i class="fa fa-check"></i><b>1.3</b> Tipe Data Spasial</a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="pengantar-analisis-spasial-dengan-r-software.html"><a href="pengantar-analisis-spasial-dengan-r-software.html#tipe-data-titik"><i class="fa fa-check"></i><b>1.3.1</b> Tipe Data titik</a></li>
+<li class="chapter" data-level="1.3.2" data-path="pengantar-analisis-spasial-dengan-r-software.html"><a href="pengantar-analisis-spasial-dengan-r-software.html#tipe-data-kontinu"><i class="fa fa-check"></i><b>1.3.2</b> Tipe Data Kontinu</a></li>
+<li class="chapter" data-level="1.3.3" data-path="pengantar-analisis-spasial-dengan-r-software.html"><a href="pengantar-analisis-spasial-dengan-r-software.html#tipe-data-area"><i class="fa fa-check"></i><b>1.3.3</b> Tipe Data Area</a></li>
+</ul></li>
+<li class="chapter" data-level="1.4" data-path="pengantar-analisis-spasial-dengan-r-software.html"><a href="pengantar-analisis-spasial-dengan-r-software.html#matriks-bobot-dan-autokorelasi-spasial"><i class="fa fa-check"></i><b>1.4</b> Matriks Bobot dan Autokorelasi Spasial</a>
+<ul>
+<li class="chapter" data-level="1.4.1" data-path="pengantar-analisis-spasial-dengan-r-software.html"><a href="pengantar-analisis-spasial-dengan-r-software.html#kriteria-kebertetanggaan"><i class="fa fa-check"></i><b>1.4.1</b> Kriteria Kebertetanggaan</a></li>
+<li class="chapter" data-level="1.4.2" data-path="pengantar-analisis-spasial-dengan-r-software.html"><a href="pengantar-analisis-spasial-dengan-r-software.html#matriks-pembobot-spasial"><i class="fa fa-check"></i><b>1.4.2</b> Matriks Pembobot Spasial</a></li>
+<li class="chapter" data-level="1.4.3" data-path="pengantar-analisis-spasial-dengan-r-software.html"><a href="pengantar-analisis-spasial-dengan-r-software.html#autokorelasi-spasial"><i class="fa fa-check"></i><b>1.4.3</b> Autokorelasi Spasial</a></li>
+</ul></li>
+<li class="chapter" data-level="1.5" data-path="pengantar-analisis-spasial-dengan-r-software.html"><a href="pengantar-analisis-spasial-dengan-r-software.html#sumber-pustaka"><i class="fa fa-check"></i><b>1.5</b> Sumber Pustaka</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="literature.html"><a href="literature.html"><i class="fa fa-check"></i><b>2</b> Literature</a></li>
+<li class="chapter" data-level="3" data-path="methods.html"><a href="methods.html"><i class="fa fa-check"></i><b>3</b> Methods</a></li>
+<li class="chapter" data-level="4" data-path="applications.html"><a href="applications.html"><i class="fa fa-check"></i><b>4</b> Applications</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="applications.html"><a href="applications.html#example-one"><i class="fa fa-check"></i><b>4.1</b> Example one</a></li>
+<li class="chapter" data-level="4.2" data-path="applications.html"><a href="applications.html#example-two"><i class="fa fa-check"></i><b>4.2</b> Example two</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="final-words.html"><a href="final-words.html"><i class="fa fa-check"></i><b>5</b> Final Words</a></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -156,7 +184,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">A Minimal Book Example</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Modul Praktikum - Pelatihan Analisis Spasial</a>
           </h1>
         </div>
 
@@ -167,14 +195,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="references" class="section level1 unnumbered">
 <h1>References</h1>
 
-<div id="refs" class="references hanging-indent">
-<div>
-<p>Xie, Yihui. 2015. <em>Dynamic Documents with R and Knitr</em>. 2nd ed. Boca Raton, Florida: Chapman; Hall/CRC. <a href="http://yihui.org/knitr/">http://yihui.org/knitr/</a>.</p>
-</div>
-<div>
-<p>———. 2020. <em>Bookdown: Authoring Books and Technical Documents with R Markdown</em>. <a href="https://github.com/rstudio/bookdown">https://github.com/rstudio/bookdown</a>.</p>
-</div>
-</div>
 </div>
             </section>
 
