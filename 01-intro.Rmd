@@ -14,11 +14,44 @@ Apabila Anda belum memiliki R dan RStudio pada perangkat PC atau laptop Anda, si
 
 
 
-```{r echo=F}
+Setelah menginstall R dan Rstudio, selanjutnya anda akan menginstall package di R yang akan dibutuhkan dalam pelatihan ini. Langkah-langkah menginstallnya dapat dilihat pada video berikut
+
+<iframe width="525" height="394" src="https://www.youtube.com/embed/nHWVO2yKdNU" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+Daftar Package yang dibutuhkan dalam pelatihan ini adalah sebagai berikut
+
+```{r eval=FALSE}
+install.packages("tidyverse")
+install.packages("leafleat")
+install.packages("sp")
+install.packages("spData")
+install.packages("spdep")
+install.packages("rgdal")
+install.packages("sf")
+install.packages("GWmodel")
+install.packages("spgwr")
+install.packages("gwrr")
+
+```
+
+Kemudian, berikut adalah daftar file yang harus didownload
+
+1. [Data Atm Pontianak](https://github.com/raoy/Pelatihan-Spasial/raw/main/DATA%20ATM%20PONTIANAK.csv)
+2. [Data SPBU Pontianak](https://github.com/raoy/Pelatihan-Spasial/raw/main/Data%20SPBU%20Pontianak.csv)
+3. [Data SPBU Pontianak Excel](https://github.com/raoy/Pelatihan-Spasial/raw/main/Data%20SPBU%20Pontianak.xlsx)
+4. [P9 Dataset 1](https://github.com/raoy/Pelatihan-Spasial/raw/main/P9%20Dataset%201.xlsx)
+5. [Pulau Jawa](https://github.com/raoy/Pelatihan-Spasial/raw/main/Pulau%20Jawa.csv)
+6. [Metro Manila](https://github.com/raoy/Pelatihan-Spasial/raw/main/metromanila.csv)
+7. 
+
+
+Setelah mendownload file-file diatas silahkan taruh file-file tersebut dalam satu folder dan file yang masih dalam bentuk `zip` silahkan extract terlebih dahulu. Kemudian silahkan jalankan sintaks dibawah ini
+
+
+```{r eval=FALSE}
 setwd("D:/Research (eksternal dept)/pelatihan spasial (adj)/modul")
 ```
 
-
+**Tolong sesuaikan directori-nya dengan folder yang memuat file-file yang sudah didownload sebelumnya**
 ## Pengenalan Data Spasial
 
 Data spasial tidak hanya berisi baris dan kolom, namun objek geometrik, seperti titik, garis, ataupun poligon. Beberapa jenis data spasial adalah data titik, data kontinu, dan data area yang akan dibawah berikut ini. Sebelum membahas jenis data tersebut satu per satu, terlebih dulu akan dibahas struktur data spasial serta cara mengimpor data spasial ke dalam R.
