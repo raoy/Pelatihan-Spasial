@@ -53,6 +53,19 @@ petajawa<- readOGR(dsn = "Jawamap", layer="jawa")
 
 ## Eksplorasi Data
 
+```{r}
+hist(datajawa$Kemiskinan)
+```
+
+```{r message=FALSE, warning=FALSE}
+bxplt<-boxplot(datajawa$Kemiskinan, outlier.tagging=T)
+
+bxplt$out
+
+subset(datajawa, datajawa$Kemiskinan>bxplt$stats[5])
+
+```
+
 
 ```{r warning=F, message = F}
 plot(datajawa$Pendidikan, datajawa$Kemiskinan,
