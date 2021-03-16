@@ -41,7 +41,9 @@ Kemudian, berikut adalah daftar file yang harus didownload
 4. [P9 Dataset 1](https://github.com/raoy/Pelatihan-Spasial/raw/main/P9%20Dataset%201.xlsx)
 5. [Pulau Jawa](https://github.com/raoy/Pelatihan-Spasial/raw/main/Pulau%20Jawa.csv)
 6. [Metro Manila](https://github.com/raoy/Pelatihan-Spasial/raw/main/metromanila.csv)
-7. 
+7. [Peta Jawa](https://github.com/raoy/Pelatihan-Spasial/raw/main/Jawamap.zip)
+8. [Peta Pontianak](https://github.com/raoy/Pelatihan-Spasial/raw/main/Peta%20Pontianak.zip)
+9. [ShowGIS SHP](https://github.com/raoy/Pelatihan-Spasial/raw/main/SnowGIS_SHP.zip)
 
 
 Setelah mendownload file-file diatas silahkan taruh file-file tersebut dalam satu folder dan file yang masih dalam bentuk `zip` silahkan extract terlebih dahulu. Kemudian silahkan jalankan sintaks dibawah ini
@@ -52,6 +54,8 @@ setwd("D:/Research (eksternal dept)/pelatihan spasial (adj)/modul")
 ```
 
 **Tolong sesuaikan directori-nya dengan folder yang memuat file-file yang sudah didownload sebelumnya**
+
+
 ## Pengenalan Data Spasial
 
 Data spasial tidak hanya berisi baris dan kolom, namun objek geometrik, seperti titik, garis, ataupun poligon. Beberapa jenis data spasial adalah data titik, data kontinu, dan data area yang akan dibawah berikut ini. Sebelum membahas jenis data tersebut satu per satu, terlebih dulu akan dibahas struktur data spasial serta cara mengimpor data spasial ke dalam R.
