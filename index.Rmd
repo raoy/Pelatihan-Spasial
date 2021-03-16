@@ -1,15 +1,13 @@
---- 
+---
 title: "Modul Praktikum - Pelatihan Analisis Spasial"
 author: "Anik Djuraidah, Rahma Anisa, Gerry Alfa Dito"
 date: "17 dan 19 Maret 2021"
 site: bookdown::bookdown_site
 documentclass: book
-bibliography: [book.bib, packages.bib]
+bibliography: book.bib
 biblio-style: apalike
 link-citations: yes
 description: ""
 always_allow_html: true
 
 ---
-
-
