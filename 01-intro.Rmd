@@ -30,6 +30,8 @@ install.packages("sf")
 install.packages("GWmodel")
 install.packages("spgwr")
 install.packages("gwrr")
+install.packages("plm")
+install.packages("splm")
 
 ```
 
