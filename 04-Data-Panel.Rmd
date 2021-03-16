@@ -1,0 +1,330 @@
+# Regresi Data Panel Spasial 
+
+Pemodelan ini merupakan salah satu alternatif yang dapat dilakukan ketika data yang kita kaji selain merupakan data spasial, juga merupakan data deret waktu. 
+
+Tahapan yang dapat dilakukan dalam melakukan pemodelan regresi data panel adalah sebagai berikut:
+
+(1) melakukan eksplorasi hubungan antar peubah, sebaran data, dsb.
+
+(2) menganalisa data panel dengan melakukan pengujian berikut:
+ 
+    - Uji Breusch-Pagan untuk menguji adanya efek waktu, individu atau keduanya
+ 
+    - Uji Chow untuk menguji signifikansi antara model gabungan dan model pengaruh tetap
+ 
+    - Uji Hausman untuk menguji signifikansi antara model pengaruh acak dengan model pengaruh tetap
+
+(4) melakukan pemodelan data panel sesuai dengan indikasi yang diperoleh pada tahap (1) s.d (3)
+
+(5) mengevaluasi kebaikan model
+
+Sedangkan tahapan dalam pemodelan data panel spasial adalah: (Rakhmi, 2015)
+
+(1) Eksplorasi Data
+
+(2) Uji ketergantungan spasial, dapat menggunakan uji CD Pesaran dengan hipotesis sebagai berikut:
+$H_0: \rho_{ij}=\rho_{ji}= korelasi(\varepsilon_{it}, \varepsilon_{jt}=0$, untuk $i \ne j$
+$H_1: \rho_{ij}=\rho_{ji} \ne 0$ , untuk beberapa $i \ne j$
+
+(3) Bila perlu, menguji autokorelasi spasial pada peubah penjelas, dapat menggunakan uji Moran.
+
+(4) Sesuai dengan indikasi pada tahapan sebelumnya, kita dapat melakukan pemodelan data panel spasial, dengan menggunakan matriks pembobot spasial yang sesuai.
+
+(5) Mengevaluasi kebaikan model yang disusun pada tahap (4).
+
+(6) Menginterpretasikan model.
+
+
+
+
+## Ilustrasi: Kemiskinan di Pulau Jawa
+
+Sebagai ilustrasi, modul ini akan membahas studi kasus yang diteliti oleh Rakhmi (2015). Pada ilustrasi ini, kita akan mengamati persentasi kemiskinan di kabupaten dan kota di Pulau Jawa pada tahun 2008-2012, dengan rincian peubah sebagai berikut:
+
++ Y = Persentase Kemiskinan di kabupaten/kota di Pulau Jawa
+
++ X1 = Indeks Pembangunan Manusia (IPM)
+
++ X2 = Tingkat Pengangguran Terbuka (TPT)
+
++ X3 = Pertumbuhan Ekonomi (PDRB)
+
+
+Pertama-tama, kita impor data peta tematik Jawa Tengah dan data pengamatan ke dalam R.
+
+```{r message=FALSE, warning=FALSE}
+data<-read.csv("data panel Jawa.csv", header = T)
+head(data)
+```
+
+## Eksplorasi Data
+
+```{r}
+y<-matrix(NA, nrow=5, ncol=119) # 5 tahun, 118 kota/kabupaten
+y[,1]<-2008:2012
+a=2
+for (i in 1:118)
+{
+  y[,i+1]<-data[a:(a+4),5]
+  a=a+5
+}
+
+palette("default")
+y<-as.data.frame(y)
+matplot(y[,1], y[,-1], type="l", pch=19, ylab="Persentase Kemiskinan", xlab="Tahun")
+```
+
+```{r message=FALSE, warning=FALSE}
+#install.packages("foreign")
+library(foreign)
+
+data1<-subset(data,data$Provinsi=="DKI JAKARTA")
+coplot(Kemiskinan~Tahun|KabKot, type="l", data=data1)
+```
+
+```{r message=FALSE, warning=FALSE}
+prov<-unique(data$Provinsi)
+for (i in 1:length(prov))
+{
+  data1<-subset(data,data$Provinsi==prov[i])
+  car::scatterplot(Kemiskinan~Tahun|KabKot, boxplots=F, smooth=F, legend=F, 
+                   grid=T,data=data1, reset.par=T, cex=0.5, main=prov[i])
+}
+```
+
+
+
+```{r}
+plot(data[,5:8], pch=16, col="blue", main="Scatterplot antar Pasangan Peubah pada 2008-2012")
+```
+
+Scatterplot memperlihatkan bahwa IPM dan PDRB cenderung memiliki hubungan yang berbanding terbalik dengan persentase kemiskinan. Sedangkan pola hubungan antara persentase kemiskinan dengan peubah TPT memiliki ragam yang cukup besar sehingga agak sulit untuk mengidentifikasinya.
+
+
+```{r}
+a=1; korelasipertahun<-NULL;
+for (i in 1:5)
+{
+  korelasi<-cor(data[a:(a+4),5:8])[-1,1]
+  a=a+5
+  korelasipertahun<-cbind(korelasipertahun,korelasi)
+}
+
+colnames(korelasipertahun)<-2008:2012
+
+barplot(korelasipertahun , beside=T, ylim=c(-1,1), col=2:4,main="Korelasi terhadap Y per Tahun")
+legend("bottomright",c("IPM", "PDRB", "TPT"),
+fill = 2:4, cex=0.75)
+```
+
+
+```{r}
+korelasipertahun
+
+```
+
+
+## Identifikasi Pengaruh Individu dan Pengaruh Waktu
+
+```{r}
+a<-scale(data[,5:8]) 
+data1<-cbind(data[,c(3,4)],a)
+head(data1)
+```
+
+## Identifikasi Keragaman Antar Individu dan Antar Waktu
+
+```{r}
+boxplot(Kemiskinan~Tahun, data=data)
+```
+
+```{r}
+boxplot(Kemiskinan~KabKot, data=data)
+```
+
+## Model Gabungan
+
+```{r}
+library(plm)
+model.pool<-plm(Kemiskinan~IPM+PDRB+TPT, data=data1, model="pooling")
+summary(model.pool)
+```
+
+Model di atas adalah model gabungan, atau sama dengan model OLS (*ordinary least squares*). Selanjutnya, kita perlu mengidentifikasi apakah terdapat pengaruh individu atau waktu, atau keduanya, serta yang manakah di antara model gabungan, tetap , atau acak yang paling sesuai untuk digunakan.
+
+
+```{r}
+plmtest(model.pool,data=data1,type="bp",effect = "time")
+```
+
+```{r}
+plmtest(model.pool,data=data1,type="bp",effect = "individual")
+```
+
+```{r}
+#install.packages("plm")
+library(plm)
+
+plmtest(model.pool,type="bp",effect = "twoways")
+```
+
+Dari hasil di atas, dapat disimpulkan bahwa terdapat pengaruh signifikan yang diakibatkan oleh waktu dan individu. 
+
+## Uji Chow
+
+Untuk mengidentifikasi salah satu di antara model gabungan dan model tetap yang lebih sesuai untuk digunakan, terlebih dulu dibangun model dengan pengaruh tetap. Terdapat empat kemungkinan model yang dapat diidentifikasi melalui uji Chow, yaitu:
+(1) jika kita menolak $H_0$ pada pengujian pengaruh spesifik individu dan waktu, maka model yang sesuai adalah model pengaruh tetap komponen sisaan dua arah
+
+(2) jika kita menolak $H_0$ pada pengujian pengaruh spesifik individu, maka model yang sesuai adalah model pengaruh tetap individu
+
+(3) jika kita menolak $H_0$ pada pengujian pengaruh spesifik waktu, maka model yang sesuai adalah model pengaruh tetap waktu
+
+(4) jika kita gagal menolak $H_0$ pada pengujian pengaruh spesifik individu dan waktu, maka model yang sesuai adalah model gabungan.
+
+Pada ilustrasi ini, sebelumnya telah ditunjukkan bahwa terdapat pengaruh individu dan pengaruh waktu terhadap kemiskinan, sehingga pada tahap ini akan diuji model dengan komponen sisaan dua arah.
+
+```{r}
+model.fixed<-plm(Kemiskinan~IPM+PDRB+TPT, data=data1, model="within", effect="twoways")
+summary(model.fixed)
+```
+
+Setelah menyusun model dengan pengaruh tetap, selanjutnya kita dapat menggunakan uji Chow untuk mengidentifikasi kesesuaian model antara model gabungan atau model dengan pengaruh tetap. 
+
+
+```{r}
+pFtest(model.fixed, model.pool)
+```
+
+Berdasarkan uji Chow pada output di atas, p-value$<\alpha=0.05$, sehingga dapat disimpulkan bahwa model yang sesuai adalah model pengaruh tetap komponen sisaan dua arah. Selanjutnya, kita masih harus mengidentifikasi lebih lanjut apakah model pengaruh acak lebih sesuai untuk digunakan dibandingkan dengan model pengaruh tetap.
+
+## Uji Hausman
+
+Pada tahap ini kita akan mengidentifikasi lebih lanjut mengenai kesuaian model antara model dengan pengaruh tetap atau pengaruh acak. 
+```{r}
+model.random<-plm(Kemiskinan~IPM+PDRB+TPT, data=data1, model="random", effect="twoways")
+summary(model.random)
+```
+Hipotesis yang diuji pada uji Hausman adalah:
+
+$H_0: E(u_{it}|x_{k, it})=0$ (model pengaruh acak)
+
+
+$H_0: E(u_{it}|x_{k, it}) \ne 0$ (model pengaruh tetap)
+
+
+```{r}
+phtest(model.fixed, model.random)
+```
+
+Terlihat pada output bahwa kita dapat menolak hipotesis nol pada taraf nyata 0.05, artinya model yang lebih tepat digunakan adalah model dengan pengaruh tetap sebagai berikut:
+
+$$y_{it}=-1.139669x_{1it}+0.137278x_{2it}-0.058057x_{3it}+\hat{\mu}_i+\varepsilon_{it}$$
+
+## Analisis Spasial
+
+Peta persebaran jumlah penduduk miskin di kabupaten/kota Provinsi Jawa Tengah pada tahun 2015 terlihat pada gambar berikut.
+
+```{r message=FALSE, warning=FALSE}
+library(rgdal)
+library(spdep)
+library(raster)
+library(sp)
+library(spatialreg)
+
+petajawa<-readOGR(dsn='Jawamap',layer='jawa')
+petajawa@data[24,] #dihilangkan dari peta karena tidak ada dalam data pengamatan
+petajawa<-petajawa[-24,]
+
+
+data2012<-subset(data, data$Tahun==2012)
+
+petajawa$Kemiskinan<-data2012$Kemiskinan
+spplot(petajawa, "Kemiskinan", main="Persentase Penduduk Miskin 2012")
+
+```
+
+## Uji Ketergantungan Spasial pada Data Panel
+
+Seperti yang telah dijelaskan pada bagian awal modul ini, kita dapat menggunakan uji *cross-sectional dependency* (CD) Pesaran untuk mengidentifikasi ketergantungan spasial pada data panel.
+
+```{r}
+library(splm)
+
+w<-as.matrix(1/dist(coordinates(petajawa)))
+ww<-w
+for(i in 1:118)
+{
+ww[i,]<-ww[i,]/apply(w,1,sum)[i]
+}
+rowSums(ww)
+
+rwtest(model.fixed, w=ww)
+```
+
+Terlihat pada output di atas bahwa p-value $<\alpha=0.05$ maka kita dapat menyimpulkan bahwa hipotesis nol ditolak, artinya pada data panel kemiskinan ini terdapat ketergantungan spasial pada peubah responnya. Hal ini mengindikasikan bahwa kemiskinan di suatu kab/kota, selain dipengaruhi oleh peubah penjelas yang dimilikinya, juga dipengaruhi oleh kemiskinan di kab/kota lain.
+
+## Pemodelan Data Panel Spasial
+
+### Model Panel SAR
+```{r message=FALSE, warning=FALSE}
+panel.sar<-spml(Kemiskinan~IPM+PDRB+TPT, data=data1, listw=mat2listw(ww),model="within", 
+                effect = "twoways", lag=T, spatial.error = "none")
+summary(panel.sar)
+```
+
+```{r}
+#db=t*n-(k+1)-n
+db<-(5*118)-(3+1)-118
+  
+sqrt(sum(panel.sar$resid^2)/db) ## Standard Error of Regression
+summary(panel.sar)$rsqr ## Pseudo-R2
+
+
+```
+
+
+### Model Panel SEM
+
+```{r message=FALSE, warning=FALSE}
+panel.sem<-spml(Kemiskinan~IPM+PDRB+TPT, data=data1, listw=mat2listw(ww),model="within", 
+                effect = "twoways", lag=F)
+summary(panel.sem)
+```
+
+```{r}
+sqrt(sum(panel.sem$resid^2)/db) ## Standard Error of Regression
+summary(panel.sem)$rsqr ## Pseudo-R2
+```
+
+
+### Model Panel GSM
+```{r message=FALSE, warning=FALSE}
+panel.gsm<-spml(Kemiskinan~IPM+PDRB+TPT, data=data1, listw=mat2listw(ww),model="within", 
+                effect = "twoways", lag=T)
+summary(panel.gsm)
+```
+
+```{r}
+sqrt(sum(panel.gsm$resid^2)/db) ## Standard Error of Regression
+summary(panel.gsm)$rsqr ## Pseudo-R2
+```
+
+## Menentukan Model Terbaik
+
+
+## Interpretasi Model
+
+```{r}
+lw<- mat2listw(ww, style ="W")
+sparse.W <- listw2dgCMatrix(lw)
+
+time<-2008:2012
+s.lwstates <- kronecker(diag(time), sparse.W)
+trMatc <- trW(s.lwstates, type="mult")
+
+#set.seed(123)
+#imp <- impacts(panel.gsm, tr = trMatc, R=200)
+#summary(imp, zstats=TRUE, short=T)
+
+```
+
