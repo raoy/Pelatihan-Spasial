@@ -52,7 +52,7 @@ Sebagai ilustrasi, modul ini akan membahas studi kasus yang diteliti oleh Agusti
 + X3 = Pertumbuhan Ekonomi (PDRB)
 
 
-Pertama-tama, kita impor data peta tematik Jawa Tengah dan data pengamatan ke dalam R.
+Pertama-tama, kita impor data peta tematik pulau Jawa dan data pengamatan ke dalam R.
 
 ```{r message=FALSE, warning=FALSE}
 data<-read.csv("data panel Jawa.csv", header = T)
@@ -231,7 +231,7 @@ $$y_{it}=-1.139669x_{1it}+0.137278x_{2it}-0.058057x_{3it}+\hat{\mu}_i+\varepsilo
 
 ## Pemodelan Data Panel Spasial
 
-Peta persebaran jumlah penduduk miskin di kabupaten/kota Provinsi Jawa Tengah pada tahun 2015 terlihat pada gambar berikut.
+Peta persebaran jumlah penduduk miskin di kabupaten/kota di pulau Jawa pada tahun 2012 terlihat pada gambar berikut.
 
 ```{r message=FALSE, warning=FALSE}
 library(rgdal)
