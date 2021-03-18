@@ -220,7 +220,12 @@ Hipotesis yang diuji pada uji Hausman adalah:
 phtest(model.fixed, model.random)
 ```
 
-Terlihat pada output bahwa kita dapat menolak hipotesis nol pada taraf nyata 0.05, artinya model yang lebih tepat digunakan adalah model dengan pengaruh tetap sebagai berikut:
+Terlihat pada output bahwa kita dapat menolak hipotesis nol pada taraf nyata 0.05, artinya model yang lebih tepat digunakan adalah model dengan pengaruh tetap.
+```{r}
+summary(model.fixed)
+```
+
+Model dapat dituliskan sebagai berikut:
 
 $$y_{it}=-1.139669x_{1it}+0.137278x_{2it}-0.058057x_{3it}+\hat{\mu}_i+\varepsilon_{it}$$
 
