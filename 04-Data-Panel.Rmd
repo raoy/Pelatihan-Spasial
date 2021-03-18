@@ -440,13 +440,13 @@ summary(panel.gsm)$rsqr ## Pseudo-R2
 Berikut ini adalah ringkasan dari pemodelan yang telah dilakukan pada tahap-tahap sebelumnya:
 ```{r echo=FALSE}
 kriteria<-c("SE of Regression", "Pseudo-R2", "p-value of lambda", "p-value of rho")
-kriteria.panelsar<-c(sqrt(sum(panel.sar$resid^2)/db), summary(panel.sar)$rsqr, 5.362e-08, NA)
-kriteria.panelsem<-c(sqrt(sum(panel.sem$resid^2)/db), summary(panel.sem)$rsqr, NA, 9.841e-07)
-kriteria.panelgsm<-c(sqrt(sum(panel.gsm$resid^2)/db), summary(panel.gsm)$rsqr, 2.445e-14, 0.05714)
+kriteria.panelsar<-c(round(sqrt(sum(panel.sar$resid^2)/db),4), round(summary(panel.sar)$rsqr, 4), round(5.362e-08, 4), NA)
+kriteria.panelsem<-c(round(sqrt(sum(panel.sem$resid^2)/db), 4), round(summary(panel.sem)$rsqr, 4), NA, round(9.841e-07,4))
+kriteria.panelgsm<-c(round(sqrt(sum(panel.gsm$resid^2)/db), 4), round(summary(panel.gsm)$rsqr, 4), round(2.445e-14, 4), round(0.05714, 4))
 
 data.frame(Kriteria=kriteria, Panel_SAR=kriteria.panelsar, Panel_SEM=kriteria.panelsem, PANEL_GSM=kriteria.panelgsm)
 ```
-Berdasarkan output di atas, model terbaik adalah model panel SAR karena koefisien $\lambda$ yang di
+Berdasarkan output di atas, model terbaik adalah model panel SAR.
 
 ### Interpretasi Model
 
