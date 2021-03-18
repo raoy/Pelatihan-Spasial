@@ -4,8 +4,8 @@
 %
 \documentclass[
 ]{book}
+\usepackage{amsmath,amssymb}
 \usepackage{lmodern}
-\usepackage{amssymb,amsmath}
 \usepackage{ifxetex,ifluatex}
 \ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
   \usepackage[T1]{fontenc}
@@ -81,7 +81,8 @@
 \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
 \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
 \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\usepackage{longtable,booktabs}
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
 % Correct order of tables after \paragraph or \subparagraph
 \usepackage{etoolbox}
 \makeatletter
@@ -155,18 +156,18 @@ Daftar Package yang dibutuhkan dalam pelatihan ini adalah sebagai berikut
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{install.packages}\NormalTok{(}\StringTok{"tidyverse"}\NormalTok{)}
-\KeywordTok{install.packages}\NormalTok{(}\StringTok{"leafleat"}\NormalTok{)}
-\KeywordTok{install.packages}\NormalTok{(}\StringTok{"sp"}\NormalTok{)}
-\KeywordTok{install.packages}\NormalTok{(}\StringTok{"spData"}\NormalTok{)}
-\KeywordTok{install.packages}\NormalTok{(}\StringTok{"spdep"}\NormalTok{)}
-\KeywordTok{install.packages}\NormalTok{(}\StringTok{"rgdal"}\NormalTok{)}
-\KeywordTok{install.packages}\NormalTok{(}\StringTok{"sf"}\NormalTok{)}
-\KeywordTok{install.packages}\NormalTok{(}\StringTok{"GWmodel"}\NormalTok{)}
-\KeywordTok{install.packages}\NormalTok{(}\StringTok{"spgwr"}\NormalTok{)}
-\KeywordTok{install.packages}\NormalTok{(}\StringTok{"gwrr"}\NormalTok{)}
-\KeywordTok{install.packages}\NormalTok{(}\StringTok{"plm"}\NormalTok{)}
-\KeywordTok{install.packages}\NormalTok{(}\StringTok{"splm"}\NormalTok{)}
+\FunctionTok{install.packages}\NormalTok{(}\StringTok{"tidyverse"}\NormalTok{)}
+\FunctionTok{install.packages}\NormalTok{(}\StringTok{"leafleat"}\NormalTok{)}
+\FunctionTok{install.packages}\NormalTok{(}\StringTok{"sp"}\NormalTok{)}
+\FunctionTok{install.packages}\NormalTok{(}\StringTok{"spData"}\NormalTok{)}
+\FunctionTok{install.packages}\NormalTok{(}\StringTok{"spdep"}\NormalTok{)}
+\FunctionTok{install.packages}\NormalTok{(}\StringTok{"rgdal"}\NormalTok{)}
+\FunctionTok{install.packages}\NormalTok{(}\StringTok{"sf"}\NormalTok{)}
+\FunctionTok{install.packages}\NormalTok{(}\StringTok{"GWmodel"}\NormalTok{)}
+\FunctionTok{install.packages}\NormalTok{(}\StringTok{"spgwr"}\NormalTok{)}
+\FunctionTok{install.packages}\NormalTok{(}\StringTok{"gwrr"}\NormalTok{)}
+\FunctionTok{install.packages}\NormalTok{(}\StringTok{"plm"}\NormalTok{)}
+\FunctionTok{install.packages}\NormalTok{(}\StringTok{"splm"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -199,7 +200,7 @@ Setelah mendownload file-file diatas silahkan taruh file-file tersebut dalam sat
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{setwd}\NormalTok{(}\StringTok{"D:/Research (eksternal dept)/pelatihan spasial (adj)/modul"}\NormalTok{)}
+\FunctionTok{setwd}\NormalTok{(}\StringTok{"D:/Research (eksternal dept)/pelatihan spasial (adj)/modul"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -210,10 +211,10 @@ Setelah mendownload file-file diatas silahkan taruh file-file tersebut dalam sat
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{A \textless{}{-}}\StringTok{ }\DecValTok{5}
-\NormalTok{A =}\StringTok{ }\DecValTok{5}
-\DecValTok{5}\NormalTok{ {-}\textgreater{}}\StringTok{ }\NormalTok{A}
-\KeywordTok{assign}\NormalTok{(}\StringTok{"A"}\NormalTok{,}\DecValTok{5}\NormalTok{)}
+\NormalTok{A }\OtherTok{\textless{}{-}} \DecValTok{5}
+\NormalTok{A }\OtherTok{=} \DecValTok{5}
+\DecValTok{5} \OtherTok{{-}\textgreater{}}\NormalTok{ A}
+\FunctionTok{assign}\NormalTok{(}\StringTok{"A"}\NormalTok{,}\DecValTok{5}\NormalTok{)}
 \NormalTok{A}
 \end{Highlighting}
 \end{Shaded}
@@ -253,10 +254,10 @@ Vector dalam R berisi elemen-element yang memiliki tipe data yang sama.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{A \textless{}{-}}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{5}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{5}\NormalTok{, }\DecValTok{1}\NormalTok{)}
-\NormalTok{x \textless{}{-}}\StringTok{ }\DecValTok{1}\OperatorTok{:}\DecValTok{10}
-\NormalTok{n \textless{}{-}}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"a"}\NormalTok{, }\StringTok{\textquotesingle{}b\textquotesingle{}}\NormalTok{, }\StringTok{"c"}\NormalTok{)}
-\NormalTok{y \textless{}{-}}\StringTok{ }\KeywordTok{seq}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DataTypeTok{by =} \DecValTok{2}\NormalTok{)}
+\NormalTok{A }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{5}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{5}\NormalTok{, }\DecValTok{1}\NormalTok{)}
+\NormalTok{x }\OtherTok{\textless{}{-}} \DecValTok{1}\SpecialCharTok{:}\DecValTok{10}
+\NormalTok{n }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"a"}\NormalTok{, }\StringTok{\textquotesingle{}b\textquotesingle{}}\NormalTok{, }\StringTok{"c"}\NormalTok{)}
+\NormalTok{y }\OtherTok{\textless{}{-}} \FunctionTok{seq}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{10}\NormalTok{, }\AttributeTok{by =} \DecValTok{2}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -274,7 +275,7 @@ Kita bisa mengakses elemen-elemen vektor dengan cara berikut
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{x[}\DecValTok{1}\OperatorTok{:}\DecValTok{4}\NormalTok{]}
+\NormalTok{x[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{4}\NormalTok{]}
 \end{Highlighting}
 \end{Shaded}
 
@@ -284,7 +285,7 @@ Kita bisa mengakses elemen-elemen vektor dengan cara berikut
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{n[}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{3}\NormalTok{)]}
+\NormalTok{n[}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{3}\NormalTok{)]}
 \end{Highlighting}
 \end{Shaded}
 
@@ -294,7 +295,7 @@ Kita bisa mengakses elemen-elemen vektor dengan cara berikut
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{y[}\OperatorTok{{-}}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\DecValTok{2}\NormalTok{)]}
+\NormalTok{y[}\SpecialCharTok{{-}}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\DecValTok{2}\NormalTok{)]}
 \end{Highlighting}
 \end{Shaded}
 
@@ -314,8 +315,8 @@ Mirip dengan vector tapi mempunyai urutan (ordinal)
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{x \textless{}{-}}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"SD"}\NormalTok{, }\StringTok{"SMP"}\NormalTok{, }\StringTok{"SMA"}\NormalTok{, }\StringTok{"S1"}\NormalTok{)}
-\NormalTok{sekolah \textless{}{-}}\StringTok{ }\KeywordTok{factor}\NormalTok{(x)}
+\NormalTok{x }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"SD"}\NormalTok{, }\StringTok{"SMP"}\NormalTok{, }\StringTok{"SMA"}\NormalTok{, }\StringTok{"S1"}\NormalTok{)}
+\NormalTok{sekolah }\OtherTok{\textless{}{-}} \FunctionTok{factor}\NormalTok{(x)}
 \NormalTok{sekolah}
 \end{Highlighting}
 \end{Shaded}
@@ -327,7 +328,7 @@ Mirip dengan vector tapi mempunyai urutan (ordinal)
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{sekolah \textless{}{-}}\StringTok{ }\KeywordTok{factor}\NormalTok{(x, }\DataTypeTok{levels =}\NormalTok{ x)}
+\NormalTok{sekolah }\OtherTok{\textless{}{-}} \FunctionTok{factor}\NormalTok{(x, }\AttributeTok{levels =}\NormalTok{ x)}
 \NormalTok{sekolah}
 \end{Highlighting}
 \end{Shaded}
@@ -352,7 +353,7 @@ Kita bisa mengakses elemen-elemen \texttt{factor} dengan cara berikut
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{sekolah[}\DecValTok{1}\OperatorTok{:}\DecValTok{2}\NormalTok{]}
+\NormalTok{sekolah[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{2}\NormalTok{]}
 \end{Highlighting}
 \end{Shaded}
 
@@ -363,7 +364,7 @@ Kita bisa mengakses elemen-elemen \texttt{factor} dengan cara berikut
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{sekolah[}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{4}\NormalTok{)]}
+\NormalTok{sekolah[}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{4}\NormalTok{)]}
 \end{Highlighting}
 \end{Shaded}
 
@@ -384,8 +385,8 @@ Matrix dalam R memiliki dua dimensi yaitu baris dan kolom. Matrix hanya bisa dig
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{M \textless{}{-}}\StringTok{ }\KeywordTok{matrix}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{), }
-        \DataTypeTok{nrow =} \DecValTok{3}\NormalTok{, }\DataTypeTok{ncol =} \DecValTok{3}\NormalTok{, }\DataTypeTok{byrow =} \OtherTok{TRUE}\NormalTok{)}
+\NormalTok{M }\OtherTok{\textless{}{-}} \FunctionTok{matrix}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{), }
+        \AttributeTok{nrow =} \DecValTok{3}\NormalTok{, }\AttributeTok{ncol =} \DecValTok{3}\NormalTok{, }\AttributeTok{byrow =} \ConstantTok{TRUE}\NormalTok{)}
 \NormalTok{M}
 \end{Highlighting}
 \end{Shaded}
@@ -431,7 +432,7 @@ Kita bisa mengakses elemen-elemen `matriks dengan cara berikut
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{M[}\DecValTok{1}\NormalTok{, }\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{3}\NormalTok{)]}
+\NormalTok{M[}\DecValTok{1}\NormalTok{, }\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{3}\NormalTok{)]}
 \end{Highlighting}
 \end{Shaded}
 
@@ -441,7 +442,7 @@ Kita bisa mengakses elemen-elemen `matriks dengan cara berikut
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{M[, }\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{3}\NormalTok{)]}
+\NormalTok{M[, }\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{3}\NormalTok{)]}
 \end{Highlighting}
 \end{Shaded}
 
@@ -464,7 +465,7 @@ Array merupakan perluasan dari matrix dalam hal dimensi. Jika matrix hanya memil
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{BB \textless{}{-}}\StringTok{ }\KeywordTok{array}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\DecValTok{12}\NormalTok{,}\DataTypeTok{dim =} \KeywordTok{c}\NormalTok{(}\DecValTok{3}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{)) }\CommentTok{\#array berdimensi 3}
+\NormalTok{BB }\OtherTok{\textless{}{-}} \FunctionTok{array}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\DecValTok{12}\NormalTok{,}\AttributeTok{dim =} \FunctionTok{c}\NormalTok{(}\DecValTok{3}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{)) }\CommentTok{\#array berdimensi 3}
 \NormalTok{BB}
 \end{Highlighting}
 \end{Shaded}
@@ -487,7 +488,7 @@ Array merupakan perluasan dari matrix dalam hal dimensi. Jika matrix hanya memil
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{CC \textless{}{-}}\StringTok{ }\KeywordTok{array}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\DecValTok{24}\NormalTok{,}\KeywordTok{c}\NormalTok{(}\DecValTok{4}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{)) }\CommentTok{\# array berdimensi 4}
+\NormalTok{CC }\OtherTok{\textless{}{-}} \FunctionTok{array}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\DecValTok{24}\NormalTok{,}\FunctionTok{c}\NormalTok{(}\DecValTok{4}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{)) }\CommentTok{\# array berdimensi 4}
 \NormalTok{CC}
 \end{Highlighting}
 \end{Shaded}
@@ -570,10 +571,10 @@ Objek seperti tabel di Excel atau database SQL yang terdiri dari baris dan kolom
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{x \textless{}{-}}\StringTok{ }\DecValTok{10}\OperatorTok{:}\DecValTok{1}
-\NormalTok{y \textless{}{-}}\StringTok{ }\DecValTok{{-}4}\OperatorTok{:}\DecValTok{5}
-\NormalTok{q \textless{}{-}}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"Hockey"}\NormalTok{, }\StringTok{"Football"}\NormalTok{, }\StringTok{"Baseball"}\NormalTok{, }\StringTok{"Curling"}\NormalTok{, }\StringTok{"Rugby"}\NormalTok{,}\StringTok{"Lacrosse"}\NormalTok{, }\StringTok{"Basketball"}\NormalTok{, }\StringTok{"Tennis"}\NormalTok{, }\StringTok{"Cricket"}\NormalTok{, }\StringTok{"Soccer"}\NormalTok{)}
-\NormalTok{theDF \textless{}{-}}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(x, y, q)}
+\NormalTok{x }\OtherTok{\textless{}{-}} \DecValTok{10}\SpecialCharTok{:}\DecValTok{1}
+\NormalTok{y }\OtherTok{\textless{}{-}} \SpecialCharTok{{-}}\DecValTok{4}\SpecialCharTok{:}\DecValTok{5}
+\NormalTok{q }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"Hockey"}\NormalTok{, }\StringTok{"Football"}\NormalTok{, }\StringTok{"Baseball"}\NormalTok{, }\StringTok{"Curling"}\NormalTok{, }\StringTok{"Rugby"}\NormalTok{,}\StringTok{"Lacrosse"}\NormalTok{, }\StringTok{"Basketball"}\NormalTok{, }\StringTok{"Tennis"}\NormalTok{, }\StringTok{"Cricket"}\NormalTok{, }\StringTok{"Soccer"}\NormalTok{)}
+\NormalTok{theDF }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(x, y, q)}
 \NormalTok{theDF}
 \end{Highlighting}
 \end{Shaded}
@@ -594,7 +595,7 @@ Objek seperti tabel di Excel atau database SQL yang terdiri dari baris dan kolom
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{theDF \textless{}{-}}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{first=}\NormalTok{x,}\DataTypeTok{second=}\NormalTok{y,}\DataTypeTok{sports=}\NormalTok{q)}
+\NormalTok{theDF }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{first=}\NormalTok{x,}\AttributeTok{second=}\NormalTok{y,}\AttributeTok{sports=}\NormalTok{q)}
 \NormalTok{theDF}
 \end{Highlighting}
 \end{Shaded}
@@ -627,7 +628,7 @@ Kita bisa mengakses elemen-elemen \texttt{data.frame} dengan cara berikut
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{theDF[}\KeywordTok{c}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{5}\NormalTok{),}\DecValTok{7}\OperatorTok{:}\DecValTok{10}\NormalTok{),] }\CommentTok{\#baris 1,5,7,8,9,10}
+\NormalTok{theDF[}\FunctionTok{c}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{5}\NormalTok{),}\DecValTok{7}\SpecialCharTok{:}\DecValTok{10}\NormalTok{),] }\CommentTok{\#baris 1,5,7,8,9,10}
 \end{Highlighting}
 \end{Shaded}
 
@@ -643,7 +644,7 @@ Kita bisa mengakses elemen-elemen \texttt{data.frame} dengan cara berikut
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{theDF[,}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{3}\NormalTok{)] }\CommentTok{\#kolom 1 dan 3}
+\NormalTok{theDF[,}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{3}\NormalTok{)] }\CommentTok{\#kolom 1 dan 3}
 \end{Highlighting}
 \end{Shaded}
 
@@ -663,7 +664,7 @@ Kita bisa mengakses elemen-elemen \texttt{data.frame} dengan cara berikut
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{theDF}\OperatorTok{$}\NormalTok{sports }\CommentTok{\#mengakses kolom sports}
+\NormalTok{theDF}\SpecialCharTok{$}\NormalTok{sports }\CommentTok{\#mengakses kolom sports}
 \end{Highlighting}
 \end{Shaded}
 
@@ -674,7 +675,7 @@ Kita bisa mengakses elemen-elemen \texttt{data.frame} dengan cara berikut
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{theDF[,}\KeywordTok{c}\NormalTok{(}\StringTok{"first"}\NormalTok{,}\StringTok{"sports"}\NormalTok{)] }\CommentTok{\#mengakses kolom first dan sports}
+\NormalTok{theDF[,}\FunctionTok{c}\NormalTok{(}\StringTok{"first"}\NormalTok{,}\StringTok{"sports"}\NormalTok{)] }\CommentTok{\#mengakses kolom first dan sports}
 \end{Highlighting}
 \end{Shaded}
 
@@ -699,7 +700,7 @@ Untuk mengakses bantuan (help) dari suatu fungsi di R bisa menggunakan fungsi \t
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{help}\NormalTok{(lm)}
+\FunctionTok{help}\NormalTok{(lm)}
 \NormalTok{?plot}
 \end{Highlighting}
 \end{Shaded}
@@ -721,7 +722,7 @@ Sebagai ilustrasi, akan digunakan data yang tersedia pada laman \url{http://rtwi
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{library}\NormalTok{(rgdal)}
+\FunctionTok{library}\NormalTok{(rgdal)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -729,8 +730,8 @@ Untuk melihat file apa saja yang ada di dalam folder shapefile tersebut, kita da
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{dsn\textless{}{-}}\KeywordTok{paste}\NormalTok{(}\StringTok{"SnowGIS\_SHP/SnowGIS\_SHP"}\NormalTok{)}
-\KeywordTok{list.files}\NormalTok{(dsn)}
+\NormalTok{dsn}\OtherTok{\textless{}{-}}\FunctionTok{paste}\NormalTok{(}\StringTok{"SnowGIS\_SHP/SnowGIS\_SHP"}\NormalTok{)}
+\FunctionTok{list.files}\NormalTok{(dsn)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -752,7 +753,7 @@ Terlihat pada output di atas bahwa folder tersebut memuat beberapa shapefile, di
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{ogrListLayers}\NormalTok{(dsn)}
+\FunctionTok{ogrListLayers}\NormalTok{(dsn)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -768,12 +769,12 @@ Kita dapat menggunakan fungsi \texttt{ogrInfo()} untuk mengetahui informasi meng
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{ogrInfo}\NormalTok{(dsn, }\DataTypeTok{layer =} \StringTok{"Cholera\_Deaths"}\NormalTok{)}
+\FunctionTok{ogrInfo}\NormalTok{(dsn, }\AttributeTok{layer =} \StringTok{"Cholera\_Deaths"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-## Source: "D:\Research (eksternal dept)\pelatihan spasial (adj)\modeul 2\Pelatihan-Spasial\SnowGIS_SHP\SnowGIS_SHP", layer: "Cholera_Deaths"
+## Source: "D:\Jobs\Pelatihan Spasial STIS\New folder\Pelatihan-Spasial\SnowGIS_SHP\SnowGIS_SHP", layer: "Cholera_Deaths"
 ## Driver: ESRI Shapefile; number of rows: 250 
 ## Feature type: wkbPoint with 2 dimensions
 ## Extent: (529160.3 180857.9) - (529655.9 181306.2)
@@ -789,20 +790,20 @@ Fungsi \texttt{readOGR()} dapat digunakan untuk membaca data shapefile.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{CholeraDeaths \textless{}{-}}\StringTok{ }\KeywordTok{readOGR}\NormalTok{(dsn, }\DataTypeTok{layer =} \StringTok{"Cholera\_Deaths"}\NormalTok{)}
+\NormalTok{CholeraDeaths }\OtherTok{\textless{}{-}} \FunctionTok{readOGR}\NormalTok{(dsn, }\AttributeTok{layer =} \StringTok{"Cholera\_Deaths"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
 ## OGR data source with driver: ESRI Shapefile 
-## Source: "D:\Research (eksternal dept)\pelatihan spasial (adj)\modeul 2\Pelatihan-Spasial\SnowGIS_SHP\SnowGIS_SHP", layer: "Cholera_Deaths"
+## Source: "D:\Jobs\Pelatihan Spasial STIS\New folder\Pelatihan-Spasial\SnowGIS_SHP\SnowGIS_SHP", layer: "Cholera_Deaths"
 ## with 250 features
 ## It has 2 fields
 \end{verbatim}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{summary}\NormalTok{(CholeraDeaths)}
+\FunctionTok{summary}\NormalTok{(CholeraDeaths)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -831,7 +832,7 @@ Selanjutnya kita dapat memeriksa \texttt{class} dari data \texttt{CholeraDeaths}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{class}\NormalTok{(CholeraDeaths)}
+\FunctionTok{class}\NormalTok{(CholeraDeaths)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -845,7 +846,7 @@ Data tersebut merupakan \texttt{SpatialPointsDataFrame} yang termasuk \texttt{S4
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{str}\NormalTok{(CholeraDeaths}\OperatorTok{@}\NormalTok{data)}
+\FunctionTok{str}\NormalTok{(CholeraDeaths}\SpecialCharTok{@}\NormalTok{data)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -862,9 +863,9 @@ Fungsi \texttt{plot()} dapat digunakan untuk membuat grafik paling sederhana dar
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{par}\NormalTok{(}\DataTypeTok{mfrow=}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{))}
-\KeywordTok{plot}\NormalTok{(CholeraDeaths)}
-\KeywordTok{plot}\NormalTok{(CholeraDeaths, }\DataTypeTok{pch=}\DecValTok{20}\NormalTok{, }\DataTypeTok{col=}\StringTok{"steelblue"}\NormalTok{)}
+\FunctionTok{par}\NormalTok{(}\AttributeTok{mfrow=}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{))}
+\FunctionTok{plot}\NormalTok{(CholeraDeaths)}
+\FunctionTok{plot}\NormalTok{(CholeraDeaths, }\AttributeTok{pch=}\DecValTok{20}\NormalTok{, }\AttributeTok{col=}\StringTok{"steelblue"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -878,9 +879,9 @@ Berikut ini akan ditunjukkan salah satu cara menampilkan peta dengan memanfaatka
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{library}\NormalTok{(leaflet)}
-\NormalTok{map \textless{}{-}}\StringTok{ }\KeywordTok{leaflet}\NormalTok{() }\OperatorTok{\%\textgreater{}\%}\StringTok{ }\KeywordTok{setView}\NormalTok{(}\DataTypeTok{lng =}  \FloatTok{{-}0.13659}\NormalTok{, }\DataTypeTok{lat =}\FloatTok{51.51328}\NormalTok{ , }\DataTypeTok{zoom =} \DecValTok{12}\NormalTok{)}
-\NormalTok{map }\OperatorTok{\%\textgreater{}\%}\StringTok{ }\KeywordTok{addTiles}\NormalTok{() }
+\FunctionTok{library}\NormalTok{(leaflet)}
+\NormalTok{map }\OtherTok{\textless{}{-}} \FunctionTok{leaflet}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{setView}\NormalTok{(}\AttributeTok{lng =}  \SpecialCharTok{{-}}\FloatTok{0.13659}\NormalTok{, }\AttributeTok{lat =}\FloatTok{51.51328}\NormalTok{ , }\AttributeTok{zoom =} \DecValTok{12}\NormalTok{)}
+\NormalTok{map }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{addTiles}\NormalTok{() }
 \end{Highlighting}
 \end{Shaded}
 
@@ -888,7 +889,7 @@ Sebelum kedua peta dan data titik digabungkan. Pastikan terlebih dahulu apakah k
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{head}\NormalTok{(}\KeywordTok{coordinates}\NormalTok{(CholeraDeaths))}
+\FunctionTok{head}\NormalTok{(}\FunctionTok{coordinates}\NormalTok{(CholeraDeaths))}
 \end{Highlighting}
 \end{Shaded}
 
@@ -915,11 +916,11 @@ Seperti terlihat di atas, koordinat pada data \texttt{CholeraDeaths} diukur pada
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{cholera\_latlong \textless{}{-}}\StringTok{ }\NormalTok{CholeraDeaths }\OperatorTok{\%\textgreater{}\%}\StringTok{ }
-\StringTok{  }\KeywordTok{spTransform}\NormalTok{(}\KeywordTok{CRS}\NormalTok{(}\StringTok{"+init=epsg:4326"}\NormalTok{))}
-\KeywordTok{leaflet}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ CholeraDeaths) }\OperatorTok{\%\textgreater{}\%}\StringTok{ }
-\StringTok{  }\KeywordTok{addTiles}\NormalTok{() }\OperatorTok{\%\textgreater{}\%}
-\StringTok{  }\KeywordTok{addMarkers}\NormalTok{(cholera\_latlong}\OperatorTok{@}\NormalTok{coords[,}\DecValTok{1}\NormalTok{], cholera\_latlong}\OperatorTok{@}\NormalTok{coords[,}\DecValTok{2}\NormalTok{])}
+\NormalTok{cholera\_latlong }\OtherTok{\textless{}{-}}\NormalTok{ CholeraDeaths }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{spTransform}\NormalTok{(}\FunctionTok{CRS}\NormalTok{(}\StringTok{"+init=epsg:4326"}\NormalTok{))}
+\FunctionTok{leaflet}\NormalTok{(}\AttributeTok{data =}\NormalTok{ CholeraDeaths) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{addTiles}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{addMarkers}\NormalTok{(cholera\_latlong}\SpecialCharTok{@}\NormalTok{coords[,}\DecValTok{1}\NormalTok{], cholera\_latlong}\SpecialCharTok{@}\NormalTok{coords[,}\DecValTok{2}\NormalTok{])}
 \end{Highlighting}
 \end{Shaded}
 
@@ -935,26 +936,26 @@ Data spasial dapat berupa titik pengamatan pada lokasi tertentu, yang umumnya me
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{library}\NormalTok{(rgdal)}
-\NormalTok{petapontianak=}\KeywordTok{readOGR}\NormalTok{(}\DataTypeTok{dsn=}\StringTok{"Peta Pontianak"}\NormalTok{, }\DataTypeTok{layer=}\StringTok{"Pontianak\_kec"}\NormalTok{)}
+\FunctionTok{library}\NormalTok{(rgdal)}
+\NormalTok{petapontianak}\OtherTok{=}\FunctionTok{readOGR}\NormalTok{(}\AttributeTok{dsn=}\StringTok{"Peta Pontianak"}\NormalTok{, }\AttributeTok{layer=}\StringTok{"Pontianak\_kec"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
 ## OGR data source with driver: ESRI Shapefile 
-## Source: "D:\Research (eksternal dept)\pelatihan spasial (adj)\modeul 2\Pelatihan-Spasial\Peta Pontianak", layer: "Pontianak_kec"
+## Source: "D:\Jobs\Pelatihan Spasial STIS\New folder\Pelatihan-Spasial\Peta Pontianak", layer: "Pontianak_kec"
 ## with 6 features
 ## It has 1 fields
 \end{verbatim}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{dataATM=}\KeywordTok{read.csv}\NormalTok{(}\StringTok{"DATA ATM PONTIANAK.csv"}\NormalTok{ , }\DataTypeTok{header=}\NormalTok{T)}
-\NormalTok{dataSPBU=}\KeywordTok{read.csv}\NormalTok{(}\StringTok{"Data SPBU Pontianak.csv"}\NormalTok{, }\DataTypeTok{sep=}\StringTok{";"}\NormalTok{,}\DataTypeTok{header=}\NormalTok{T)}
-\KeywordTok{plot}\NormalTok{(petapontianak)}
-\KeywordTok{points}\NormalTok{(dataATM}\OperatorTok{$}\NormalTok{lon, dataATM}\OperatorTok{$}\NormalTok{lat, }\DataTypeTok{col=}\StringTok{"blue"}\NormalTok{, }\DataTypeTok{pch=}\DecValTok{3}\NormalTok{)}
-\KeywordTok{points}\NormalTok{(dataSPBU}\OperatorTok{$}\NormalTok{lon, dataSPBU}\OperatorTok{$}\NormalTok{lat, }\DataTypeTok{col=}\StringTok{"red"}\NormalTok{, }\DataTypeTok{pch=}\DecValTok{3}\NormalTok{)}
-\KeywordTok{title}\NormalTok{(}\StringTok{"Lokasi ATM dan SPBU di Pontianak"}\NormalTok{)}
+\NormalTok{dataATM}\OtherTok{=}\FunctionTok{read.csv}\NormalTok{(}\StringTok{"DATA ATM PONTIANAK.csv"}\NormalTok{ , }\AttributeTok{header=}\NormalTok{T)}
+\NormalTok{dataSPBU}\OtherTok{=}\FunctionTok{read.csv}\NormalTok{(}\StringTok{"Data SPBU Pontianak.csv"}\NormalTok{, }\AttributeTok{sep=}\StringTok{";"}\NormalTok{,}\AttributeTok{header=}\NormalTok{T)}
+\FunctionTok{plot}\NormalTok{(petapontianak)}
+\FunctionTok{points}\NormalTok{(dataATM}\SpecialCharTok{$}\NormalTok{lon, dataATM}\SpecialCharTok{$}\NormalTok{lat, }\AttributeTok{col=}\StringTok{"blue"}\NormalTok{, }\AttributeTok{pch=}\DecValTok{3}\NormalTok{)}
+\FunctionTok{points}\NormalTok{(dataSPBU}\SpecialCharTok{$}\NormalTok{lon, dataSPBU}\SpecialCharTok{$}\NormalTok{lat, }\AttributeTok{col=}\StringTok{"red"}\NormalTok{, }\AttributeTok{pch=}\DecValTok{3}\NormalTok{)}
+\FunctionTok{title}\NormalTok{(}\StringTok{"Lokasi ATM dan SPBU di Pontianak"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -969,21 +970,21 @@ Tipe data ini merupakan pengamatan yang memiliki nilai tidak hanya pada titik ya
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{library}\NormalTok{(sp)}
-\KeywordTok{library}\NormalTok{(gstat)}
+\FunctionTok{library}\NormalTok{(sp)}
+\FunctionTok{library}\NormalTok{(gstat)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-## Warning: package 'gstat' was built under R version 4.0.3
+## Warning: package 'gstat' was built under R version 4.0.4
 \end{verbatim}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{metromanila=}\KeywordTok{read.csv}\NormalTok{(}\StringTok{"metromanila.csv"}\NormalTok{)}
-\KeywordTok{coordinates}\NormalTok{(metromanila)\textless{}{-}}\KeywordTok{c}\NormalTok{(}\StringTok{"lon"}\NormalTok{,}\StringTok{"lat"}\NormalTok{)}
-\KeywordTok{spplot}\NormalTok{(metromanila,}\StringTok{"precipitation"}\NormalTok{, }\DataTypeTok{asp =} \DecValTok{1}\NormalTok{,}
-       \DataTypeTok{cex=}\FloatTok{0.5}\NormalTok{, }\DataTypeTok{pch =} \DecValTok{19}\NormalTok{, }\DataTypeTok{main=}\StringTok{"Angka Presipitasi di Metro Manila"}\NormalTok{)}
+\NormalTok{metromanila}\OtherTok{=}\FunctionTok{read.csv}\NormalTok{(}\StringTok{"metromanila.csv"}\NormalTok{)}
+\FunctionTok{coordinates}\NormalTok{(metromanila)}\OtherTok{\textless{}{-}}\FunctionTok{c}\NormalTok{(}\StringTok{"lon"}\NormalTok{,}\StringTok{"lat"}\NormalTok{)}
+\FunctionTok{spplot}\NormalTok{(metromanila,}\StringTok{"precipitation"}\NormalTok{, }\AttributeTok{asp =} \DecValTok{1}\NormalTok{,}
+       \AttributeTok{cex=}\FloatTok{0.5}\NormalTok{, }\AttributeTok{pch =} \DecValTok{19}\NormalTok{, }\AttributeTok{main=}\StringTok{"Angka Presipitasi di Metro Manila"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -996,23 +997,23 @@ Pada tipe data ini, pengamatan dilakukan pada level area. Area dapat mengacu pad
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{library}\NormalTok{(spdep)}
-\KeywordTok{library}\NormalTok{(rgdal)}
-\KeywordTok{library}\NormalTok{(raster)}
-\NormalTok{petajawa\textless{}{-}}\StringTok{ }\KeywordTok{readOGR}\NormalTok{(}\DataTypeTok{dsn =} \StringTok{"Jawamap"}\NormalTok{, }\DataTypeTok{layer=}\StringTok{"jawa"}\NormalTok{)}
+\FunctionTok{library}\NormalTok{(spdep)}
+\FunctionTok{library}\NormalTok{(rgdal)}
+\FunctionTok{library}\NormalTok{(raster)}
+\NormalTok{petajawa}\OtherTok{\textless{}{-}} \FunctionTok{readOGR}\NormalTok{(}\AttributeTok{dsn =} \StringTok{"Jawamap"}\NormalTok{, }\AttributeTok{layer=}\StringTok{"jawa"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
 ## OGR data source with driver: ESRI Shapefile 
-## Source: "D:\Research (eksternal dept)\pelatihan spasial (adj)\modeul 2\Pelatihan-Spasial\Jawamap", layer: "jawa"
+## Source: "D:\Jobs\Pelatihan Spasial STIS\New folder\Pelatihan-Spasial\Jawamap", layer: "jawa"
 ## with 119 features
 ## It has 5 fields
 \end{verbatim}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{plot}\NormalTok{(petajawa)}
+\FunctionTok{plot}\NormalTok{(petajawa)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1040,9 +1041,9 @@ Ilustrasi yang akan digunakan pada bagian ini adalah data yang tersedia di dalam
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{library}\NormalTok{(raster)}
-\NormalTok{p \textless{}{-}}\StringTok{ }\KeywordTok{shapefile}\NormalTok{(}\KeywordTok{system.file}\NormalTok{(}\StringTok{"external/lux.shp"}\NormalTok{, }\DataTypeTok{package=}\StringTok{"raster"}\NormalTok{))}
-\NormalTok{p \textless{}{-}}\StringTok{ }\NormalTok{p[p}\OperatorTok{$}\NormalTok{NAME\_}\DecValTok{1}\OperatorTok{==}\StringTok{"Diekirch"}\NormalTok{, ]}
+\FunctionTok{library}\NormalTok{(raster)}
+\NormalTok{p }\OtherTok{\textless{}{-}} \FunctionTok{shapefile}\NormalTok{(}\FunctionTok{system.file}\NormalTok{(}\StringTok{"external/lux.shp"}\NormalTok{, }\AttributeTok{package=}\StringTok{"raster"}\NormalTok{))}
+\NormalTok{p }\OtherTok{\textless{}{-}}\NormalTok{ p[p}\SpecialCharTok{$}\NormalTok{NAME\_1}\SpecialCharTok{==}\StringTok{"Diekirch"}\NormalTok{, ]}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1050,8 +1051,8 @@ Selanjutnya kita akan tentukan sembarang nilai yang akan disimpan pada setiap lo
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{p}\OperatorTok{$}\NormalTok{value \textless{}{-}}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{10}\NormalTok{, }\DecValTok{6}\NormalTok{, }\DecValTok{4}\NormalTok{, }\DecValTok{11}\NormalTok{, }\DecValTok{6}\NormalTok{)}
-\KeywordTok{data.frame}\NormalTok{(p)}
+\NormalTok{p}\SpecialCharTok{$}\NormalTok{value }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{10}\NormalTok{, }\DecValTok{6}\NormalTok{, }\DecValTok{4}\NormalTok{, }\DecValTok{11}\NormalTok{, }\DecValTok{6}\NormalTok{)}
+\FunctionTok{data.frame}\NormalTok{(p)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1068,11 +1069,11 @@ Berikut adalah visualisasi dari data yang telah kita persiapkan.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{par}\NormalTok{(}\DataTypeTok{mai=}\KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{))}
-\KeywordTok{plot}\NormalTok{(p, }\DataTypeTok{col=}\DecValTok{2}\OperatorTok{:}\DecValTok{7}\NormalTok{)}
-\NormalTok{coords \textless{}{-}}\StringTok{ }\KeywordTok{coordinates}\NormalTok{(p)}
-\KeywordTok{points}\NormalTok{(coords, }\DataTypeTok{cex=}\DecValTok{6}\NormalTok{, }\DataTypeTok{pch=}\DecValTok{20}\NormalTok{, }\DataTypeTok{col=}\StringTok{\textquotesingle{}white\textquotesingle{}}\NormalTok{)}
-\KeywordTok{text}\NormalTok{(p, }\StringTok{\textquotesingle{}ID\_2\textquotesingle{}}\NormalTok{, }\DataTypeTok{cex=}\FloatTok{1.5}\NormalTok{)}
+\FunctionTok{par}\NormalTok{(}\AttributeTok{mai=}\FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{))}
+\FunctionTok{plot}\NormalTok{(p, }\AttributeTok{col=}\DecValTok{2}\SpecialCharTok{:}\DecValTok{7}\NormalTok{)}
+\NormalTok{coords }\OtherTok{\textless{}{-}} \FunctionTok{coordinates}\NormalTok{(p)}
+\FunctionTok{points}\NormalTok{(coords, }\AttributeTok{cex=}\DecValTok{6}\NormalTok{, }\AttributeTok{pch=}\DecValTok{20}\NormalTok{, }\AttributeTok{col=}\StringTok{\textquotesingle{}white\textquotesingle{}}\NormalTok{)}
+\FunctionTok{text}\NormalTok{(p, }\StringTok{\textquotesingle{}ID\_2\textquotesingle{}}\NormalTok{, }\AttributeTok{cex=}\FloatTok{1.5}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1089,14 +1090,14 @@ Program berikut ini dapat diguakan untuk dapat memperoleh matriks bobot berdasar
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{library}\NormalTok{(spdep)}
-\NormalTok{w \textless{}{-}}\StringTok{ }\KeywordTok{poly2nb}\NormalTok{(p)}
+\FunctionTok{library}\NormalTok{(spdep)}
+\NormalTok{w }\OtherTok{\textless{}{-}} \FunctionTok{poly2nb}\NormalTok{(p)}
 
 \CommentTok{\#lebih lengkap dapat dituliskan seperti berikut ini:}
-\NormalTok{w \textless{}{-}}\StringTok{ }\KeywordTok{poly2nb}\NormalTok{(p, }\DataTypeTok{queen=}\OtherTok{TRUE}\NormalTok{)}
+\NormalTok{w }\OtherTok{\textless{}{-}} \FunctionTok{poly2nb}\NormalTok{(p, }\AttributeTok{queen=}\ConstantTok{TRUE}\NormalTok{)}
 
-\KeywordTok{plot}\NormalTok{(p)}
-\KeywordTok{plot}\NormalTok{(w, coords, }\DataTypeTok{add=}\NormalTok{T)}
+\FunctionTok{plot}\NormalTok{(p)}
+\FunctionTok{plot}\NormalTok{(w, coords, }\AttributeTok{add=}\NormalTok{T)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1106,10 +1107,10 @@ Jika yang ingin digunakan adalah kriteria \emph{rook contiguity}, maka kita dapa
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{w.rook \textless{}{-}}\StringTok{ }\KeywordTok{poly2nb}\NormalTok{(p, }\DataTypeTok{queen=}\OtherTok{FALSE}\NormalTok{)}
-\NormalTok{coords\textless{}{-}}\KeywordTok{coordinates}\NormalTok{(p)}
-\KeywordTok{plot}\NormalTok{(p)}
-\KeywordTok{plot}\NormalTok{(w, coords, }\DataTypeTok{add=}\NormalTok{T)}
+\NormalTok{w.rook }\OtherTok{\textless{}{-}} \FunctionTok{poly2nb}\NormalTok{(p, }\AttributeTok{queen=}\ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{coords}\OtherTok{\textless{}{-}}\FunctionTok{coordinates}\NormalTok{(p)}
+\FunctionTok{plot}\NormalTok{(p)}
+\FunctionTok{plot}\NormalTok{(w, coords, }\AttributeTok{add=}\NormalTok{T)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1143,21 +1144,21 @@ Berikut ini adalah ilustrasi untuk memperoleh ketetanggaan dengan pendekatan KNN
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{coords\textless{}{-}}\KeywordTok{coordinates}\NormalTok{(p)}
-\NormalTok{IDs\textless{}{-}}\KeywordTok{row.names}\NormalTok{(}\KeywordTok{as}\NormalTok{(p, }\StringTok{"data.frame"}\NormalTok{))}
-\NormalTok{p\_kn1\textless{}{-}}\KeywordTok{knn2nb}\NormalTok{(}\KeywordTok{knearneigh}\NormalTok{(coords, }\DataTypeTok{k=}\DecValTok{1}\NormalTok{), }\DataTypeTok{row.names=}\NormalTok{IDs)}
-\NormalTok{p\_kn2\textless{}{-}}\KeywordTok{knn2nb}\NormalTok{(}\KeywordTok{knearneigh}\NormalTok{(coords, }\DataTypeTok{k=}\DecValTok{2}\NormalTok{), }\DataTypeTok{row.names=}\NormalTok{IDs)}
-\NormalTok{p\_kn4\textless{}{-}}\KeywordTok{knn2nb}\NormalTok{(}\KeywordTok{knearneigh}\NormalTok{(coords, }\DataTypeTok{k=}\DecValTok{4}\NormalTok{), }\DataTypeTok{row.names=}\NormalTok{IDs)}
+\NormalTok{coords}\OtherTok{\textless{}{-}}\FunctionTok{coordinates}\NormalTok{(p)}
+\NormalTok{IDs}\OtherTok{\textless{}{-}}\FunctionTok{row.names}\NormalTok{(}\FunctionTok{as}\NormalTok{(p, }\StringTok{"data.frame"}\NormalTok{))}
+\NormalTok{p\_kn1}\OtherTok{\textless{}{-}}\FunctionTok{knn2nb}\NormalTok{(}\FunctionTok{knearneigh}\NormalTok{(coords, }\AttributeTok{k=}\DecValTok{1}\NormalTok{), }\AttributeTok{row.names=}\NormalTok{IDs)}
+\NormalTok{p\_kn2}\OtherTok{\textless{}{-}}\FunctionTok{knn2nb}\NormalTok{(}\FunctionTok{knearneigh}\NormalTok{(coords, }\AttributeTok{k=}\DecValTok{2}\NormalTok{), }\AttributeTok{row.names=}\NormalTok{IDs)}
+\NormalTok{p\_kn4}\OtherTok{\textless{}{-}}\FunctionTok{knn2nb}\NormalTok{(}\FunctionTok{knearneigh}\NormalTok{(coords, }\AttributeTok{k=}\DecValTok{4}\NormalTok{), }\AttributeTok{row.names=}\NormalTok{IDs)}
 
-\KeywordTok{par}\NormalTok{(}\DataTypeTok{mfrow=}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{3}\NormalTok{))}
-\KeywordTok{plot}\NormalTok{(p, }\DataTypeTok{main =} \StringTok{"k=1"}\NormalTok{)}
-\KeywordTok{plot}\NormalTok{(p\_kn1, coords, }\DataTypeTok{add=}\NormalTok{T)}
+\FunctionTok{par}\NormalTok{(}\AttributeTok{mfrow=}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{3}\NormalTok{))}
+\FunctionTok{plot}\NormalTok{(p, }\AttributeTok{main =} \StringTok{"k=1"}\NormalTok{)}
+\FunctionTok{plot}\NormalTok{(p\_kn1, coords, }\AttributeTok{add=}\NormalTok{T)}
 
-\KeywordTok{plot}\NormalTok{(p, }\DataTypeTok{main =} \StringTok{"k=2"}\NormalTok{)}
-\KeywordTok{plot}\NormalTok{(p\_kn2, coords, }\DataTypeTok{add=}\NormalTok{T)}
+\FunctionTok{plot}\NormalTok{(p, }\AttributeTok{main =} \StringTok{"k=2"}\NormalTok{)}
+\FunctionTok{plot}\NormalTok{(p\_kn2, coords, }\AttributeTok{add=}\NormalTok{T)}
 
-\KeywordTok{plot}\NormalTok{(p, }\DataTypeTok{main =} \StringTok{"k=4"}\NormalTok{)}
-\KeywordTok{plot}\NormalTok{(p\_kn4, coords, }\DataTypeTok{add=}\NormalTok{T)}
+\FunctionTok{plot}\NormalTok{(p, }\AttributeTok{main =} \StringTok{"k=4"}\NormalTok{)}
+\FunctionTok{plot}\NormalTok{(p\_kn4, coords, }\AttributeTok{add=}\NormalTok{T)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1174,8 +1175,8 @@ Berikut ini adalah ilustrasi untuk memperoleh ketetanggaan dengan pendekatan KNN
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{dist\textless{}{-}}\KeywordTok{unlist}\NormalTok{(}\KeywordTok{nbdists}\NormalTok{(p\_kn1, coords))}
-\KeywordTok{summary}\NormalTok{(dist)}
+\NormalTok{dist}\OtherTok{\textless{}{-}}\FunctionTok{unlist}\NormalTok{(}\FunctionTok{nbdists}\NormalTok{(p\_kn1, coords))}
+\FunctionTok{summary}\NormalTok{(dist)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1186,7 +1187,7 @@ Berikut ini adalah ilustrasi untuk memperoleh ketetanggaan dengan pendekatan KNN
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{sort}\NormalTok{(dist)}
+\FunctionTok{sort}\NormalTok{(dist)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1196,20 +1197,20 @@ Berikut ini adalah ilustrasi untuk memperoleh ketetanggaan dengan pendekatan KNN
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{max\_k1\textless{}{-}}\KeywordTok{max}\NormalTok{(dist)}
-\NormalTok{p\_kd1\textless{}{-}}\KeywordTok{dnearneigh}\NormalTok{(coords, }\DataTypeTok{d1=}\DecValTok{0}\NormalTok{, }\DataTypeTok{d2=}\FloatTok{0.75}\OperatorTok{*}\NormalTok{max\_k1, }\DataTypeTok{row.names=}\NormalTok{IDs)}
-\NormalTok{p\_kd2\textless{}{-}}\KeywordTok{dnearneigh}\NormalTok{(coords, }\DataTypeTok{d1=}\DecValTok{0}\NormalTok{, }\DataTypeTok{d2=}\DecValTok{1}\OperatorTok{*}\NormalTok{max\_k1, }\DataTypeTok{row.names=}\NormalTok{IDs)}
-\NormalTok{p\_kd3\textless{}{-}}\KeywordTok{dnearneigh}\NormalTok{(coords, }\DataTypeTok{d1=}\DecValTok{0}\NormalTok{, }\DataTypeTok{d2=}\FloatTok{1.5}\OperatorTok{*}\NormalTok{max\_k1, }\DataTypeTok{row.names=}\NormalTok{IDs)}
+\NormalTok{max\_k1}\OtherTok{\textless{}{-}}\FunctionTok{max}\NormalTok{(dist)}
+\NormalTok{p\_kd1}\OtherTok{\textless{}{-}}\FunctionTok{dnearneigh}\NormalTok{(coords, }\AttributeTok{d1=}\DecValTok{0}\NormalTok{, }\AttributeTok{d2=}\FloatTok{0.75}\SpecialCharTok{*}\NormalTok{max\_k1, }\AttributeTok{row.names=}\NormalTok{IDs)}
+\NormalTok{p\_kd2}\OtherTok{\textless{}{-}}\FunctionTok{dnearneigh}\NormalTok{(coords, }\AttributeTok{d1=}\DecValTok{0}\NormalTok{, }\AttributeTok{d2=}\DecValTok{1}\SpecialCharTok{*}\NormalTok{max\_k1, }\AttributeTok{row.names=}\NormalTok{IDs)}
+\NormalTok{p\_kd3}\OtherTok{\textless{}{-}}\FunctionTok{dnearneigh}\NormalTok{(coords, }\AttributeTok{d1=}\DecValTok{0}\NormalTok{, }\AttributeTok{d2=}\FloatTok{1.5}\SpecialCharTok{*}\NormalTok{max\_k1, }\AttributeTok{row.names=}\NormalTok{IDs)}
 
-\KeywordTok{par}\NormalTok{(}\DataTypeTok{mfrow=}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{3}\NormalTok{))}
-\KeywordTok{plot}\NormalTok{(p, }\DataTypeTok{main =} \StringTok{"Distance=0.75*max\_k1"}\NormalTok{)}
-\KeywordTok{plot}\NormalTok{(p\_kd1,coords, }\DataTypeTok{add=}\NormalTok{T)}
+\FunctionTok{par}\NormalTok{(}\AttributeTok{mfrow=}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{3}\NormalTok{))}
+\FunctionTok{plot}\NormalTok{(p, }\AttributeTok{main =} \StringTok{"Distance=0.75*max\_k1"}\NormalTok{)}
+\FunctionTok{plot}\NormalTok{(p\_kd1,coords, }\AttributeTok{add=}\NormalTok{T)}
 
-\KeywordTok{plot}\NormalTok{(p, }\DataTypeTok{main =} \StringTok{"Distance=1*max\_k1"}\NormalTok{)}
-\KeywordTok{plot}\NormalTok{(p\_kd2,coords, }\DataTypeTok{add=}\NormalTok{T)}
+\FunctionTok{plot}\NormalTok{(p, }\AttributeTok{main =} \StringTok{"Distance=1*max\_k1"}\NormalTok{)}
+\FunctionTok{plot}\NormalTok{(p\_kd2,coords, }\AttributeTok{add=}\NormalTok{T)}
 
-\KeywordTok{plot}\NormalTok{(p, }\DataTypeTok{main =} \StringTok{"Distance=1.5*max\_k1"}\NormalTok{)}
-\KeywordTok{plot}\NormalTok{(p\_kd3,coords, }\DataTypeTok{add=}\NormalTok{T)}
+\FunctionTok{plot}\NormalTok{(p, }\AttributeTok{main =} \StringTok{"Distance=1.5*max\_k1"}\NormalTok{)}
+\FunctionTok{plot}\NormalTok{(p\_kd3,coords, }\AttributeTok{add=}\NormalTok{T)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1222,7 +1223,7 @@ Matriks pembobot spasial dapat berisi elemen biner (1 atau 0) untuk menunjukkan 
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{nb2mat}\NormalTok{(w, }\DataTypeTok{style=}\StringTok{"B"}\NormalTok{)  }\CommentTok{\#matriks pembobot biner}
+\FunctionTok{nb2mat}\NormalTok{(w, }\AttributeTok{style=}\StringTok{"B"}\NormalTok{)  }\CommentTok{\#matriks pembobot biner}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1239,7 +1240,7 @@ Matriks pembobot spasial dapat berisi elemen biner (1 atau 0) untuk menunjukkan 
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{nb2mat}\NormalTok{(w) }\CommentTok{\# matriks pembobot row standardized}
+\FunctionTok{nb2mat}\NormalTok{(w) }\CommentTok{\# matriks pembobot row standardized}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1264,28 +1265,28 @@ Sebagai ilustrasi, akan digunakan data persentase kemiskinan kabupaten/kota di P
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{library}\NormalTok{(rgdal)}
-\KeywordTok{library}\NormalTok{(spdep)}
-\KeywordTok{library}\NormalTok{(sp)}
-\NormalTok{petajawa=}\KeywordTok{readOGR}\NormalTok{(}\DataTypeTok{dsn=}\StringTok{"Jawamap"}\NormalTok{, }\DataTypeTok{layer=}\StringTok{"jawa"}\NormalTok{)}
+\FunctionTok{library}\NormalTok{(rgdal)}
+\FunctionTok{library}\NormalTok{(spdep)}
+\FunctionTok{library}\NormalTok{(sp)}
+\NormalTok{petajawa}\OtherTok{=}\FunctionTok{readOGR}\NormalTok{(}\AttributeTok{dsn=}\StringTok{"Jawamap"}\NormalTok{, }\AttributeTok{layer=}\StringTok{"jawa"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
 ## OGR data source with driver: ESRI Shapefile 
-## Source: "D:\Research (eksternal dept)\pelatihan spasial (adj)\modeul 2\Pelatihan-Spasial\Jawamap", layer: "jawa"
+## Source: "D:\Jobs\Pelatihan Spasial STIS\New folder\Pelatihan-Spasial\Jawamap", layer: "jawa"
 ## with 119 features
 ## It has 5 fields
 \end{verbatim}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{datajawa=}\KeywordTok{read.csv}\NormalTok{(}\StringTok{"Pulau Jawa.csv"}\NormalTok{, }\DataTypeTok{header=}\NormalTok{T, }\DataTypeTok{sep=}\StringTok{";"}\NormalTok{)}
-\NormalTok{petajawa}\OperatorTok{$}\NormalTok{Kemiskinan\textless{}{-}}\StringTok{ }\NormalTok{datajawa}\OperatorTok{$}\NormalTok{Kemiskinan}
-\NormalTok{k=}\DecValTok{9}
-\NormalTok{colfunc \textless{}{-}}\StringTok{ }\KeywordTok{colorRampPalette}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\StringTok{"green"}\NormalTok{, }\StringTok{"yellow"}\NormalTok{,}\StringTok{"red"}\NormalTok{))}
-\NormalTok{color \textless{}{-}}\StringTok{ }\KeywordTok{colfunc}\NormalTok{(k)}
-\KeywordTok{spplot}\NormalTok{(petajawa, }\StringTok{"Kemiskinan"}\NormalTok{, }\DataTypeTok{col.regions=}\NormalTok{color)}
+\NormalTok{datajawa}\OtherTok{=}\FunctionTok{read.csv}\NormalTok{(}\StringTok{"Pulau Jawa.csv"}\NormalTok{, }\AttributeTok{header=}\NormalTok{T, }\AttributeTok{sep=}\StringTok{";"}\NormalTok{)}
+\NormalTok{petajawa}\SpecialCharTok{$}\NormalTok{Kemiskinan}\OtherTok{\textless{}{-}}\NormalTok{ datajawa}\SpecialCharTok{$}\NormalTok{Kemiskinan}
+\NormalTok{k}\OtherTok{=}\DecValTok{9}
+\NormalTok{colfunc }\OtherTok{\textless{}{-}} \FunctionTok{colorRampPalette}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"green"}\NormalTok{, }\StringTok{"yellow"}\NormalTok{,}\StringTok{"red"}\NormalTok{))}
+\NormalTok{color }\OtherTok{\textless{}{-}} \FunctionTok{colfunc}\NormalTok{(k)}
+\FunctionTok{spplot}\NormalTok{(petajawa, }\StringTok{"Kemiskinan"}\NormalTok{, }\AttributeTok{col.regions=}\NormalTok{color)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1295,7 +1296,7 @@ Seandainya kita akan menggunakan kriteria queen contiguity, maka dapat dilakukan
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{w.queen \textless{}{-}}\StringTok{ }\KeywordTok{poly2nb}\NormalTok{(petajawa)}
+\NormalTok{w.queen }\OtherTok{\textless{}{-}} \FunctionTok{poly2nb}\NormalTok{(petajawa)}
 \NormalTok{w.queen}
 \end{Highlighting}
 \end{Shaded}
@@ -1314,7 +1315,7 @@ Terlihat pada output tersebut, bahwa terdapat 1 wilayah yang tidak memiliki teta
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{wqueen \textless{}{-}}\StringTok{ }\KeywordTok{nb2listw}\NormalTok{(w.queen, }\DataTypeTok{zero.policy=}\NormalTok{T)}
+\NormalTok{wqueen }\OtherTok{\textless{}{-}} \FunctionTok{nb2listw}\NormalTok{(w.queen, }\AttributeTok{zero.policy=}\NormalTok{T)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1322,7 +1323,7 @@ Seandainya kita ingin menguji autokorelasi menggunakan pendekatan indeks moran, 
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{I1 \textless{}{-}}\StringTok{ }\KeywordTok{moran.test}\NormalTok{(petajawa}\OperatorTok{$}\NormalTok{Kemiskinan, wqueen, }\DataTypeTok{zero.policy=}\NormalTok{T, }\DataTypeTok{alternative=}\StringTok{"greater"}\NormalTok{)}
+\NormalTok{I1 }\OtherTok{\textless{}{-}} \FunctionTok{moran.test}\NormalTok{(petajawa}\SpecialCharTok{$}\NormalTok{Kemiskinan, wqueen, }\AttributeTok{zero.policy=}\NormalTok{T, }\AttributeTok{alternative=}\StringTok{"greater"}\NormalTok{)}
 
 \CommentTok{\#alternative hyptohesis could be either of "two.sided", "greater", or "less"}
 
@@ -1351,8 +1352,8 @@ Uji moran dapat pula dilakukan dengan melibatkan simulasi monte carlo.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{set.seed}\NormalTok{(}\DecValTok{123}\NormalTok{)}
-\NormalTok{MC\textless{}{-}}\StringTok{ }\KeywordTok{moran.mc}\NormalTok{(petajawa}\OperatorTok{$}\NormalTok{Kemiskinan, wqueen, }\DataTypeTok{nsim=}\DecValTok{99}\NormalTok{, }\DataTypeTok{zero.policy=}\NormalTok{T, }\DataTypeTok{alternative=}\StringTok{"greater"}\NormalTok{)}
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{123}\NormalTok{)}
+\NormalTok{MC}\OtherTok{\textless{}{-}} \FunctionTok{moran.mc}\NormalTok{(petajawa}\SpecialCharTok{$}\NormalTok{Kemiskinan, wqueen, }\AttributeTok{nsim=}\DecValTok{99}\NormalTok{, }\AttributeTok{zero.policy=}\NormalTok{T, }\AttributeTok{alternative=}\StringTok{"greater"}\NormalTok{)}
 
 \CommentTok{\# View results (including p{-}value)}
 \NormalTok{MC}
@@ -1378,8 +1379,8 @@ Pendekatan ini termasuk ke dalam \emph{Local Indicators for Spatial Association 
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{oid \textless{}{-}}\StringTok{ }\KeywordTok{order}\NormalTok{(petajawa}\OperatorTok{$}\NormalTok{Kemiskinan)}
-\NormalTok{resI \textless{}{-}}\StringTok{ }\KeywordTok{localmoran}\NormalTok{(petajawa}\OperatorTok{$}\NormalTok{Kemiskinan, wqueen)}
+\NormalTok{oid }\OtherTok{\textless{}{-}} \FunctionTok{order}\NormalTok{(petajawa}\SpecialCharTok{$}\NormalTok{Kemiskinan)}
+\NormalTok{resI }\OtherTok{\textless{}{-}} \FunctionTok{localmoran}\NormalTok{(petajawa}\SpecialCharTok{$}\NormalTok{Kemiskinan, wqueen)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1390,7 +1391,7 @@ Pendekatan ini termasuk ke dalam \emph{Local Indicators for Spatial Association 
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{head}\NormalTok{(resI)}
+\FunctionTok{head}\NormalTok{(resI)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1406,10 +1407,10 @@ Pendekatan ini termasuk ke dalam \emph{Local Indicators for Spatial Association 
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{petajawa}\OperatorTok{$}\NormalTok{z.li \textless{}{-}}\StringTok{ }\NormalTok{resI[,}\DecValTok{4}\NormalTok{]}
-\NormalTok{petajawa}\OperatorTok{$}\NormalTok{pvalue \textless{}{-}}\StringTok{ }\NormalTok{resI[,}\DecValTok{5}\NormalTok{]}
-\NormalTok{lm.palette \textless{}{-}}\StringTok{ }\KeywordTok{colorRampPalette}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\StringTok{"white"}\NormalTok{,}\StringTok{"orange"}\NormalTok{, }\StringTok{"red"}\NormalTok{), }\DataTypeTok{space =} \StringTok{"rgb"}\NormalTok{)}
-\KeywordTok{spplot}\NormalTok{(petajawa, }\DataTypeTok{zcol=}\StringTok{"z.li"}\NormalTok{, }\DataTypeTok{col.regions=}\KeywordTok{lm.palette}\NormalTok{(}\DecValTok{20}\NormalTok{), }\DataTypeTok{main=}\StringTok{"Local Moran"}\NormalTok{)}
+\NormalTok{petajawa}\SpecialCharTok{$}\NormalTok{z.li }\OtherTok{\textless{}{-}}\NormalTok{ resI[,}\DecValTok{4}\NormalTok{]}
+\NormalTok{petajawa}\SpecialCharTok{$}\NormalTok{pvalue }\OtherTok{\textless{}{-}}\NormalTok{ resI[,}\DecValTok{5}\NormalTok{]}
+\NormalTok{lm.palette }\OtherTok{\textless{}{-}} \FunctionTok{colorRampPalette}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"white"}\NormalTok{,}\StringTok{"orange"}\NormalTok{, }\StringTok{"red"}\NormalTok{), }\AttributeTok{space =} \StringTok{"rgb"}\NormalTok{)}
+\FunctionTok{spplot}\NormalTok{(petajawa, }\AttributeTok{zcol=}\StringTok{"z.li"}\NormalTok{, }\AttributeTok{col.regions=}\FunctionTok{lm.palette}\NormalTok{(}\DecValTok{20}\NormalTok{), }\AttributeTok{main=}\StringTok{"Local Moran"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1417,7 +1418,7 @@ Pendekatan ini termasuk ke dalam \emph{Local Indicators for Spatial Association 
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{moran.plot}\NormalTok{(petajawa}\OperatorTok{$}\NormalTok{Kemiskinan, wqueen, }\DataTypeTok{zero.policy=}\NormalTok{T, }\DataTypeTok{labels=}\NormalTok{petajawa}\OperatorTok{$}\NormalTok{KABKOT)}
+\FunctionTok{moran.plot}\NormalTok{(petajawa}\SpecialCharTok{$}\NormalTok{Kemiskinan, wqueen, }\AttributeTok{zero.policy=}\NormalTok{T, }\AttributeTok{labels=}\NormalTok{petajawa}\SpecialCharTok{$}\NormalTok{KABKOT)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1472,8 +1473,8 @@ Seperti yang telah dijelaskan pada modul sebelumnya, impor data dapat dilakukan 
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{datajawa =}\StringTok{ }\NormalTok{datajawa=}\KeywordTok{read.csv}\NormalTok{(}\StringTok{"Pulau Jawa.csv"}\NormalTok{, }\DataTypeTok{header=}\NormalTok{T, }\DataTypeTok{sep=}\StringTok{";"}\NormalTok{)}
-\KeywordTok{head}\NormalTok{(datajawa)}
+\NormalTok{datajawa }\OtherTok{=}\NormalTok{ datajawa}\OtherTok{=}\FunctionTok{read.csv}\NormalTok{(}\StringTok{"Pulau Jawa.csv"}\NormalTok{, }\AttributeTok{header=}\NormalTok{T, }\AttributeTok{sep=}\StringTok{";"}\NormalTok{)}
+\FunctionTok{head}\NormalTok{(datajawa)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1505,11 +1506,11 @@ Pada ilustrasi ini, pemodelan dilakukan untuk mengkaji peubah respon \textbf{per
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{library}\NormalTok{(spdep)}
-\KeywordTok{library}\NormalTok{(rgdal)}
-\KeywordTok{library}\NormalTok{(raster)}
+\FunctionTok{library}\NormalTok{(spdep)}
+\FunctionTok{library}\NormalTok{(rgdal)}
+\FunctionTok{library}\NormalTok{(raster)}
 
-\NormalTok{petajawa\textless{}{-}}\KeywordTok{readOGR}\NormalTok{(}\DataTypeTok{dsn=}\NormalTok{“directory tempat folder utk file .shp}\StringTok{", layer=“nama file shp"}\NormalTok{)}
+\NormalTok{petajawa}\OtherTok{\textless{}{-}}\FunctionTok{readOGR}\NormalTok{(}\AttributeTok{dsn=}\NormalTok{“directory tempat folder utk file .shp}\StringTok{", layer=“nama file shp"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1518,7 +1519,7 @@ Pada ilustrasi ini, pemodelan dilakukan untuk mengkaji peubah respon \textbf{per
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{hist}\NormalTok{(datajawa}\OperatorTok{$}\NormalTok{Kemiskinan)}
+\FunctionTok{hist}\NormalTok{(datajawa}\SpecialCharTok{$}\NormalTok{Kemiskinan)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1526,7 +1527,7 @@ Pada ilustrasi ini, pemodelan dilakukan untuk mengkaji peubah respon \textbf{per
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{bxplt\textless{}{-}}\KeywordTok{boxplot}\NormalTok{(datajawa}\OperatorTok{$}\NormalTok{Kemiskinan, }\DataTypeTok{outlier.tagging=}\NormalTok{T)}
+\NormalTok{bxplt}\OtherTok{\textless{}{-}}\FunctionTok{boxplot}\NormalTok{(datajawa}\SpecialCharTok{$}\NormalTok{Kemiskinan, }\AttributeTok{outlier.tagging=}\NormalTok{T)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1534,7 +1535,7 @@ Pada ilustrasi ini, pemodelan dilakukan untuk mengkaji peubah respon \textbf{per
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{bxplt}\OperatorTok{$}\NormalTok{out}
+\NormalTok{bxplt}\SpecialCharTok{$}\NormalTok{out}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1544,7 +1545,7 @@ Pada ilustrasi ini, pemodelan dilakukan untuk mengkaji peubah respon \textbf{per
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{subset}\NormalTok{(datajawa, datajawa}\OperatorTok{$}\NormalTok{Kemiskinan}\OperatorTok{\textgreater{}}\NormalTok{bxplt}\OperatorTok{$}\NormalTok{stats[}\DecValTok{5}\NormalTok{])}
+\FunctionTok{subset}\NormalTok{(datajawa, datajawa}\SpecialCharTok{$}\NormalTok{Kemiskinan}\SpecialCharTok{\textgreater{}}\NormalTok{bxplt}\SpecialCharTok{$}\NormalTok{stats[}\DecValTok{5}\NormalTok{])}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1562,10 +1563,10 @@ Pada ilustrasi ini, pemodelan dilakukan untuk mengkaji peubah respon \textbf{per
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{plot}\NormalTok{(datajawa}\OperatorTok{$}\NormalTok{Pendidikan, datajawa}\OperatorTok{$}\NormalTok{Kemiskinan,}
-  \DataTypeTok{xlab=}\StringTok{"Persentase Pendidikan yang ditamatkan di bawah SD Thn.2018"}\NormalTok{, }
-  \DataTypeTok{ylab=}\StringTok{"Persentase Penduduk Miskin Thn.2018"}\NormalTok{,}
-  \DataTypeTok{pch=}\DecValTok{20}\NormalTok{, }\DataTypeTok{col=}\StringTok{"orange"}\NormalTok{, }\DataTypeTok{cex=}\DecValTok{2}\NormalTok{)}
+\FunctionTok{plot}\NormalTok{(datajawa}\SpecialCharTok{$}\NormalTok{Pendidikan, datajawa}\SpecialCharTok{$}\NormalTok{Kemiskinan,}
+  \AttributeTok{xlab=}\StringTok{"Persentase Pendidikan yang ditamatkan di bawah SD Thn.2018"}\NormalTok{, }
+  \AttributeTok{ylab=}\StringTok{"Persentase Penduduk Miskin Thn.2018"}\NormalTok{,}
+  \AttributeTok{pch=}\DecValTok{20}\NormalTok{, }\AttributeTok{col=}\StringTok{"orange"}\NormalTok{, }\AttributeTok{cex=}\DecValTok{2}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1575,11 +1576,11 @@ Plot tersebut memperlihatkan adanya pola hubungan linear positif antara persenta
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{petajawa}\OperatorTok{$}\NormalTok{Kemiskinan\textless{}{-}}\StringTok{ }\NormalTok{datajawa}\OperatorTok{$}\NormalTok{Kemiskinan}
-\NormalTok{k=}\DecValTok{16}
-\NormalTok{colfunc \textless{}{-}}\StringTok{ }\KeywordTok{colorRampPalette}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\StringTok{"green"}\NormalTok{, }\StringTok{"yellow"}\NormalTok{,}\StringTok{"red"}\NormalTok{))}
-\NormalTok{color \textless{}{-}}\StringTok{ }\KeywordTok{colfunc}\NormalTok{(k)}
-\KeywordTok{spplot}\NormalTok{(petajawa, }\StringTok{"Kemiskinan"}\NormalTok{, }\DataTypeTok{col.regions=}\NormalTok{color, }\DataTypeTok{main=}\StringTok{"Persentase Penduduk Miskin Tahun 2018"}\NormalTok{)}
+\NormalTok{petajawa}\SpecialCharTok{$}\NormalTok{Kemiskinan}\OtherTok{\textless{}{-}}\NormalTok{ datajawa}\SpecialCharTok{$}\NormalTok{Kemiskinan}
+\NormalTok{k}\OtherTok{=}\DecValTok{16}
+\NormalTok{colfunc }\OtherTok{\textless{}{-}} \FunctionTok{colorRampPalette}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"green"}\NormalTok{, }\StringTok{"yellow"}\NormalTok{,}\StringTok{"red"}\NormalTok{))}
+\NormalTok{color }\OtherTok{\textless{}{-}} \FunctionTok{colfunc}\NormalTok{(k)}
+\FunctionTok{spplot}\NormalTok{(petajawa, }\StringTok{"Kemiskinan"}\NormalTok{, }\AttributeTok{col.regions=}\NormalTok{color, }\AttributeTok{main=}\StringTok{"Persentase Penduduk Miskin Tahun 2018"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1592,10 +1593,10 @@ Berdasarkan plot di atas, dapat dilihat adanya kecenderungan pola bergerombol pa
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{w\textless{}{-}}\KeywordTok{poly2nb}\NormalTok{(petajawa)}
-\NormalTok{ww\textless{}{-}}\KeywordTok{nb2listw}\NormalTok{(w, }\DataTypeTok{zero.policy=}\NormalTok{T)}
-\KeywordTok{moran}\NormalTok{(datajawa}\OperatorTok{$}\NormalTok{Kemiskinan, ww, }\DataTypeTok{n=}\KeywordTok{length}\NormalTok{(ww}\OperatorTok{$}\NormalTok{neighbours), }
-      \DataTypeTok{S0=}\KeywordTok{Szero}\NormalTok{(ww), }\DataTypeTok{zero.policy=}\NormalTok{T)}
+\NormalTok{w}\OtherTok{\textless{}{-}}\FunctionTok{poly2nb}\NormalTok{(petajawa)}
+\NormalTok{ww}\OtherTok{\textless{}{-}}\FunctionTok{nb2listw}\NormalTok{(w, }\AttributeTok{zero.policy=}\NormalTok{T)}
+\FunctionTok{moran}\NormalTok{(datajawa}\SpecialCharTok{$}\NormalTok{Kemiskinan, ww, }\AttributeTok{n=}\FunctionTok{length}\NormalTok{(ww}\SpecialCharTok{$}\NormalTok{neighbours), }
+      \AttributeTok{S0=}\FunctionTok{Szero}\NormalTok{(ww), }\AttributeTok{zero.policy=}\NormalTok{T)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1609,8 +1610,8 @@ Berdasarkan plot di atas, dapat dilihat adanya kecenderungan pola bergerombol pa
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{moran.test}\NormalTok{(datajawa}\OperatorTok{$}\NormalTok{Kemiskinan, ww,}\DataTypeTok{randomisation=}\NormalTok{T, }
-           \DataTypeTok{alternative=}\StringTok{"greater"}\NormalTok{, }\DataTypeTok{zero.policy=}\NormalTok{T)}
+\FunctionTok{moran.test}\NormalTok{(datajawa}\SpecialCharTok{$}\NormalTok{Kemiskinan, ww,}\AttributeTok{randomisation=}\NormalTok{T, }
+           \AttributeTok{alternative=}\StringTok{"greater"}\NormalTok{, }\AttributeTok{zero.policy=}\NormalTok{T)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1631,7 +1632,7 @@ Berdasarkan plot di atas, dapat dilihat adanya kecenderungan pola bergerombol pa
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{moran.plot}\NormalTok{(datajawa}\OperatorTok{$}\NormalTok{Kemiskinan, ww, }\DataTypeTok{labels=}\NormalTok{petajawa}\OperatorTok{$}\NormalTok{KABKOT, }\DataTypeTok{zero.policy=}\NormalTok{T)}
+\FunctionTok{moran.plot}\NormalTok{(datajawa}\SpecialCharTok{$}\NormalTok{Kemiskinan, ww, }\AttributeTok{labels=}\NormalTok{petajawa}\SpecialCharTok{$}\NormalTok{KABKOT, }\AttributeTok{zero.policy=}\NormalTok{T)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1644,9 +1645,9 @@ Pemodelan regresi dapat dilakukan menggunakan fungsi \texttt{lm} berikut.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{reg.klasik =}\StringTok{ }\KeywordTok{lm}\NormalTok{(Kemiskinan}\OperatorTok{\textasciitilde{}}\NormalTok{Pendidikan, }\DataTypeTok{data =}\NormalTok{ datajawa)}
-\NormalTok{err.regklasik\textless{}{-}}\KeywordTok{residuals}\NormalTok{(reg.klasik)}
-\KeywordTok{summary}\NormalTok{(reg.klasik)}
+\NormalTok{reg.klasik }\OtherTok{=} \FunctionTok{lm}\NormalTok{(Kemiskinan}\SpecialCharTok{\textasciitilde{}}\NormalTok{Pendidikan, }\AttributeTok{data =}\NormalTok{ datajawa)}
+\NormalTok{err.regklasik}\OtherTok{\textless{}{-}}\FunctionTok{residuals}\NormalTok{(reg.klasik)}
+\FunctionTok{summary}\NormalTok{(reg.klasik)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1673,7 +1674,7 @@ Pemodelan regresi dapat dilakukan menggunakan fungsi \texttt{lm} berikut.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{cor}\NormalTok{(datajawa}\OperatorTok{$}\NormalTok{Kemiskinan, }\KeywordTok{fitted}\NormalTok{(reg.klasik))}\OperatorTok{\^{}}\DecValTok{2}
+\FunctionTok{cor}\NormalTok{(datajawa}\SpecialCharTok{$}\NormalTok{Kemiskinan, }\FunctionTok{fitted}\NormalTok{(reg.klasik))}\SpecialCharTok{\^{}}\DecValTok{2}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1689,11 +1690,11 @@ Pemodelan regresi dapat dilakukan menggunakan fungsi \texttt{lm} berikut.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{library}\NormalTok{(nortest)}
-\KeywordTok{library}\NormalTok{(car)}
-\KeywordTok{library}\NormalTok{(DescTools)}
-\KeywordTok{library}\NormalTok{(lmtest)}
-\KeywordTok{shapiro.test}\NormalTok{(err.regklasik)}
+\FunctionTok{library}\NormalTok{(nortest)}
+\FunctionTok{library}\NormalTok{(car)}
+\FunctionTok{library}\NormalTok{(DescTools)}
+\FunctionTok{library}\NormalTok{(lmtest)}
+\FunctionTok{shapiro.test}\NormalTok{(err.regklasik)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1707,9 +1708,9 @@ Pemodelan regresi dapat dilakukan menggunakan fungsi \texttt{lm} berikut.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{par}\NormalTok{(}\DataTypeTok{mfrow=}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{))}
-\KeywordTok{hist}\NormalTok{(err.regklasik)}
-\NormalTok{car}\OperatorTok{::}\KeywordTok{qqPlot}\NormalTok{(}\KeywordTok{residuals}\NormalTok{(reg.klasik))}
+\FunctionTok{par}\NormalTok{(}\AttributeTok{mfrow=}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{))}
+\FunctionTok{hist}\NormalTok{(err.regklasik)}
+\NormalTok{car}\SpecialCharTok{::}\FunctionTok{qqPlot}\NormalTok{(}\FunctionTok{residuals}\NormalTok{(reg.klasik))}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1732,7 +1733,7 @@ H1: galat model tidak menyebar normal
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{plot}\NormalTok{(}\KeywordTok{fitted}\NormalTok{(reg.klasik), }\KeywordTok{residuals}\NormalTok{(reg.klasik))}
+\FunctionTok{plot}\NormalTok{(}\FunctionTok{fitted}\NormalTok{(reg.klasik), }\FunctionTok{residuals}\NormalTok{(reg.klasik))}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1740,7 +1741,7 @@ H1: galat model tidak menyebar normal
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{bptest}\NormalTok{(reg.klasik)}
+\FunctionTok{bptest}\NormalTok{(reg.klasik)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1767,9 +1768,9 @@ Uji kebebasan sisaan pada data spasial dapat dilakukan dengan uji moran mengguna
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{w\textless{}{-}}\KeywordTok{poly2nb}\NormalTok{(petajawa)}
-\NormalTok{ww\textless{}{-}}\KeywordTok{nb2listw}\NormalTok{(w, }\DataTypeTok{zero.policy =}\NormalTok{T)}
-\KeywordTok{lm.morantest}\NormalTok{(reg.klasik, ww, }\DataTypeTok{alternative=}\StringTok{"two.sided"}\NormalTok{, }\DataTypeTok{zero.policy =}\NormalTok{ T)}
+\NormalTok{w}\OtherTok{\textless{}{-}}\FunctionTok{poly2nb}\NormalTok{(petajawa)}
+\NormalTok{ww}\OtherTok{\textless{}{-}}\FunctionTok{nb2listw}\NormalTok{(w, }\AttributeTok{zero.policy =}\NormalTok{T)}
+\FunctionTok{lm.morantest}\NormalTok{(reg.klasik, ww, }\AttributeTok{alternative=}\StringTok{"two.sided"}\NormalTok{, }\AttributeTok{zero.policy =}\NormalTok{ T)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1792,7 +1793,7 @@ Selain menggunakan fungsi \texttt{lm.morantest}, uji moran dapat dilakukan mengg
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{moran.test}\NormalTok{(err.regklasik, ww,}\DataTypeTok{randomisation=}\NormalTok{F, }\DataTypeTok{alternative=}\StringTok{"two.sided"}\NormalTok{, }\DataTypeTok{zero.policy=}\NormalTok{T)}
+\FunctionTok{moran.test}\NormalTok{(err.regklasik, ww,}\AttributeTok{randomisation=}\NormalTok{F, }\AttributeTok{alternative=}\StringTok{"two.sided"}\NormalTok{, }\AttributeTok{zero.policy=}\NormalTok{T)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1818,9 +1819,9 @@ Terlihat pada output bahwa hasil kedua tes menunjukkan kesimpulan yang sama, yai
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{LM\textless{}{-}}\KeywordTok{lm.LMtests}\NormalTok{(reg.klasik, }\KeywordTok{nb2listw}\NormalTok{(w, }\DataTypeTok{style=}\StringTok{"W"}\NormalTok{, }\DataTypeTok{zero.policy=}\NormalTok{T),}
-               \DataTypeTok{test=}\KeywordTok{c}\NormalTok{(}\StringTok{"LMerr"}\NormalTok{, }\StringTok{"LMlag"}\NormalTok{,}\StringTok{"RLMerr"}\NormalTok{,}\StringTok{"RLMlag"}\NormalTok{,}\StringTok{"SARMA"}\NormalTok{), }\DataTypeTok{zero.policy=}\NormalTok{T)}
-\KeywordTok{summary}\NormalTok{(LM)}
+\NormalTok{LM}\OtherTok{\textless{}{-}}\FunctionTok{lm.LMtests}\NormalTok{(reg.klasik, }\FunctionTok{nb2listw}\NormalTok{(w, }\AttributeTok{style=}\StringTok{"W"}\NormalTok{, }\AttributeTok{zero.policy=}\NormalTok{T),}
+               \AttributeTok{test=}\FunctionTok{c}\NormalTok{(}\StringTok{"LMerr"}\NormalTok{, }\StringTok{"LMlag"}\NormalTok{,}\StringTok{"RLMerr"}\NormalTok{,}\StringTok{"RLMlag"}\NormalTok{,}\StringTok{"SARMA"}\NormalTok{), }\AttributeTok{zero.policy=}\NormalTok{T)}
+\FunctionTok{summary}\NormalTok{(LM)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1851,8 +1852,8 @@ Pada modul ini, untuk kepentingan pembelajaran, kita akan mencoba ketiga model, 
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{w\textless{}{-}}\KeywordTok{poly2nb}\NormalTok{(petajawa)}
-\NormalTok{ww\textless{}{-}}\KeywordTok{nb2listw}\NormalTok{(w, }\DataTypeTok{zero.policy=}\NormalTok{T)}
+\NormalTok{w}\OtherTok{\textless{}{-}}\FunctionTok{poly2nb}\NormalTok{(petajawa)}
+\NormalTok{ww}\OtherTok{\textless{}{-}}\FunctionTok{nb2listw}\NormalTok{(w, }\AttributeTok{zero.policy=}\NormalTok{T)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1861,10 +1862,10 @@ Pada modul ini, untuk kepentingan pembelajaran, kita akan mencoba ketiga model, 
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{library}\NormalTok{(spatialreg)}
+\FunctionTok{library}\NormalTok{(spatialreg)}
 
-\NormalTok{sem\textless{}{-}}\KeywordTok{errorsarlm}\NormalTok{(Kemiskinan}\OperatorTok{\textasciitilde{}}\NormalTok{Pendidikan,}\DataTypeTok{data=}\NormalTok{datajawa,ww, }\DataTypeTok{zero.policy=}\NormalTok{T)}
-\KeywordTok{summary}\NormalTok{(sem)}
+\NormalTok{sem}\OtherTok{\textless{}{-}}\FunctionTok{errorsarlm}\NormalTok{(Kemiskinan}\SpecialCharTok{\textasciitilde{}}\NormalTok{Pendidikan,}\AttributeTok{data=}\NormalTok{datajawa,ww, }\AttributeTok{zero.policy=}\NormalTok{T)}
+\FunctionTok{summary}\NormalTok{(sem)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1899,7 +1900,7 @@ Pada modul ini, untuk kepentingan pembelajaran, kita akan mencoba ketiga model, 
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{pseudoR2.sem\textless{}{-}}\KeywordTok{cor}\NormalTok{(datajawa}\OperatorTok{$}\NormalTok{Kemiskinan, }\KeywordTok{fitted}\NormalTok{(sem))}\OperatorTok{\^{}}\DecValTok{2}
+\NormalTok{pseudoR2.sem}\OtherTok{\textless{}{-}}\FunctionTok{cor}\NormalTok{(datajawa}\SpecialCharTok{$}\NormalTok{Kemiskinan, }\FunctionTok{fitted}\NormalTok{(sem))}\SpecialCharTok{\^{}}\DecValTok{2}
 \NormalTok{pseudoR2.sem}
 \end{Highlighting}
 \end{Shaded}
@@ -1912,9 +1913,9 @@ Output di atas menunjukkan bahwa koefisien Lambda signifikan pada taraf nyata 5\
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{library}\NormalTok{(nortest)}
-\NormalTok{err.sem\textless{}{-}}\KeywordTok{residuals}\NormalTok{(sem)}
-\KeywordTok{shapiro.test}\NormalTok{(err.sem)}
+\FunctionTok{library}\NormalTok{(nortest)}
+\NormalTok{err.sem}\OtherTok{\textless{}{-}}\FunctionTok{residuals}\NormalTok{(sem)}
+\FunctionTok{shapiro.test}\NormalTok{(err.sem)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1928,7 +1929,7 @@ Output di atas menunjukkan bahwa koefisien Lambda signifikan pada taraf nyata 5\
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{bptest.sarlm}\NormalTok{(sem)}
+\FunctionTok{bptest.sarlm}\NormalTok{(sem)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1942,7 +1943,7 @@ Output di atas menunjukkan bahwa koefisien Lambda signifikan pada taraf nyata 5\
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{moran.test}\NormalTok{(err.sem, ww, }\DataTypeTok{alternative=}\StringTok{"two.sided"}\NormalTok{, }\DataTypeTok{zero.policy=}\NormalTok{T)}
+\FunctionTok{moran.test}\NormalTok{(err.sem, ww, }\AttributeTok{alternative=}\StringTok{"two.sided"}\NormalTok{, }\AttributeTok{zero.policy=}\NormalTok{T)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1968,8 +1969,8 @@ Terlihat pada output di atas bahwa sisaan memenuhi asumsi kenormalan dan asumsi 
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{sar\textless{}{-}}\KeywordTok{lagsarlm}\NormalTok{(Kemiskinan}\OperatorTok{\textasciitilde{}}\NormalTok{Pendidikan,}\DataTypeTok{data=}\NormalTok{datajawa,ww, }\DataTypeTok{zero.policy=}\NormalTok{T)}
-\KeywordTok{summary}\NormalTok{(sar)}
+\NormalTok{sar}\OtherTok{\textless{}{-}}\FunctionTok{lagsarlm}\NormalTok{(Kemiskinan}\SpecialCharTok{\textasciitilde{}}\NormalTok{Pendidikan,}\AttributeTok{data=}\NormalTok{datajawa,ww, }\AttributeTok{zero.policy=}\NormalTok{T)}
+\FunctionTok{summary}\NormalTok{(sar)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2006,7 +2007,7 @@ Terlihat pada output di atas bahwa sisaan memenuhi asumsi kenormalan dan asumsi 
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{pseudoR2.sar\textless{}{-}}\KeywordTok{cor}\NormalTok{(datajawa}\OperatorTok{$}\NormalTok{Kemiskinan, }\KeywordTok{fitted}\NormalTok{(sar))}\OperatorTok{\^{}}\DecValTok{2}
+\NormalTok{pseudoR2.sar}\OtherTok{\textless{}{-}}\FunctionTok{cor}\NormalTok{(datajawa}\SpecialCharTok{$}\NormalTok{Kemiskinan, }\FunctionTok{fitted}\NormalTok{(sar))}\SpecialCharTok{\^{}}\DecValTok{2}
 \NormalTok{pseudoR2.sar}
 \end{Highlighting}
 \end{Shaded}
@@ -2019,8 +2020,8 @@ Output di atas memperlihatkan bahwa koefisien Rho pada model SAR signifikan, den
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{err.sar\textless{}{-}}\KeywordTok{residuals}\NormalTok{(sar)}
-\KeywordTok{shapiro.test}\NormalTok{(err.sar)}
+\NormalTok{err.sar}\OtherTok{\textless{}{-}}\FunctionTok{residuals}\NormalTok{(sar)}
+\FunctionTok{shapiro.test}\NormalTok{(err.sar)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2034,7 +2035,7 @@ Output di atas memperlihatkan bahwa koefisien Rho pada model SAR signifikan, den
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{bptest.sarlm}\NormalTok{(sar)}
+\FunctionTok{bptest.sarlm}\NormalTok{(sar)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2048,7 +2049,7 @@ Output di atas memperlihatkan bahwa koefisien Rho pada model SAR signifikan, den
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{moran.test}\NormalTok{(err.sar, ww, }\DataTypeTok{alternative=}\StringTok{"two.sided"}\NormalTok{, }\DataTypeTok{zero.policy=}\NormalTok{T)}
+\FunctionTok{moran.test}\NormalTok{(err.sar, ww, }\AttributeTok{alternative=}\StringTok{"two.sided"}\NormalTok{, }\AttributeTok{zero.policy=}\NormalTok{T)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2074,8 +2075,8 @@ Berdasarkan output di atas, pada taraf 5\% dapat disimpulkan bahwa sisaan model 
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{gsm\textless{}{-}}\KeywordTok{sacsarlm}\NormalTok{(Kemiskinan}\OperatorTok{\textasciitilde{}}\NormalTok{Pendidikan,}\DataTypeTok{data=}\NormalTok{datajawa,ww, }\DataTypeTok{zero.policy=}\NormalTok{T)}
-\KeywordTok{summary}\NormalTok{(gsm)}
+\NormalTok{gsm}\OtherTok{\textless{}{-}}\FunctionTok{sacsarlm}\NormalTok{(Kemiskinan}\SpecialCharTok{\textasciitilde{}}\NormalTok{Pendidikan,}\AttributeTok{data=}\NormalTok{datajawa,ww, }\AttributeTok{zero.policy=}\NormalTok{T)}
+\FunctionTok{summary}\NormalTok{(gsm)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2112,7 +2113,7 @@ Berdasarkan output di atas, pada taraf 5\% dapat disimpulkan bahwa sisaan model 
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{pseudoR2.gsm\textless{}{-}}\KeywordTok{cor}\NormalTok{(datajawa}\OperatorTok{$}\NormalTok{Kemiskinan, }\KeywordTok{fitted}\NormalTok{(gsm))}\OperatorTok{\^{}}\DecValTok{2}
+\NormalTok{pseudoR2.gsm}\OtherTok{\textless{}{-}}\FunctionTok{cor}\NormalTok{(datajawa}\SpecialCharTok{$}\NormalTok{Kemiskinan, }\FunctionTok{fitted}\NormalTok{(gsm))}\SpecialCharTok{\^{}}\DecValTok{2}
 \NormalTok{pseudoR2.gsm}
 \end{Highlighting}
 \end{Shaded}
@@ -2125,8 +2126,8 @@ Output di atas memperlihatkan bahwa kedua koefisien dependensi spasial, Rho dan 
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{err.gsm\textless{}{-}}\KeywordTok{residuals}\NormalTok{(gsm)}
-\KeywordTok{shapiro.test}\NormalTok{(err.gsm)}
+\NormalTok{err.gsm}\OtherTok{\textless{}{-}}\FunctionTok{residuals}\NormalTok{(gsm)}
+\FunctionTok{shapiro.test}\NormalTok{(err.gsm)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2140,7 +2141,7 @@ Output di atas memperlihatkan bahwa kedua koefisien dependensi spasial, Rho dan 
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{bptest.sarlm}\NormalTok{(gsm)}
+\FunctionTok{bptest.sarlm}\NormalTok{(gsm)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2154,7 +2155,7 @@ Output di atas memperlihatkan bahwa kedua koefisien dependensi spasial, Rho dan 
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{moran.test}\NormalTok{(err.gsm, ww, }\DataTypeTok{alternative=}\StringTok{"two.sided"}\NormalTok{, }\DataTypeTok{zero.policy=}\NormalTok{T)}
+\FunctionTok{moran.test}\NormalTok{(err.gsm, ww, }\AttributeTok{alternative=}\StringTok{"two.sided"}\NormalTok{, }\AttributeTok{zero.policy=}\NormalTok{T)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2206,7 +2207,7 @@ Efek marginal terdapat pada model dependensi spasial SAR, GSM, SDM, SDEM, dan SL
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{impacts}\NormalTok{(gsm, }\DataTypeTok{listw=}\NormalTok{ww)}
+\FunctionTok{impacts}\NormalTok{(gsm, }\AttributeTok{listw=}\NormalTok{ww)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2279,22 +2280,22 @@ Pada modul ini akan dibahas pemodelan GWR menggunakan package \texttt{spgwr}.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{library}\NormalTok{(rgdal)}
-\NormalTok{petajawa=}\KeywordTok{readOGR}\NormalTok{(}\DataTypeTok{dsn=}\StringTok{"Jawamap"}\NormalTok{, }\DataTypeTok{layer=}\StringTok{"jawa"}\NormalTok{)}
+\FunctionTok{library}\NormalTok{(rgdal)}
+\NormalTok{petajawa}\OtherTok{=}\FunctionTok{readOGR}\NormalTok{(}\AttributeTok{dsn=}\StringTok{"Jawamap"}\NormalTok{, }\AttributeTok{layer=}\StringTok{"jawa"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
 ## OGR data source with driver: ESRI Shapefile 
-## Source: "D:\Research (eksternal dept)\pelatihan spasial (adj)\modeul 2\Pelatihan-Spasial\Jawamap", layer: "jawa"
+## Source: "D:\Jobs\Pelatihan Spasial STIS\New folder\Pelatihan-Spasial\Jawamap", layer: "jawa"
 ## with 119 features
 ## It has 5 fields
 \end{verbatim}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{datajawa=}\KeywordTok{read.csv}\NormalTok{(}\StringTok{"Pulau Jawa.csv"}\NormalTok{, }\DataTypeTok{header=}\NormalTok{T, }\DataTypeTok{sep=}\StringTok{";"}\NormalTok{)}
-\NormalTok{petajawa}\OperatorTok{$}\NormalTok{Kemiskinan\textless{}{-}}\StringTok{ }\NormalTok{datajawa}\OperatorTok{$}\NormalTok{Kemiskinan}
+\NormalTok{datajawa}\OtherTok{=}\FunctionTok{read.csv}\NormalTok{(}\StringTok{"Pulau Jawa.csv"}\NormalTok{, }\AttributeTok{header=}\NormalTok{T, }\AttributeTok{sep=}\StringTok{";"}\NormalTok{)}
+\NormalTok{petajawa}\SpecialCharTok{$}\NormalTok{Kemiskinan}\OtherTok{\textless{}{-}}\NormalTok{ datajawa}\SpecialCharTok{$}\NormalTok{Kemiskinan}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2302,8 +2303,8 @@ Plot berikut ini dapat dimanfaatkan untuk mengeksplorasi hubungan antar peubah.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{corr\textless{}{-}}\KeywordTok{cor}\NormalTok{(datajawa[,}\OperatorTok{{-}}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\DecValTok{4}\NormalTok{)])}
-\NormalTok{corrplot}\OperatorTok{::}\KeywordTok{corrplot}\NormalTok{(corr, }\DataTypeTok{is.corr=}\NormalTok{T)}
+\NormalTok{corr}\OtherTok{\textless{}{-}}\FunctionTok{cor}\NormalTok{(datajawa[,}\SpecialCharTok{{-}}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\DecValTok{4}\NormalTok{)])}
+\NormalTok{corrplot}\SpecialCharTok{::}\FunctionTok{corrplot}\NormalTok{(corr, }\AttributeTok{is.corr=}\NormalTok{T)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2313,8 +2314,8 @@ Sebagai ilustrasi, peubah rata-rata lama sekolah akan digunakan untuk memodelkan
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{fit.lm\textless{}{-}}\KeywordTok{lm}\NormalTok{(Kemiskinan}\OperatorTok{\textasciitilde{}}\NormalTok{Rata.Rata.Lama.Sekolah, }\DataTypeTok{data=}\NormalTok{datajawa)}
-\KeywordTok{summary}\NormalTok{(fit.lm)}
+\NormalTok{fit.lm}\OtherTok{\textless{}{-}}\FunctionTok{lm}\NormalTok{(Kemiskinan}\SpecialCharTok{\textasciitilde{}}\NormalTok{Rata.Rata.Lama.Sekolah, }\AttributeTok{data=}\NormalTok{datajawa)}
+\FunctionTok{summary}\NormalTok{(fit.lm)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2343,8 +2344,8 @@ Selanjutnya, diagnostik model dilakukan untuk memeriksa pemenuhan asumsi pada mo
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{err.lm\textless{}{-}}\KeywordTok{residuals}\NormalTok{(fit.lm)}
-\KeywordTok{shapiro.test}\NormalTok{(err.lm)}
+\NormalTok{err.lm}\OtherTok{\textless{}{-}}\FunctionTok{residuals}\NormalTok{(fit.lm)}
+\FunctionTok{shapiro.test}\NormalTok{(err.lm)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2358,9 +2359,9 @@ Selanjutnya, diagnostik model dilakukan untuk memeriksa pemenuhan asumsi pada mo
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{par}\NormalTok{(}\DataTypeTok{mfrow=}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{))}
-\KeywordTok{hist}\NormalTok{(err.lm)}
-\NormalTok{car}\OperatorTok{::}\KeywordTok{qqPlot}\NormalTok{(}\KeywordTok{residuals}\NormalTok{(fit.lm))}
+\FunctionTok{par}\NormalTok{(}\AttributeTok{mfrow=}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{))}
+\FunctionTok{hist}\NormalTok{(err.lm)}
+\NormalTok{car}\SpecialCharTok{::}\FunctionTok{qqPlot}\NormalTok{(}\FunctionTok{residuals}\NormalTok{(fit.lm))}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2372,8 +2373,8 @@ Selanjutnya, diagnostik model dilakukan untuk memeriksa pemenuhan asumsi pada mo
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{plot}\NormalTok{(fit.lm,}\DataTypeTok{which=}\DecValTok{1}\NormalTok{)}
-\NormalTok{lmtest}\OperatorTok{::}\KeywordTok{bptest}\NormalTok{(fit.lm)}
+\FunctionTok{plot}\NormalTok{(fit.lm,}\AttributeTok{which=}\DecValTok{1}\NormalTok{)}
+\NormalTok{lmtest}\SpecialCharTok{::}\FunctionTok{bptest}\NormalTok{(fit.lm)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2391,11 +2392,11 @@ Terlihat pada output di atas bahwa sisaan model cenderung memiliki ragam yang ti
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{library}\NormalTok{(spdep)}
-\NormalTok{w\textless{}{-}}\KeywordTok{poly2nb}\NormalTok{(petajawa)}
-\NormalTok{ww\textless{}{-}}\KeywordTok{nb2listw}\NormalTok{(w, }\DataTypeTok{zero.policy=}\NormalTok{T)}
+\FunctionTok{library}\NormalTok{(spdep)}
+\NormalTok{w}\OtherTok{\textless{}{-}}\FunctionTok{poly2nb}\NormalTok{(petajawa)}
+\NormalTok{ww}\OtherTok{\textless{}{-}}\FunctionTok{nb2listw}\NormalTok{(w, }\AttributeTok{zero.policy=}\NormalTok{T)}
 
-\KeywordTok{lm.morantest}\NormalTok{(fit.lm, ww, }\DataTypeTok{alternative=}\StringTok{"two.sided"}\NormalTok{, }\DataTypeTok{zero.policy =}\NormalTok{ T)}
+\FunctionTok{lm.morantest}\NormalTok{(fit.lm, ww, }\AttributeTok{alternative=}\StringTok{"two.sided"}\NormalTok{, }\AttributeTok{zero.policy =}\NormalTok{ T)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2419,8 +2420,8 @@ Terlihat pada output bahwa terdapat autokorelasi spasial pada sisaan model regre
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{LM\textless{}{-}}\KeywordTok{lm.LMtests}\NormalTok{(fit.lm, ww,}\DataTypeTok{test=}\KeywordTok{c}\NormalTok{(}\StringTok{"LMerr"}\NormalTok{, }\StringTok{"LMlag"}\NormalTok{,}\StringTok{"RLMerr"}\NormalTok{,}\StringTok{"RLMlag"}\NormalTok{,}\StringTok{"SARMA"}\NormalTok{), }\DataTypeTok{zero.policy=}\NormalTok{T)}
-\KeywordTok{summary}\NormalTok{(LM)}
+\NormalTok{LM}\OtherTok{\textless{}{-}}\FunctionTok{lm.LMtests}\NormalTok{(fit.lm, ww,}\AttributeTok{test=}\FunctionTok{c}\NormalTok{(}\StringTok{"LMerr"}\NormalTok{, }\StringTok{"LMlag"}\NormalTok{,}\StringTok{"RLMerr"}\NormalTok{,}\StringTok{"RLMlag"}\NormalTok{,}\StringTok{"SARMA"}\NormalTok{), }\AttributeTok{zero.policy=}\NormalTok{T)}
+\FunctionTok{summary}\NormalTok{(LM)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2443,12 +2444,12 @@ Terlihat pada output bahwa terdapat autokorelasi spasial pada sisaan model regre
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{library}\NormalTok{(spatialreg)}
-\NormalTok{sem\textless{}{-}}\KeywordTok{errorsarlm}\NormalTok{(Kemiskinan}\OperatorTok{\textasciitilde{}}\NormalTok{Rata.Rata.Lama.Sekolah,}\DataTypeTok{data=}\NormalTok{datajawa,ww, }\DataTypeTok{zero.policy=}\NormalTok{T)}
-\NormalTok{sar\textless{}{-}}\KeywordTok{lagsarlm}\NormalTok{(Kemiskinan}\OperatorTok{\textasciitilde{}}\NormalTok{Rata.Rata.Lama.Sekolah,}\DataTypeTok{data=}\NormalTok{datajawa,ww, }\DataTypeTok{zero.policy=}\NormalTok{T)}
-\NormalTok{gsm\textless{}{-}}\KeywordTok{sacsarlm}\NormalTok{(Kemiskinan}\OperatorTok{\textasciitilde{}}\NormalTok{Rata.Rata.Lama.Sekolah,}\DataTypeTok{data=}\NormalTok{datajawa,ww, }\DataTypeTok{zero.policy=}\NormalTok{T)}
+\FunctionTok{library}\NormalTok{(spatialreg)}
+\NormalTok{sem}\OtherTok{\textless{}{-}}\FunctionTok{errorsarlm}\NormalTok{(Kemiskinan}\SpecialCharTok{\textasciitilde{}}\NormalTok{Rata.Rata.Lama.Sekolah,}\AttributeTok{data=}\NormalTok{datajawa,ww, }\AttributeTok{zero.policy=}\NormalTok{T)}
+\NormalTok{sar}\OtherTok{\textless{}{-}}\FunctionTok{lagsarlm}\NormalTok{(Kemiskinan}\SpecialCharTok{\textasciitilde{}}\NormalTok{Rata.Rata.Lama.Sekolah,}\AttributeTok{data=}\NormalTok{datajawa,ww, }\AttributeTok{zero.policy=}\NormalTok{T)}
+\NormalTok{gsm}\OtherTok{\textless{}{-}}\FunctionTok{sacsarlm}\NormalTok{(Kemiskinan}\SpecialCharTok{\textasciitilde{}}\NormalTok{Rata.Rata.Lama.Sekolah,}\AttributeTok{data=}\NormalTok{datajawa,ww, }\AttributeTok{zero.policy=}\NormalTok{T)}
 
-\KeywordTok{bptest.sarlm}\NormalTok{(sem)}
+\FunctionTok{bptest.sarlm}\NormalTok{(sem)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2462,7 +2463,7 @@ Terlihat pada output bahwa terdapat autokorelasi spasial pada sisaan model regre
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{bptest.sarlm}\NormalTok{(sar)}
+\FunctionTok{bptest.sarlm}\NormalTok{(sar)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2476,7 +2477,7 @@ Terlihat pada output bahwa terdapat autokorelasi spasial pada sisaan model regre
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{bptest.sarlm}\NormalTok{(gsm)}
+\FunctionTok{bptest.sarlm}\NormalTok{(gsm)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2495,12 +2496,12 @@ Kita dapat menggunakan fungsi \texttt{gwr} pada package \texttt{spgwr} untuk men
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{library}\NormalTok{(spgwr)}
+\FunctionTok{library}\NormalTok{(spgwr)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-## Warning: package 'spgwr' was built under R version 4.0.3
+## Warning: package 'spgwr' was built under R version 4.0.4
 \end{verbatim}
 
 \begin{verbatim}
@@ -2510,8 +2511,8 @@ Kita dapat menggunakan fungsi \texttt{gwr} pada package \texttt{spgwr} untuk men
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{coordinates}\NormalTok{(datajawa)\textless{}{-}}\KeywordTok{c}\NormalTok{(}\StringTok{"Longitude"}\NormalTok{,}\StringTok{"Latitude"}\NormalTok{)}
-\NormalTok{gwr20 \textless{}{-}}\StringTok{ }\KeywordTok{gwr}\NormalTok{(Kemiskinan}\OperatorTok{\textasciitilde{}}\NormalTok{Rata.Rata.Lama.Sekolah,}\DataTypeTok{data=}\NormalTok{datajawa,}\DataTypeTok{bandwidth=}\DecValTok{20}\NormalTok{)}
+\FunctionTok{coordinates}\NormalTok{(datajawa)}\OtherTok{\textless{}{-}}\FunctionTok{c}\NormalTok{(}\StringTok{"Longitude"}\NormalTok{,}\StringTok{"Latitude"}\NormalTok{)}
+\NormalTok{gwr20 }\OtherTok{\textless{}{-}} \FunctionTok{gwr}\NormalTok{(Kemiskinan}\SpecialCharTok{\textasciitilde{}}\NormalTok{Rata.Rata.Lama.Sekolah,}\AttributeTok{data=}\NormalTok{datajawa,}\AttributeTok{bandwidth=}\DecValTok{20}\NormalTok{)}
 \NormalTok{gwr20}
 \end{Highlighting}
 \end{Shaded}
@@ -2532,7 +2533,7 @@ Kita dapat pula mengganti bandwidth sesuai dengan yang diinginkan. Selanjutnya k
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{gwr3 \textless{}{-}}\StringTok{ }\KeywordTok{gwr}\NormalTok{(Kemiskinan}\OperatorTok{\textasciitilde{}}\NormalTok{Rata.Rata.Lama.Sekolah,}\DataTypeTok{data=}\NormalTok{datajawa, }\DataTypeTok{bandwidth=}\DecValTok{3}\NormalTok{)}
+\NormalTok{gwr3 }\OtherTok{\textless{}{-}} \FunctionTok{gwr}\NormalTok{(Kemiskinan}\SpecialCharTok{\textasciitilde{}}\NormalTok{Rata.Rata.Lama.Sekolah,}\AttributeTok{data=}\NormalTok{datajawa, }\AttributeTok{bandwidth=}\DecValTok{3}\NormalTok{)}
 \NormalTok{gwr3}
 \end{Highlighting}
 \end{Shaded}
@@ -2551,7 +2552,7 @@ Kita dapat pula mengganti bandwidth sesuai dengan yang diinginkan. Selanjutnya k
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{gwr2 \textless{}{-}}\StringTok{ }\KeywordTok{gwr}\NormalTok{(Kemiskinan}\OperatorTok{\textasciitilde{}}\NormalTok{Rata.Rata.Lama.Sekolah,}\DataTypeTok{data=}\NormalTok{datajawa,}\DataTypeTok{bandwidth=}\DecValTok{2}\NormalTok{)}
+\NormalTok{gwr2 }\OtherTok{\textless{}{-}} \FunctionTok{gwr}\NormalTok{(Kemiskinan}\SpecialCharTok{\textasciitilde{}}\NormalTok{Rata.Rata.Lama.Sekolah,}\AttributeTok{data=}\NormalTok{datajawa,}\AttributeTok{bandwidth=}\DecValTok{2}\NormalTok{)}
 \NormalTok{gwr2}
 \end{Highlighting}
 \end{Shaded}
@@ -2570,10 +2571,10 @@ Kita dapat pula mengganti bandwidth sesuai dengan yang diinginkan. Selanjutnya k
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{betabw20 \textless{}{-}}\StringTok{ }\NormalTok{gwr20}\OperatorTok{$}\NormalTok{SDF}\OperatorTok{$}\NormalTok{Rata.Rata.Lama.Sekolah}
-\NormalTok{betabw3 \textless{}{-}}\StringTok{ }\NormalTok{gwr3}\OperatorTok{$}\NormalTok{SDF}\OperatorTok{$}\NormalTok{Rata.Rata.Lama.Sekolah}
-\NormalTok{betabw2 \textless{}{-}}\StringTok{ }\NormalTok{gwr2}\OperatorTok{$}\NormalTok{SDF}\OperatorTok{$}\NormalTok{Rata.Rata.Lama.Sekolah}
-\KeywordTok{boxplot}\NormalTok{(betabw20, betabw3, betabw2, }\DataTypeTok{names=}\KeywordTok{c}\NormalTok{(}\StringTok{"bw=20"}\NormalTok{,}\StringTok{"bw=3"}\NormalTok{,}\StringTok{"bw=2"}\NormalTok{))}
+\NormalTok{betabw20 }\OtherTok{\textless{}{-}}\NormalTok{ gwr20}\SpecialCharTok{$}\NormalTok{SDF}\SpecialCharTok{$}\NormalTok{Rata.Rata.Lama.Sekolah}
+\NormalTok{betabw3 }\OtherTok{\textless{}{-}}\NormalTok{ gwr3}\SpecialCharTok{$}\NormalTok{SDF}\SpecialCharTok{$}\NormalTok{Rata.Rata.Lama.Sekolah}
+\NormalTok{betabw2 }\OtherTok{\textless{}{-}}\NormalTok{ gwr2}\SpecialCharTok{$}\NormalTok{SDF}\SpecialCharTok{$}\NormalTok{Rata.Rata.Lama.Sekolah}
+\FunctionTok{boxplot}\NormalTok{(betabw20, betabw3, betabw2, }\AttributeTok{names=}\FunctionTok{c}\NormalTok{(}\StringTok{"bw=20"}\NormalTok{,}\StringTok{"bw=3"}\NormalTok{,}\StringTok{"bw=2"}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2588,7 +2589,7 @@ Penentuan bandwidth yang optimal dapat ditentukan berdasarkan kriteria AIC atau 
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{bw1 \textless{}{-}}\StringTok{ }\KeywordTok{gwr.sel}\NormalTok{(Kemiskinan}\OperatorTok{\textasciitilde{}}\NormalTok{Rata.Rata.Lama.Sekolah,}\DataTypeTok{data=}\NormalTok{datajawa) }\CommentTok{\# default method is CV}
+\NormalTok{bw1 }\OtherTok{\textless{}{-}} \FunctionTok{gwr.sel}\NormalTok{(Kemiskinan}\SpecialCharTok{\textasciitilde{}}\NormalTok{Rata.Rata.Lama.Sekolah,}\AttributeTok{data=}\NormalTok{datajawa) }\CommentTok{\# default method is CV}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2614,9 +2615,9 @@ Penentuan bandwidth yang optimal dapat ditentukan berdasarkan kriteria AIC atau 
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{gwr01 \textless{}{-}}\StringTok{ }\KeywordTok{gwr}\NormalTok{(Kemiskinan}\OperatorTok{\textasciitilde{}}\NormalTok{Rata.Rata.Lama.Sekolah,}\DataTypeTok{data=}\NormalTok{datajawa,}\DataTypeTok{bandwidth=}\NormalTok{bw1)}
+\NormalTok{gwr01 }\OtherTok{\textless{}{-}} \FunctionTok{gwr}\NormalTok{(Kemiskinan}\SpecialCharTok{\textasciitilde{}}\NormalTok{Rata.Rata.Lama.Sekolah,}\AttributeTok{data=}\NormalTok{datajawa,}\AttributeTok{bandwidth=}\NormalTok{bw1)}
 
-\NormalTok{bw2 \textless{}{-}}\StringTok{ }\KeywordTok{gwr.sel}\NormalTok{(Kemiskinan}\OperatorTok{\textasciitilde{}}\NormalTok{Rata.Rata.Lama.Sekolah,}\DataTypeTok{data=}\NormalTok{datajawa,}\DataTypeTok{method=}\StringTok{"aic"}\NormalTok{)}
+\NormalTok{bw2 }\OtherTok{\textless{}{-}} \FunctionTok{gwr.sel}\NormalTok{(Kemiskinan}\SpecialCharTok{\textasciitilde{}}\NormalTok{Rata.Rata.Lama.Sekolah,}\AttributeTok{data=}\NormalTok{datajawa,}\AttributeTok{method=}\StringTok{"aic"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2642,9 +2643,9 @@ Penentuan bandwidth yang optimal dapat ditentukan berdasarkan kriteria AIC atau 
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{gwr02 \textless{}{-}}\StringTok{ }\KeywordTok{gwr}\NormalTok{(Kemiskinan}\OperatorTok{\textasciitilde{}}\NormalTok{Rata.Rata.Lama.Sekolah,}\DataTypeTok{data=}\NormalTok{datajawa,}\DataTypeTok{bandwidth=}\NormalTok{bw2)}
+\NormalTok{gwr02 }\OtherTok{\textless{}{-}} \FunctionTok{gwr}\NormalTok{(Kemiskinan}\SpecialCharTok{\textasciitilde{}}\NormalTok{Rata.Rata.Lama.Sekolah,}\AttributeTok{data=}\NormalTok{datajawa,}\AttributeTok{bandwidth=}\NormalTok{bw2)}
 
-\NormalTok{bwbs1 \textless{}{-}}\StringTok{ }\KeywordTok{gwr.sel}\NormalTok{(Kemiskinan}\OperatorTok{\textasciitilde{}}\NormalTok{Rata.Rata.Lama.Sekolah,}\DataTypeTok{data=}\NormalTok{datajawa,}\DataTypeTok{gweight=}\NormalTok{gwr.bisquare)}
+\NormalTok{bwbs1 }\OtherTok{\textless{}{-}} \FunctionTok{gwr.sel}\NormalTok{(Kemiskinan}\SpecialCharTok{\textasciitilde{}}\NormalTok{Rata.Rata.Lama.Sekolah,}\AttributeTok{data=}\NormalTok{datajawa,}\AttributeTok{gweight=}\NormalTok{gwr.bisquare)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2668,11 +2669,11 @@ Penentuan bandwidth yang optimal dapat ditentukan berdasarkan kriteria AIC atau 
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{gwr03 \textless{}{-}}\StringTok{ }\KeywordTok{gwr}\NormalTok{(Kemiskinan}\OperatorTok{\textasciitilde{}}\NormalTok{Rata.Rata.Lama.Sekolah,}\DataTypeTok{data=}\NormalTok{datajawa,}\DataTypeTok{gweight=}\NormalTok{gwr.bisquare,}
-    \DataTypeTok{bandwidth=}\NormalTok{bwbs1)}
+\NormalTok{gwr03 }\OtherTok{\textless{}{-}} \FunctionTok{gwr}\NormalTok{(Kemiskinan}\SpecialCharTok{\textasciitilde{}}\NormalTok{Rata.Rata.Lama.Sekolah,}\AttributeTok{data=}\NormalTok{datajawa,}\AttributeTok{gweight=}\NormalTok{gwr.bisquare,}
+    \AttributeTok{bandwidth=}\NormalTok{bwbs1)}
 
-\NormalTok{bwbs2 \textless{}{-}}\StringTok{ }\KeywordTok{gwr.sel}\NormalTok{(Kemiskinan}\OperatorTok{\textasciitilde{}}\NormalTok{Rata.Rata.Lama.Sekolah,}\DataTypeTok{data=}\NormalTok{datajawa,}
-                 \DataTypeTok{gweight=}\NormalTok{gwr.bisquare,}\DataTypeTok{method=}\StringTok{"aic"}\NormalTok{)}
+\NormalTok{bwbs2 }\OtherTok{\textless{}{-}} \FunctionTok{gwr.sel}\NormalTok{(Kemiskinan}\SpecialCharTok{\textasciitilde{}}\NormalTok{Rata.Rata.Lama.Sekolah,}\AttributeTok{data=}\NormalTok{datajawa,}
+                 \AttributeTok{gweight=}\NormalTok{gwr.bisquare,}\AttributeTok{method=}\StringTok{"aic"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2695,8 +2696,8 @@ Penentuan bandwidth yang optimal dapat ditentukan berdasarkan kriteria AIC atau 
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{gwr04 \textless{}{-}}\StringTok{ }\KeywordTok{gwr}\NormalTok{(Kemiskinan}\OperatorTok{\textasciitilde{}}\NormalTok{Rata.Rata.Lama.Sekolah,}\DataTypeTok{data=}\NormalTok{datajawa,}\DataTypeTok{gweight=}\NormalTok{gwr.bisquare,}
-    \DataTypeTok{bandwidth=}\NormalTok{bwbs2)}
+\NormalTok{gwr04 }\OtherTok{\textless{}{-}} \FunctionTok{gwr}\NormalTok{(Kemiskinan}\SpecialCharTok{\textasciitilde{}}\NormalTok{Rata.Rata.Lama.Sekolah,}\AttributeTok{data=}\NormalTok{datajawa,}\AttributeTok{gweight=}\NormalTok{gwr.bisquare,}
+    \AttributeTok{bandwidth=}\NormalTok{bwbs2)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2707,8 +2708,8 @@ Penentuan model terbaik dapat ditentukan berdasarkan beberapa kriteria tertentu.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{gwr01 \textless{}{-}}\StringTok{ }\KeywordTok{gwr}\NormalTok{(Kemiskinan}\OperatorTok{\textasciitilde{}}\NormalTok{Rata.Rata.Lama.Sekolah,}\DataTypeTok{data=}\NormalTok{datajawa,}
-             \DataTypeTok{hatmatrix=}\NormalTok{T, }\DataTypeTok{bandwidth=}\NormalTok{bw1)}
+\NormalTok{gwr01 }\OtherTok{\textless{}{-}} \FunctionTok{gwr}\NormalTok{(Kemiskinan}\SpecialCharTok{\textasciitilde{}}\NormalTok{Rata.Rata.Lama.Sekolah,}\AttributeTok{data=}\NormalTok{datajawa,}
+             \AttributeTok{hatmatrix=}\NormalTok{T, }\AttributeTok{bandwidth=}\NormalTok{bw1)}
 \NormalTok{gwr01}
 \end{Highlighting}
 \end{Shaded}
@@ -2741,7 +2742,7 @@ Fungsi \texttt{gwr} memberikan nilai AIC dengan tiga pendekatan, sehingga kita m
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{gwr01}\OperatorTok{$}\NormalTok{results}\OperatorTok{$}\NormalTok{AICc}
+\NormalTok{gwr01}\SpecialCharTok{$}\NormalTok{results}\SpecialCharTok{$}\NormalTok{AICc}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2751,7 +2752,7 @@ Fungsi \texttt{gwr} memberikan nilai AIC dengan tiga pendekatan, sehingga kita m
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{gwr01}\OperatorTok{$}\NormalTok{results}\OperatorTok{$}\NormalTok{AICb}
+\NormalTok{gwr01}\SpecialCharTok{$}\NormalTok{results}\SpecialCharTok{$}\NormalTok{AICb}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2761,7 +2762,7 @@ Fungsi \texttt{gwr} memberikan nilai AIC dengan tiga pendekatan, sehingga kita m
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{gwr01}\OperatorTok{$}\NormalTok{results}\OperatorTok{$}\NormalTok{AICh}
+\NormalTok{gwr01}\SpecialCharTok{$}\NormalTok{results}\SpecialCharTok{$}\NormalTok{AICh}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2775,7 +2776,7 @@ Beberapa pendekatan uji dapat dilakukan untuk menguji \(H_0\) yang menyatakan ba
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{BFC02.gwr.test}\NormalTok{(gwr01)}
+\FunctionTok{BFC02.gwr.test}\NormalTok{(gwr01)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2793,7 +2794,7 @@ Beberapa pendekatan uji dapat dilakukan untuk menguji \(H_0\) yang menyatakan ba
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{BFC99.gwr.test}\NormalTok{(gwr01)}
+\FunctionTok{BFC99.gwr.test}\NormalTok{(gwr01)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2811,7 +2812,7 @@ Beberapa pendekatan uji dapat dilakukan untuk menguji \(H_0\) yang menyatakan ba
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{LMZ.F1GWR.test}\NormalTok{(gwr01)}
+\FunctionTok{LMZ.F1GWR.test}\NormalTok{(gwr01)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2829,7 +2830,7 @@ Beberapa pendekatan uji dapat dilakukan untuk menguji \(H_0\) yang menyatakan ba
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{LMZ.F2GWR.test}\NormalTok{(gwr01)}
+\FunctionTok{LMZ.F2GWR.test}\NormalTok{(gwr01)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2849,7 +2850,7 @@ Berdasarkan output di atas, seluruh uji menunjukkan nilai \(p\)-value yang lebih
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{LMZ.F3GWR.test}\NormalTok{(gwr01)}
+\FunctionTok{LMZ.F3GWR.test}\NormalTok{(gwr01)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2874,7 +2875,7 @@ Koefisien model GWR bersifat lokal, sehingga nilai penduga koefisien akan dipero
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{str}\NormalTok{(gwr01}\OperatorTok{$}\NormalTok{SDF)}
+\FunctionTok{str}\NormalTok{(gwr01}\SpecialCharTok{$}\NormalTok{SDF)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2910,11 +2911,11 @@ Beberapa nilai dapat diperoleh langsung dari output fungsi \texttt{gwr}, yaitu p
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{petajawa}\OperatorTok{$}\NormalTok{beta\textless{}{-}gwr01}\OperatorTok{$}\NormalTok{SDF}\OperatorTok{$}\NormalTok{Rata.Rata.Lama.Sekolah}
-\NormalTok{petajawa}\OperatorTok{$}\NormalTok{pred\textless{}{-}gwr01}\OperatorTok{$}\NormalTok{SDF}\OperatorTok{$}\NormalTok{pred}
-\NormalTok{petajawa}\OperatorTok{$}\NormalTok{localR2\textless{}{-}gwr01}\OperatorTok{$}\NormalTok{SDF}\OperatorTok{$}\NormalTok{localR2}
+\NormalTok{petajawa}\SpecialCharTok{$}\NormalTok{beta}\OtherTok{\textless{}{-}}\NormalTok{gwr01}\SpecialCharTok{$}\NormalTok{SDF}\SpecialCharTok{$}\NormalTok{Rata.Rata.Lama.Sekolah}
+\NormalTok{petajawa}\SpecialCharTok{$}\NormalTok{pred}\OtherTok{\textless{}{-}}\NormalTok{gwr01}\SpecialCharTok{$}\NormalTok{SDF}\SpecialCharTok{$}\NormalTok{pred}
+\NormalTok{petajawa}\SpecialCharTok{$}\NormalTok{localR2}\OtherTok{\textless{}{-}}\NormalTok{gwr01}\SpecialCharTok{$}\NormalTok{SDF}\SpecialCharTok{$}\NormalTok{localR2}
 
-\KeywordTok{spplot}\NormalTok{(petajawa, }\StringTok{"beta"}\NormalTok{, }\DataTypeTok{main=}\StringTok{"Penduga Koefisien Model GWR"}\NormalTok{)}
+\FunctionTok{spplot}\NormalTok{(petajawa, }\StringTok{"beta"}\NormalTok{, }\AttributeTok{main=}\StringTok{"Penduga Koefisien Model GWR"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2922,7 +2923,7 @@ Beberapa nilai dapat diperoleh langsung dari output fungsi \texttt{gwr}, yaitu p
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{spplot}\NormalTok{(petajawa, }\StringTok{"pred"}\NormalTok{, }\DataTypeTok{main=}\StringTok{"Prediksi Kemiskinan"}\NormalTok{)}
+\FunctionTok{spplot}\NormalTok{(petajawa, }\StringTok{"pred"}\NormalTok{, }\AttributeTok{main=}\StringTok{"Prediksi Kemiskinan"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2930,7 +2931,7 @@ Beberapa nilai dapat diperoleh langsung dari output fungsi \texttt{gwr}, yaitu p
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{spplot}\NormalTok{(petajawa, }\StringTok{"localR2"}\NormalTok{, }\DataTypeTok{main=}\StringTok{"Local R{-}square"}\NormalTok{)}
+\FunctionTok{spplot}\NormalTok{(petajawa, }\StringTok{"localR2"}\NormalTok{, }\AttributeTok{main=}\StringTok{"Local R{-}square"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -3020,12 +3021,12 @@ Sebagai ilustrasi, modul ini akan membahas studi kasus yang diteliti oleh Agusti
   X3 = Pertumbuhan Ekonomi (PDRB)
 \end{itemize}
 
-Pertama-tama, kita impor data peta tematik Jawa Tengah dan data pengamatan ke dalam R.
+Pertama-tama, kita impor data peta tematik pulau Jawa dan data pengamatan ke dalam R.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{data\textless{}{-}}\KeywordTok{read.csv}\NormalTok{(}\StringTok{"data panel Jawa.csv"}\NormalTok{, }\DataTypeTok{header =}\NormalTok{ T)}
-\KeywordTok{head}\NormalTok{(data)}
+\NormalTok{data}\OtherTok{\textless{}{-}}\FunctionTok{read.csv}\NormalTok{(}\StringTok{"data panel Jawa.csv"}\NormalTok{, }\AttributeTok{header =}\NormalTok{ T)}
+\FunctionTok{head}\NormalTok{(data)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -3044,18 +3045,18 @@ Pertama-tama, kita impor data peta tematik Jawa Tengah dan data pengamatan ke da
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{y\textless{}{-}}\KeywordTok{matrix}\NormalTok{(}\OtherTok{NA}\NormalTok{, }\DataTypeTok{nrow=}\DecValTok{5}\NormalTok{, }\DataTypeTok{ncol=}\DecValTok{119}\NormalTok{) }\CommentTok{\# 5 tahun, 118 kota/kabupaten}
-\NormalTok{y[,}\DecValTok{1}\NormalTok{]\textless{}{-}}\DecValTok{2008}\OperatorTok{:}\DecValTok{2012}
-\NormalTok{a=}\DecValTok{2}
-\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\OperatorTok{:}\DecValTok{118}\NormalTok{)}
+\NormalTok{y}\OtherTok{\textless{}{-}}\FunctionTok{matrix}\NormalTok{(}\ConstantTok{NA}\NormalTok{, }\AttributeTok{nrow=}\DecValTok{5}\NormalTok{, }\AttributeTok{ncol=}\DecValTok{119}\NormalTok{) }\CommentTok{\# 5 tahun, 118 kota/kabupaten}
+\NormalTok{y[,}\DecValTok{1}\NormalTok{]}\OtherTok{\textless{}{-}}\DecValTok{2008}\SpecialCharTok{:}\DecValTok{2012}
+\NormalTok{a}\OtherTok{=}\DecValTok{2}
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\DecValTok{118}\NormalTok{)}
 \NormalTok{\{}
-\NormalTok{  y[,i}\OperatorTok{+}\DecValTok{1}\NormalTok{]\textless{}{-}data[a}\OperatorTok{:}\NormalTok{(a}\OperatorTok{+}\DecValTok{4}\NormalTok{),}\DecValTok{5}\NormalTok{]}
-\NormalTok{  a=a}\OperatorTok{+}\DecValTok{5}
+\NormalTok{  y[,i}\SpecialCharTok{+}\DecValTok{1}\NormalTok{]}\OtherTok{\textless{}{-}}\NormalTok{data[a}\SpecialCharTok{:}\NormalTok{(a}\SpecialCharTok{+}\DecValTok{4}\NormalTok{),}\DecValTok{5}\NormalTok{]}
+\NormalTok{  a}\OtherTok{=}\NormalTok{a}\SpecialCharTok{+}\DecValTok{5}
 \NormalTok{\}}
 
-\KeywordTok{palette}\NormalTok{(}\StringTok{"default"}\NormalTok{)}
-\NormalTok{y\textless{}{-}}\KeywordTok{as.data.frame}\NormalTok{(y)}
-\KeywordTok{matplot}\NormalTok{(y[,}\DecValTok{1}\NormalTok{], y[,}\OperatorTok{{-}}\DecValTok{1}\NormalTok{], }\DataTypeTok{type=}\StringTok{"l"}\NormalTok{, }\DataTypeTok{pch=}\DecValTok{19}\NormalTok{, }\DataTypeTok{ylab=}\StringTok{"Persentase Kemiskinan"}\NormalTok{, }\DataTypeTok{xlab=}\StringTok{"Tahun"}\NormalTok{)}
+\FunctionTok{palette}\NormalTok{(}\StringTok{"default"}\NormalTok{)}
+\NormalTok{y}\OtherTok{\textless{}{-}}\FunctionTok{as.data.frame}\NormalTok{(y)}
+\FunctionTok{matplot}\NormalTok{(y[,}\DecValTok{1}\NormalTok{], y[,}\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{], }\AttributeTok{type=}\StringTok{"l"}\NormalTok{, }\AttributeTok{pch=}\DecValTok{19}\NormalTok{, }\AttributeTok{ylab=}\StringTok{"Persentase Kemiskinan"}\NormalTok{, }\AttributeTok{xlab=}\StringTok{"Tahun"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -3064,10 +3065,10 @@ Pertama-tama, kita impor data peta tematik Jawa Tengah dan data pengamatan ke da
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\#install.packages("foreign")}
-\KeywordTok{library}\NormalTok{(foreign)}
+\FunctionTok{library}\NormalTok{(foreign)}
 
-\NormalTok{data1\textless{}{-}}\KeywordTok{subset}\NormalTok{(data,data}\OperatorTok{$}\NormalTok{Provinsi}\OperatorTok{==}\StringTok{"DKI JAKARTA"}\NormalTok{)}
-\KeywordTok{coplot}\NormalTok{(Kemiskinan}\OperatorTok{\textasciitilde{}}\NormalTok{Tahun}\OperatorTok{|}\NormalTok{KabKot, }\DataTypeTok{type=}\StringTok{"l"}\NormalTok{, }\DataTypeTok{data=}\NormalTok{data1)}
+\NormalTok{data1}\OtherTok{\textless{}{-}}\FunctionTok{subset}\NormalTok{(data,data}\SpecialCharTok{$}\NormalTok{Provinsi}\SpecialCharTok{==}\StringTok{"DKI JAKARTA"}\NormalTok{)}
+\FunctionTok{coplot}\NormalTok{(Kemiskinan}\SpecialCharTok{\textasciitilde{}}\NormalTok{Tahun}\SpecialCharTok{|}\NormalTok{KabKot, }\AttributeTok{type=}\StringTok{"l"}\NormalTok{, }\AttributeTok{data=}\NormalTok{data1)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -3075,12 +3076,12 @@ Pertama-tama, kita impor data peta tematik Jawa Tengah dan data pengamatan ke da
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{prov\textless{}{-}}\KeywordTok{unique}\NormalTok{(data}\OperatorTok{$}\NormalTok{Provinsi)}
-\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\OperatorTok{:}\KeywordTok{length}\NormalTok{(prov))}
+\NormalTok{prov}\OtherTok{\textless{}{-}}\FunctionTok{unique}\NormalTok{(data}\SpecialCharTok{$}\NormalTok{Provinsi)}
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\FunctionTok{length}\NormalTok{(prov))}
 \NormalTok{\{}
-\NormalTok{  data1\textless{}{-}}\KeywordTok{subset}\NormalTok{(data,data}\OperatorTok{$}\NormalTok{Provinsi}\OperatorTok{==}\NormalTok{prov[i])}
-\NormalTok{  car}\OperatorTok{::}\KeywordTok{scatterplot}\NormalTok{(Kemiskinan}\OperatorTok{\textasciitilde{}}\NormalTok{Tahun}\OperatorTok{|}\NormalTok{KabKot, }\DataTypeTok{boxplots=}\NormalTok{F, }\DataTypeTok{smooth=}\NormalTok{F, }\DataTypeTok{legend=}\NormalTok{F, }
-                   \DataTypeTok{grid=}\NormalTok{T,}\DataTypeTok{data=}\NormalTok{data1, }\DataTypeTok{reset.par=}\NormalTok{T, }\DataTypeTok{cex=}\FloatTok{0.5}\NormalTok{, }\DataTypeTok{main=}\NormalTok{prov[i])}
+\NormalTok{  data1}\OtherTok{\textless{}{-}}\FunctionTok{subset}\NormalTok{(data,data}\SpecialCharTok{$}\NormalTok{Provinsi}\SpecialCharTok{==}\NormalTok{prov[i])}
+\NormalTok{  car}\SpecialCharTok{::}\FunctionTok{scatterplot}\NormalTok{(Kemiskinan}\SpecialCharTok{\textasciitilde{}}\NormalTok{Tahun}\SpecialCharTok{|}\NormalTok{KabKot, }\AttributeTok{boxplots=}\NormalTok{F, }\AttributeTok{smooth=}\NormalTok{F, }\AttributeTok{legend=}\NormalTok{F, }
+                   \AttributeTok{grid=}\NormalTok{T,}\AttributeTok{data=}\NormalTok{data1, }\AttributeTok{reset.par=}\NormalTok{T, }\AttributeTok{cex=}\FloatTok{0.5}\NormalTok{, }\AttributeTok{main=}\NormalTok{prov[i])}
 \NormalTok{\}}
 \end{Highlighting}
 \end{Shaded}
@@ -3089,7 +3090,7 @@ Pertama-tama, kita impor data peta tematik Jawa Tengah dan data pengamatan ke da
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{plot}\NormalTok{(data[,}\DecValTok{5}\OperatorTok{:}\DecValTok{8}\NormalTok{], }\DataTypeTok{pch=}\DecValTok{16}\NormalTok{, }\DataTypeTok{col=}\StringTok{"blue"}\NormalTok{, }\DataTypeTok{main=}\StringTok{"Scatterplot antar Pasangan Peubah pada 2008{-}2012"}\NormalTok{)}
+\FunctionTok{plot}\NormalTok{(data[,}\DecValTok{5}\SpecialCharTok{:}\DecValTok{8}\NormalTok{], }\AttributeTok{pch=}\DecValTok{16}\NormalTok{, }\AttributeTok{col=}\StringTok{"blue"}\NormalTok{, }\AttributeTok{main=}\StringTok{"Scatterplot antar Pasangan Peubah pada 2008{-}2012"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -3099,19 +3100,19 @@ Scatterplot memperlihatkan bahwa IPM dan PDRB cenderung memiliki hubungan yang b
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{a=}\DecValTok{1}\NormalTok{; korelasipertahun\textless{}{-}}\OtherTok{NULL}\NormalTok{;}
-\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\OperatorTok{:}\DecValTok{5}\NormalTok{)}
+\NormalTok{a}\OtherTok{=}\DecValTok{1}\NormalTok{; korelasipertahun}\OtherTok{\textless{}{-}}\ConstantTok{NULL}\NormalTok{;}
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\DecValTok{5}\NormalTok{)}
 \NormalTok{\{}
-\NormalTok{  korelasi\textless{}{-}}\KeywordTok{cor}\NormalTok{(data[a}\OperatorTok{:}\NormalTok{(a}\OperatorTok{+}\DecValTok{4}\NormalTok{),}\DecValTok{5}\OperatorTok{:}\DecValTok{8}\NormalTok{])[}\OperatorTok{{-}}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{]}
-\NormalTok{  a=a}\OperatorTok{+}\DecValTok{5}
-\NormalTok{  korelasipertahun\textless{}{-}}\KeywordTok{cbind}\NormalTok{(korelasipertahun,korelasi)}
+\NormalTok{  korelasi}\OtherTok{\textless{}{-}}\FunctionTok{cor}\NormalTok{(data[a}\SpecialCharTok{:}\NormalTok{(a}\SpecialCharTok{+}\DecValTok{4}\NormalTok{),}\DecValTok{5}\SpecialCharTok{:}\DecValTok{8}\NormalTok{])[}\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{]}
+\NormalTok{  a}\OtherTok{=}\NormalTok{a}\SpecialCharTok{+}\DecValTok{5}
+\NormalTok{  korelasipertahun}\OtherTok{\textless{}{-}}\FunctionTok{cbind}\NormalTok{(korelasipertahun,korelasi)}
 \NormalTok{\}}
 
-\KeywordTok{colnames}\NormalTok{(korelasipertahun)\textless{}{-}}\DecValTok{2008}\OperatorTok{:}\DecValTok{2012}
+\FunctionTok{colnames}\NormalTok{(korelasipertahun)}\OtherTok{\textless{}{-}}\DecValTok{2008}\SpecialCharTok{:}\DecValTok{2012}
 
-\KeywordTok{barplot}\NormalTok{(korelasipertahun , }\DataTypeTok{beside=}\NormalTok{T, }\DataTypeTok{ylim=}\KeywordTok{c}\NormalTok{(}\OperatorTok{{-}}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{), }\DataTypeTok{col=}\DecValTok{2}\OperatorTok{:}\DecValTok{4}\NormalTok{,}\DataTypeTok{main=}\StringTok{"Korelasi terhadap Y per Tahun"}\NormalTok{)}
-\KeywordTok{legend}\NormalTok{(}\StringTok{"bottomright"}\NormalTok{,}\KeywordTok{c}\NormalTok{(}\StringTok{"IPM"}\NormalTok{, }\StringTok{"PDRB"}\NormalTok{, }\StringTok{"TPT"}\NormalTok{),}
-\DataTypeTok{fill =} \DecValTok{2}\OperatorTok{:}\DecValTok{4}\NormalTok{, }\DataTypeTok{cex=}\FloatTok{0.75}\NormalTok{)}
+\FunctionTok{barplot}\NormalTok{(korelasipertahun , }\AttributeTok{beside=}\NormalTok{T, }\AttributeTok{ylim=}\FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{), }\AttributeTok{col=}\DecValTok{2}\SpecialCharTok{:}\DecValTok{4}\NormalTok{,}\AttributeTok{main=}\StringTok{"Korelasi terhadap Y per Tahun"}\NormalTok{)}
+\FunctionTok{legend}\NormalTok{(}\StringTok{"bottomright"}\NormalTok{,}\FunctionTok{c}\NormalTok{(}\StringTok{"IPM"}\NormalTok{, }\StringTok{"PDRB"}\NormalTok{, }\StringTok{"TPT"}\NormalTok{),}
+\AttributeTok{fill =} \DecValTok{2}\SpecialCharTok{:}\DecValTok{4}\NormalTok{, }\AttributeTok{cex=}\FloatTok{0.75}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -3135,7 +3136,7 @@ Scatterplot memperlihatkan bahwa IPM dan PDRB cenderung memiliki hubungan yang b
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{boxplot}\NormalTok{(Kemiskinan}\OperatorTok{\textasciitilde{}}\NormalTok{Tahun, }\DataTypeTok{data=}\NormalTok{data)}
+\FunctionTok{boxplot}\NormalTok{(Kemiskinan}\SpecialCharTok{\textasciitilde{}}\NormalTok{Tahun, }\AttributeTok{data=}\NormalTok{data)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -3143,7 +3144,7 @@ Scatterplot memperlihatkan bahwa IPM dan PDRB cenderung memiliki hubungan yang b
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{boxplot}\NormalTok{(Kemiskinan}\OperatorTok{\textasciitilde{}}\NormalTok{KabKot, }\DataTypeTok{data=}\NormalTok{data)}
+\FunctionTok{boxplot}\NormalTok{(Kemiskinan}\SpecialCharTok{\textasciitilde{}}\NormalTok{KabKot, }\AttributeTok{data=}\NormalTok{data)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -3157,9 +3158,9 @@ Scatterplot memperlihatkan bahwa IPM dan PDRB cenderung memiliki hubungan yang b
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{a\textless{}{-}}\KeywordTok{scale}\NormalTok{(data[,}\DecValTok{5}\OperatorTok{:}\DecValTok{8}\NormalTok{]) }
-\NormalTok{data1\textless{}{-}}\KeywordTok{cbind}\NormalTok{(data[,}\KeywordTok{c}\NormalTok{(}\DecValTok{3}\NormalTok{,}\DecValTok{4}\NormalTok{)],a)}
-\KeywordTok{head}\NormalTok{(data1)}
+\NormalTok{a}\OtherTok{\textless{}{-}}\FunctionTok{scale}\NormalTok{(data[,}\DecValTok{5}\SpecialCharTok{:}\DecValTok{8}\NormalTok{]) }
+\NormalTok{data1}\OtherTok{\textless{}{-}}\FunctionTok{cbind}\NormalTok{(data[,}\FunctionTok{c}\NormalTok{(}\DecValTok{3}\NormalTok{,}\DecValTok{4}\NormalTok{)],a)}
+\FunctionTok{head}\NormalTok{(data1)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -3175,13 +3176,9 @@ Scatterplot memperlihatkan bahwa IPM dan PDRB cenderung memiliki hubungan yang b
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{library}\NormalTok{(plm)}
+\FunctionTok{library}\NormalTok{(plm)}
 \end{Highlighting}
 \end{Shaded}
-
-\begin{verbatim}
-## Warning: package 'plm' was built under R version 4.0.4
-\end{verbatim}
 
 \begin{verbatim}
 ## 
@@ -3196,8 +3193,8 @@ Scatterplot memperlihatkan bahwa IPM dan PDRB cenderung memiliki hubungan yang b
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{model.pool\textless{}{-}}\KeywordTok{plm}\NormalTok{(Kemiskinan}\OperatorTok{\textasciitilde{}}\NormalTok{IPM}\OperatorTok{+}\NormalTok{PDRB}\OperatorTok{+}\NormalTok{TPT, }\DataTypeTok{data=}\NormalTok{data1, }\DataTypeTok{model=}\StringTok{"pooling"}\NormalTok{)}
-\KeywordTok{summary}\NormalTok{(model.pool)}
+\NormalTok{model.pool}\OtherTok{\textless{}{-}}\FunctionTok{plm}\NormalTok{(Kemiskinan}\SpecialCharTok{\textasciitilde{}}\NormalTok{IPM}\SpecialCharTok{+}\NormalTok{PDRB}\SpecialCharTok{+}\NormalTok{TPT, }\AttributeTok{data=}\NormalTok{data1, }\AttributeTok{model=}\StringTok{"pooling"}\NormalTok{)}
+\FunctionTok{summary}\NormalTok{(model.pool)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -3233,7 +3230,7 @@ Model di atas adalah model gabungan, atau sama dengan model OLS (\emph{ordinary 
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{plmtest}\NormalTok{(model.pool,}\DataTypeTok{data=}\NormalTok{data1,}\DataTypeTok{type=}\StringTok{"bp"}\NormalTok{,}\DataTypeTok{effect =} \StringTok{"time"}\NormalTok{)}
+\FunctionTok{plmtest}\NormalTok{(model.pool,}\AttributeTok{data=}\NormalTok{data1,}\AttributeTok{type=}\StringTok{"bp"}\NormalTok{,}\AttributeTok{effect =} \StringTok{"time"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -3249,7 +3246,7 @@ Model di atas adalah model gabungan, atau sama dengan model OLS (\emph{ordinary 
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{plmtest}\NormalTok{(model.pool,}\DataTypeTok{data=}\NormalTok{data1,}\DataTypeTok{type=}\StringTok{"bp"}\NormalTok{,}\DataTypeTok{effect =} \StringTok{"individual"}\NormalTok{)}
+\FunctionTok{plmtest}\NormalTok{(model.pool,}\AttributeTok{data=}\NormalTok{data1,}\AttributeTok{type=}\StringTok{"bp"}\NormalTok{,}\AttributeTok{effect =} \StringTok{"individual"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -3265,9 +3262,9 @@ Model di atas adalah model gabungan, atau sama dengan model OLS (\emph{ordinary 
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\#install.packages("plm")}
-\KeywordTok{library}\NormalTok{(plm)}
+\FunctionTok{library}\NormalTok{(plm)}
 
-\KeywordTok{plmtest}\NormalTok{(model.pool,}\DataTypeTok{type=}\StringTok{"bp"}\NormalTok{,}\DataTypeTok{effect =} \StringTok{"twoways"}\NormalTok{)}
+\FunctionTok{plmtest}\NormalTok{(model.pool,}\AttributeTok{type=}\StringTok{"bp"}\NormalTok{,}\AttributeTok{effect =} \StringTok{"twoways"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -3304,8 +3301,8 @@ Pada ilustrasi ini, sebelumnya telah ditunjukkan bahwa terdapat pengaruh individ
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{model.fixed\textless{}{-}}\KeywordTok{plm}\NormalTok{(Kemiskinan}\OperatorTok{\textasciitilde{}}\NormalTok{IPM}\OperatorTok{+}\NormalTok{PDRB}\OperatorTok{+}\NormalTok{TPT, }\DataTypeTok{data=}\NormalTok{data1, }\DataTypeTok{model=}\StringTok{"within"}\NormalTok{, }\DataTypeTok{effect=}\StringTok{"twoways"}\NormalTok{)}
-\KeywordTok{summary}\NormalTok{(model.fixed)}
+\NormalTok{model.fixed}\OtherTok{\textless{}{-}}\FunctionTok{plm}\NormalTok{(Kemiskinan}\SpecialCharTok{\textasciitilde{}}\NormalTok{IPM}\SpecialCharTok{+}\NormalTok{PDRB}\SpecialCharTok{+}\NormalTok{TPT, }\AttributeTok{data=}\NormalTok{data1, }\AttributeTok{model=}\StringTok{"within"}\NormalTok{, }\AttributeTok{effect=}\StringTok{"twoways"}\NormalTok{)}
+\FunctionTok{summary}\NormalTok{(model.fixed)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -3341,7 +3338,7 @@ Setelah menyusun model dengan pengaruh tetap, selanjutnya kita dapat menggunakan
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{pFtest}\NormalTok{(model.fixed, model.pool)}
+\FunctionTok{pFtest}\NormalTok{(model.fixed, model.pool)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -3363,8 +3360,8 @@ Pada tahap ini kita akan mengidentifikasi lebih lanjut mengenai kesuaian model a
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{model.random\textless{}{-}}\KeywordTok{plm}\NormalTok{(Kemiskinan}\OperatorTok{\textasciitilde{}}\NormalTok{IPM}\OperatorTok{+}\NormalTok{PDRB}\OperatorTok{+}\NormalTok{TPT, }\DataTypeTok{data=}\NormalTok{data1, }\DataTypeTok{model=}\StringTok{"random"}\NormalTok{, }\DataTypeTok{effect=}\StringTok{"twoways"}\NormalTok{)}
-\KeywordTok{summary}\NormalTok{(model.random)}
+\NormalTok{model.random}\OtherTok{\textless{}{-}}\FunctionTok{plm}\NormalTok{(Kemiskinan}\SpecialCharTok{\textasciitilde{}}\NormalTok{IPM}\SpecialCharTok{+}\NormalTok{PDRB}\SpecialCharTok{+}\NormalTok{TPT, }\AttributeTok{data=}\NormalTok{data1, }\AttributeTok{model=}\StringTok{"random"}\NormalTok{, }\AttributeTok{effect=}\StringTok{"twoways"}\NormalTok{)}
+\FunctionTok{summary}\NormalTok{(model.random)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -3417,7 +3414,7 @@ Hipotesis yang diuji pada uji Hausman adalah:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{phtest}\NormalTok{(model.fixed, model.random)}
+\FunctionTok{phtest}\NormalTok{(model.fixed, model.random)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -3434,7 +3431,7 @@ Terlihat pada output bahwa kita dapat menolak hipotesis nol pada taraf nyata 0.0
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{summary}\NormalTok{(model.fixed)}
+\FunctionTok{summary}\NormalTok{(model.fixed)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -3473,30 +3470,30 @@ Model dapat dituliskan sebagai berikut:
 \hypertarget{pemodelan-data-panel-spasial}{%
 \section{Pemodelan Data Panel Spasial}\label{pemodelan-data-panel-spasial}}
 
-Peta persebaran jumlah penduduk miskin di kabupaten/kota Provinsi Jawa Tengah pada tahun 2015 terlihat pada gambar berikut.
+Peta persebaran jumlah penduduk miskin di kabupaten/kota di pulau Jawa pada tahun 2012 terlihat pada gambar berikut.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{library}\NormalTok{(rgdal)}
-\KeywordTok{library}\NormalTok{(spdep)}
-\KeywordTok{library}\NormalTok{(raster)}
-\KeywordTok{library}\NormalTok{(sp)}
-\KeywordTok{library}\NormalTok{(spatialreg)}
+\FunctionTok{library}\NormalTok{(rgdal)}
+\FunctionTok{library}\NormalTok{(spdep)}
+\FunctionTok{library}\NormalTok{(raster)}
+\FunctionTok{library}\NormalTok{(sp)}
+\FunctionTok{library}\NormalTok{(spatialreg)}
 
-\NormalTok{petajawa\textless{}{-}}\KeywordTok{readOGR}\NormalTok{(}\DataTypeTok{dsn=}\StringTok{\textquotesingle{}Jawamap\textquotesingle{}}\NormalTok{,}\DataTypeTok{layer=}\StringTok{\textquotesingle{}jawa\textquotesingle{}}\NormalTok{)}
+\NormalTok{petajawa}\OtherTok{\textless{}{-}}\FunctionTok{readOGR}\NormalTok{(}\AttributeTok{dsn=}\StringTok{\textquotesingle{}Jawamap\textquotesingle{}}\NormalTok{,}\AttributeTok{layer=}\StringTok{\textquotesingle{}jawa\textquotesingle{}}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
 ## OGR data source with driver: ESRI Shapefile 
-## Source: "D:\Research (eksternal dept)\pelatihan spasial (adj)\modeul 2\Pelatihan-Spasial\Jawamap", layer: "jawa"
+## Source: "D:\Jobs\Pelatihan Spasial STIS\New folder\Pelatihan-Spasial\Jawamap", layer: "jawa"
 ## with 119 features
 ## It has 5 fields
 \end{verbatim}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{petajawa}\OperatorTok{@}\NormalTok{data[}\DecValTok{24}\NormalTok{,] }\CommentTok{\#dihilangkan dari peta karena tidak ada dalam data pengamatan}
+\NormalTok{petajawa}\SpecialCharTok{@}\NormalTok{data[}\DecValTok{24}\NormalTok{,] }\CommentTok{\#dihilangkan dari peta karena tidak ada dalam data pengamatan}
 \end{Highlighting}
 \end{Shaded}
 
@@ -3507,13 +3504,13 @@ Peta persebaran jumlah penduduk miskin di kabupaten/kota Provinsi Jawa Tengah pa
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{petajawa\textless{}{-}petajawa[}\OperatorTok{{-}}\DecValTok{24}\NormalTok{,]}
+\NormalTok{petajawa}\OtherTok{\textless{}{-}}\NormalTok{petajawa[}\SpecialCharTok{{-}}\DecValTok{24}\NormalTok{,]}
 
 
-\NormalTok{data2012\textless{}{-}}\KeywordTok{subset}\NormalTok{(data, data}\OperatorTok{$}\NormalTok{Tahun}\OperatorTok{==}\DecValTok{2012}\NormalTok{)}
+\NormalTok{data2012}\OtherTok{\textless{}{-}}\FunctionTok{subset}\NormalTok{(data, data}\SpecialCharTok{$}\NormalTok{Tahun}\SpecialCharTok{==}\DecValTok{2012}\NormalTok{)}
 
-\NormalTok{petajawa}\OperatorTok{$}\NormalTok{Kemiskinan\textless{}{-}data2012}\OperatorTok{$}\NormalTok{Kemiskinan}
-\KeywordTok{spplot}\NormalTok{(petajawa, }\StringTok{"Kemiskinan"}\NormalTok{, }\DataTypeTok{main=}\StringTok{"Persentase Penduduk Miskin 2012"}\NormalTok{)}
+\NormalTok{petajawa}\SpecialCharTok{$}\NormalTok{Kemiskinan}\OtherTok{\textless{}{-}}\NormalTok{data2012}\SpecialCharTok{$}\NormalTok{Kemiskinan}
+\FunctionTok{spplot}\NormalTok{(petajawa, }\StringTok{"Kemiskinan"}\NormalTok{, }\AttributeTok{main=}\StringTok{"Persentase Penduduk Miskin 2012"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -3526,7 +3523,7 @@ Seperti yang telah dijelaskan pada bagian awal modul ini, kita dapat menggunakan
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{library}\NormalTok{(splm)}
+\FunctionTok{library}\NormalTok{(splm)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -3536,13 +3533,13 @@ Seperti yang telah dijelaskan pada bagian awal modul ini, kita dapat menggunakan
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{w\textless{}{-}}\KeywordTok{as.matrix}\NormalTok{(}\DecValTok{1}\OperatorTok{/}\KeywordTok{dist}\NormalTok{(}\KeywordTok{coordinates}\NormalTok{(petajawa)))}
-\NormalTok{ww\textless{}{-}w}
-\ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \DecValTok{1}\OperatorTok{:}\DecValTok{118}\NormalTok{)}
+\NormalTok{w}\OtherTok{\textless{}{-}}\FunctionTok{as.matrix}\NormalTok{(}\DecValTok{1}\SpecialCharTok{/}\FunctionTok{dist}\NormalTok{(}\FunctionTok{coordinates}\NormalTok{(petajawa)))}
+\NormalTok{ww}\OtherTok{\textless{}{-}}\NormalTok{w}
+\ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\DecValTok{118}\NormalTok{)}
 \NormalTok{\{}
-\NormalTok{ww[i,]\textless{}{-}ww[i,]}\OperatorTok{/}\KeywordTok{apply}\NormalTok{(w,}\DecValTok{1}\NormalTok{,sum)[i]}
+\NormalTok{ww[i,]}\OtherTok{\textless{}{-}}\NormalTok{ww[i,]}\SpecialCharTok{/}\FunctionTok{apply}\NormalTok{(w,}\DecValTok{1}\NormalTok{,sum)[i]}
 \NormalTok{\}}
-\KeywordTok{rowSums}\NormalTok{(ww)}
+\FunctionTok{rowSums}\NormalTok{(ww)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -3563,7 +3560,7 @@ Seperti yang telah dijelaskan pada bagian awal modul ini, kita dapat menggunakan
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{rwtest}\NormalTok{(model.fixed, }\DataTypeTok{w=}\NormalTok{ww)}
+\FunctionTok{rwtest}\NormalTok{(model.fixed, }\AttributeTok{w=}\NormalTok{ww)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -3663,8 +3660,8 @@ Uji ini dilakukan untuk mengidentifikasi kesesuaian model dengan pengaruh tetap 
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{library}\NormalTok{(splm)}
-\KeywordTok{print}\NormalTok{(panelhausman\textless{}{-}}\KeywordTok{phtest}\NormalTok{(Kemiskinan}\OperatorTok{\textasciitilde{}}\NormalTok{IPM}\OperatorTok{+}\NormalTok{PDRB}\OperatorTok{+}\NormalTok{TPT, }\DataTypeTok{data=}\NormalTok{data1))}
+\FunctionTok{library}\NormalTok{(splm)}
+\FunctionTok{print}\NormalTok{(panelhausman}\OtherTok{\textless{}{-}}\FunctionTok{phtest}\NormalTok{(Kemiskinan}\SpecialCharTok{\textasciitilde{}}\NormalTok{IPM}\SpecialCharTok{+}\NormalTok{PDRB}\SpecialCharTok{+}\NormalTok{TPT, }\AttributeTok{data=}\NormalTok{data1))}
 \end{Highlighting}
 \end{Shaded}
 
@@ -3679,7 +3676,7 @@ Uji ini dilakukan untuk mengidentifikasi kesesuaian model dengan pengaruh tetap 
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{print}\NormalTok{(spat.hausman.SEM\textless{}{-}}\KeywordTok{sphtest}\NormalTok{(Kemiskinan}\OperatorTok{\textasciitilde{}}\NormalTok{IPM}\OperatorTok{+}\NormalTok{PDRB}\OperatorTok{+}\NormalTok{TPT, }\DataTypeTok{data=}\NormalTok{data1, }\DataTypeTok{listw=}\KeywordTok{mat2listw}\NormalTok{(ww),}\DataTypeTok{spatial.model=}\StringTok{"error"}\NormalTok{))}
+\FunctionTok{print}\NormalTok{(spat.hausman.SEM}\OtherTok{\textless{}{-}}\FunctionTok{sphtest}\NormalTok{(Kemiskinan}\SpecialCharTok{\textasciitilde{}}\NormalTok{IPM}\SpecialCharTok{+}\NormalTok{PDRB}\SpecialCharTok{+}\NormalTok{TPT, }\AttributeTok{data=}\NormalTok{data1, }\AttributeTok{listw=}\FunctionTok{mat2listw}\NormalTok{(ww),}\AttributeTok{spatial.model=}\StringTok{"error"}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
 
@@ -3694,7 +3691,7 @@ Uji ini dilakukan untuk mengidentifikasi kesesuaian model dengan pengaruh tetap 
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{print}\NormalTok{(spat.hausman.SAR\textless{}{-}}\KeywordTok{sphtest}\NormalTok{(Kemiskinan}\OperatorTok{\textasciitilde{}}\NormalTok{IPM}\OperatorTok{+}\NormalTok{PDRB}\OperatorTok{+}\NormalTok{TPT, }\DataTypeTok{data=}\NormalTok{data1, }\DataTypeTok{listw=}\KeywordTok{mat2listw}\NormalTok{(ww),}\DataTypeTok{spatial.model=}\StringTok{"lag"}\NormalTok{))}
+\FunctionTok{print}\NormalTok{(spat.hausman.SAR}\OtherTok{\textless{}{-}}\FunctionTok{sphtest}\NormalTok{(Kemiskinan}\SpecialCharTok{\textasciitilde{}}\NormalTok{IPM}\SpecialCharTok{+}\NormalTok{PDRB}\SpecialCharTok{+}\NormalTok{TPT, }\AttributeTok{data=}\NormalTok{data1, }\AttributeTok{listw=}\FunctionTok{mat2listw}\NormalTok{(ww),}\AttributeTok{spatial.model=}\StringTok{"lag"}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
 
@@ -3720,7 +3717,7 @@ Untuk model tetap, uji Lagrange dapat dilakukan untuk mengidentifikasi spesifika
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# Uji 1}
-\KeywordTok{slmtest}\NormalTok{(Kemiskinan}\OperatorTok{\textasciitilde{}}\NormalTok{IPM}\OperatorTok{+}\NormalTok{PDRB}\OperatorTok{+}\NormalTok{TPT, }\DataTypeTok{data=}\NormalTok{data1, }\DataTypeTok{listw=}\KeywordTok{mat2listw}\NormalTok{(ww),}\DataTypeTok{test=}\StringTok{"lml"}\NormalTok{, }\DataTypeTok{model=}\StringTok{"within"}\NormalTok{)}
+\FunctionTok{slmtest}\NormalTok{(Kemiskinan}\SpecialCharTok{\textasciitilde{}}\NormalTok{IPM}\SpecialCharTok{+}\NormalTok{PDRB}\SpecialCharTok{+}\NormalTok{TPT, }\AttributeTok{data=}\NormalTok{data1, }\AttributeTok{listw=}\FunctionTok{mat2listw}\NormalTok{(ww),}\AttributeTok{test=}\StringTok{"lml"}\NormalTok{, }\AttributeTok{model=}\StringTok{"within"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -3736,7 +3733,7 @@ Untuk model tetap, uji Lagrange dapat dilakukan untuk mengidentifikasi spesifika
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# Uji 2}
-\KeywordTok{slmtest}\NormalTok{(Kemiskinan}\OperatorTok{\textasciitilde{}}\NormalTok{IPM}\OperatorTok{+}\NormalTok{PDRB}\OperatorTok{+}\NormalTok{TPT, }\DataTypeTok{data=}\NormalTok{data1, }\DataTypeTok{listw=}\KeywordTok{mat2listw}\NormalTok{(ww),}\DataTypeTok{test=}\StringTok{"lme"}\NormalTok{, }\DataTypeTok{model=}\StringTok{"within"}\NormalTok{)}
+\FunctionTok{slmtest}\NormalTok{(Kemiskinan}\SpecialCharTok{\textasciitilde{}}\NormalTok{IPM}\SpecialCharTok{+}\NormalTok{PDRB}\SpecialCharTok{+}\NormalTok{TPT, }\AttributeTok{data=}\NormalTok{data1, }\AttributeTok{listw=}\FunctionTok{mat2listw}\NormalTok{(ww),}\AttributeTok{test=}\StringTok{"lme"}\NormalTok{, }\AttributeTok{model=}\StringTok{"within"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -3755,7 +3752,7 @@ Uji robust dapat dilakukan untuk membantu menentukan spesifikasi model apabila u
 \begin{Highlighting}[]
 \CommentTok{\# Uji 3}
 
-\KeywordTok{slmtest}\NormalTok{(Kemiskinan}\OperatorTok{\textasciitilde{}}\NormalTok{IPM}\OperatorTok{+}\NormalTok{PDRB}\OperatorTok{+}\NormalTok{TPT, }\DataTypeTok{data=}\NormalTok{data1, }\DataTypeTok{listw=}\KeywordTok{mat2listw}\NormalTok{(ww),}\DataTypeTok{test=}\StringTok{"rlml"}\NormalTok{, }\DataTypeTok{model=}\StringTok{"within"}\NormalTok{)}
+\FunctionTok{slmtest}\NormalTok{(Kemiskinan}\SpecialCharTok{\textasciitilde{}}\NormalTok{IPM}\SpecialCharTok{+}\NormalTok{PDRB}\SpecialCharTok{+}\NormalTok{TPT, }\AttributeTok{data=}\NormalTok{data1, }\AttributeTok{listw=}\FunctionTok{mat2listw}\NormalTok{(ww),}\AttributeTok{test=}\StringTok{"rlml"}\NormalTok{, }\AttributeTok{model=}\StringTok{"within"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -3772,7 +3769,7 @@ Uji robust dapat dilakukan untuk membantu menentukan spesifikasi model apabila u
 \begin{Highlighting}[]
 \CommentTok{\# Uji 4}
 
-\KeywordTok{slmtest}\NormalTok{(Kemiskinan}\OperatorTok{\textasciitilde{}}\NormalTok{IPM}\OperatorTok{+}\NormalTok{PDRB}\OperatorTok{+}\NormalTok{TPT, }\DataTypeTok{data=}\NormalTok{data1, }\DataTypeTok{listw=}\KeywordTok{mat2listw}\NormalTok{(ww),}\DataTypeTok{test=}\StringTok{"rlme"}\NormalTok{, }\DataTypeTok{model=}\StringTok{"within"}\NormalTok{)}
+\FunctionTok{slmtest}\NormalTok{(Kemiskinan}\SpecialCharTok{\textasciitilde{}}\NormalTok{IPM}\SpecialCharTok{+}\NormalTok{PDRB}\SpecialCharTok{+}\NormalTok{TPT, }\AttributeTok{data=}\NormalTok{data1, }\AttributeTok{listw=}\FunctionTok{mat2listw}\NormalTok{(ww),}\AttributeTok{test=}\StringTok{"rlme"}\NormalTok{, }\AttributeTok{model=}\StringTok{"within"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -3790,9 +3787,9 @@ Uji robust dapat dilakukan untuk membantu menentukan spesifikasi model apabila u
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{panel.sar\textless{}{-}}\KeywordTok{spml}\NormalTok{(Kemiskinan}\OperatorTok{\textasciitilde{}}\NormalTok{IPM}\OperatorTok{+}\NormalTok{PDRB}\OperatorTok{+}\NormalTok{TPT, }\DataTypeTok{data=}\NormalTok{data1, }\DataTypeTok{listw=}\KeywordTok{mat2listw}\NormalTok{(ww),}\DataTypeTok{model=}\StringTok{"within"}\NormalTok{, }
-                \DataTypeTok{effect =} \StringTok{"twoways"}\NormalTok{, }\DataTypeTok{lag=}\NormalTok{T, }\DataTypeTok{spatial.error =} \StringTok{"none"}\NormalTok{)}
-\KeywordTok{summary}\NormalTok{(panel.sar)}
+\NormalTok{panel.sar}\OtherTok{\textless{}{-}}\FunctionTok{spml}\NormalTok{(Kemiskinan}\SpecialCharTok{\textasciitilde{}}\NormalTok{IPM}\SpecialCharTok{+}\NormalTok{PDRB}\SpecialCharTok{+}\NormalTok{TPT, }\AttributeTok{data=}\NormalTok{data1, }\AttributeTok{listw=}\FunctionTok{mat2listw}\NormalTok{(ww),}\AttributeTok{model=}\StringTok{"within"}\NormalTok{, }
+                \AttributeTok{effect =} \StringTok{"twoways"}\NormalTok{, }\AttributeTok{lag=}\NormalTok{T, }\AttributeTok{spatial.error =} \StringTok{"none"}\NormalTok{)}
+\FunctionTok{summary}\NormalTok{(panel.sar)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -3824,9 +3821,9 @@ Uji robust dapat dilakukan untuk membantu menentukan spesifikasi model apabila u
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\#db=t*n{-}(k+1){-}n}
-\NormalTok{db\textless{}{-}(}\DecValTok{5}\OperatorTok{*}\DecValTok{118}\NormalTok{)}\OperatorTok{{-}}\NormalTok{(}\DecValTok{3}\OperatorTok{+}\DecValTok{1}\NormalTok{)}\OperatorTok{{-}}\DecValTok{118}
+\NormalTok{db}\OtherTok{\textless{}{-}}\NormalTok{(}\DecValTok{5}\SpecialCharTok{*}\DecValTok{118}\NormalTok{)}\SpecialCharTok{{-}}\NormalTok{(}\DecValTok{3}\SpecialCharTok{+}\DecValTok{1}\NormalTok{)}\SpecialCharTok{{-}}\DecValTok{118}
   
-\KeywordTok{sqrt}\NormalTok{(}\KeywordTok{sum}\NormalTok{(panel.sar}\OperatorTok{$}\NormalTok{resid}\OperatorTok{\^{}}\DecValTok{2}\NormalTok{)}\OperatorTok{/}\NormalTok{db) }\CommentTok{\#\# Standard Error of Regression}
+\FunctionTok{sqrt}\NormalTok{(}\FunctionTok{sum}\NormalTok{(panel.sar}\SpecialCharTok{$}\NormalTok{resid}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{)}\SpecialCharTok{/}\NormalTok{db) }\DocumentationTok{\#\# Standard Error of Regression}
 \end{Highlighting}
 \end{Shaded}
 
@@ -3836,7 +3833,7 @@ Uji robust dapat dilakukan untuk membantu menentukan spesifikasi model apabila u
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{summary}\NormalTok{(panel.sar)}\OperatorTok{$}\NormalTok{rsqr }\CommentTok{\#\# Pseudo{-}R2}
+\FunctionTok{summary}\NormalTok{(panel.sar)}\SpecialCharTok{$}\NormalTok{rsqr }\DocumentationTok{\#\# Pseudo{-}R2}
 \end{Highlighting}
 \end{Shaded}
 
@@ -3849,9 +3846,9 @@ Uji robust dapat dilakukan untuk membantu menentukan spesifikasi model apabila u
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{panel.sem\textless{}{-}}\KeywordTok{spml}\NormalTok{(Kemiskinan}\OperatorTok{\textasciitilde{}}\NormalTok{IPM}\OperatorTok{+}\NormalTok{PDRB}\OperatorTok{+}\NormalTok{TPT, }\DataTypeTok{data=}\NormalTok{data1, }\DataTypeTok{listw=}\KeywordTok{mat2listw}\NormalTok{(ww),}\DataTypeTok{model=}\StringTok{"within"}\NormalTok{, }
-                \DataTypeTok{effect =} \StringTok{"twoways"}\NormalTok{, }\DataTypeTok{lag=}\NormalTok{F)}
-\KeywordTok{summary}\NormalTok{(panel.sem)}
+\NormalTok{panel.sem}\OtherTok{\textless{}{-}}\FunctionTok{spml}\NormalTok{(Kemiskinan}\SpecialCharTok{\textasciitilde{}}\NormalTok{IPM}\SpecialCharTok{+}\NormalTok{PDRB}\SpecialCharTok{+}\NormalTok{TPT, }\AttributeTok{data=}\NormalTok{data1, }\AttributeTok{listw=}\FunctionTok{mat2listw}\NormalTok{(ww),}\AttributeTok{model=}\StringTok{"within"}\NormalTok{, }
+                \AttributeTok{effect =} \StringTok{"twoways"}\NormalTok{, }\AttributeTok{lag=}\NormalTok{F)}
+\FunctionTok{summary}\NormalTok{(panel.sem)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -3882,7 +3879,7 @@ Uji robust dapat dilakukan untuk membantu menentukan spesifikasi model apabila u
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{sqrt}\NormalTok{(}\KeywordTok{sum}\NormalTok{(panel.sem}\OperatorTok{$}\NormalTok{resid}\OperatorTok{\^{}}\DecValTok{2}\NormalTok{)}\OperatorTok{/}\NormalTok{db) }\CommentTok{\#\# Standard Error of Regression}
+\FunctionTok{sqrt}\NormalTok{(}\FunctionTok{sum}\NormalTok{(panel.sem}\SpecialCharTok{$}\NormalTok{resid}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{)}\SpecialCharTok{/}\NormalTok{db) }\DocumentationTok{\#\# Standard Error of Regression}
 \end{Highlighting}
 \end{Shaded}
 
@@ -3892,7 +3889,7 @@ Uji robust dapat dilakukan untuk membantu menentukan spesifikasi model apabila u
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{summary}\NormalTok{(panel.sem)}\OperatorTok{$}\NormalTok{rsqr }\CommentTok{\#\# Pseudo{-}R2}
+\FunctionTok{summary}\NormalTok{(panel.sem)}\SpecialCharTok{$}\NormalTok{rsqr }\DocumentationTok{\#\# Pseudo{-}R2}
 \end{Highlighting}
 \end{Shaded}
 
@@ -3905,9 +3902,9 @@ Uji robust dapat dilakukan untuk membantu menentukan spesifikasi model apabila u
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{panel.gsm\textless{}{-}}\KeywordTok{spml}\NormalTok{(Kemiskinan}\OperatorTok{\textasciitilde{}}\NormalTok{IPM}\OperatorTok{+}\NormalTok{PDRB}\OperatorTok{+}\NormalTok{TPT, }\DataTypeTok{data=}\NormalTok{data1, }\DataTypeTok{listw=}\KeywordTok{mat2listw}\NormalTok{(ww),}\DataTypeTok{model=}\StringTok{"within"}\NormalTok{, }
-                \DataTypeTok{effect =} \StringTok{"twoways"}\NormalTok{, }\DataTypeTok{lag=}\NormalTok{T)}
-\KeywordTok{summary}\NormalTok{(panel.gsm)}
+\NormalTok{panel.gsm}\OtherTok{\textless{}{-}}\FunctionTok{spml}\NormalTok{(Kemiskinan}\SpecialCharTok{\textasciitilde{}}\NormalTok{IPM}\SpecialCharTok{+}\NormalTok{PDRB}\SpecialCharTok{+}\NormalTok{TPT, }\AttributeTok{data=}\NormalTok{data1, }\AttributeTok{listw=}\FunctionTok{mat2listw}\NormalTok{(ww),}\AttributeTok{model=}\StringTok{"within"}\NormalTok{, }
+                \AttributeTok{effect =} \StringTok{"twoways"}\NormalTok{, }\AttributeTok{lag=}\NormalTok{T)}
+\FunctionTok{summary}\NormalTok{(panel.gsm)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -3942,7 +3939,7 @@ Uji robust dapat dilakukan untuk membantu menentukan spesifikasi model apabila u
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{sqrt}\NormalTok{(}\KeywordTok{sum}\NormalTok{(panel.gsm}\OperatorTok{$}\NormalTok{resid}\OperatorTok{\^{}}\DecValTok{2}\NormalTok{)}\OperatorTok{/}\NormalTok{db) }\CommentTok{\#\# Standard Error of Regression}
+\FunctionTok{sqrt}\NormalTok{(}\FunctionTok{sum}\NormalTok{(panel.gsm}\SpecialCharTok{$}\NormalTok{resid}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{)}\SpecialCharTok{/}\NormalTok{db) }\DocumentationTok{\#\# Standard Error of Regression}
 \end{Highlighting}
 \end{Shaded}
 
@@ -3952,7 +3949,7 @@ Uji robust dapat dilakukan untuk membantu menentukan spesifikasi model apabila u
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{summary}\NormalTok{(panel.gsm)}\OperatorTok{$}\NormalTok{rsqr }\CommentTok{\#\# Pseudo{-}R2}
+\FunctionTok{summary}\NormalTok{(panel.gsm)}\SpecialCharTok{$}\NormalTok{rsqr }\DocumentationTok{\#\# Pseudo{-}R2}
 \end{Highlighting}
 \end{Shaded}
 
@@ -3966,23 +3963,23 @@ Uji robust dapat dilakukan untuk membantu menentukan spesifikasi model apabila u
 Berikut ini adalah ringkasan dari pemodelan yang telah dilakukan pada tahap-tahap sebelumnya:
 
 \begin{verbatim}
-##            Kriteria    Panel_SAR    Panel_SEM   PANEL_GSM
-## 1  SE of Regression 1.191296e-01 0.1224889083 1.18768e-01
-## 2         Pseudo-R2 9.887236e-01 0.9880786871 9.88792e-01
-## 3 p-value of lambda 5.362000e-08           NA 2.44500e-14
-## 4    p-value of rho           NA 0.0000009841 5.71400e-02
+##            Kriteria Panel_SAR Panel_SEM PANEL_GSM
+## 1  SE of Regression    0.1191    0.1225    0.1188
+## 2         Pseudo-R2    0.9887    0.9881    0.9888
+## 3 p-value of lambda    0.0000        NA    0.0000
+## 4    p-value of rho        NA    0.0000    0.0571
 \end{verbatim}
 
-Berdasarkan output di atas, model terbaik adalah model panel SAR karena koefisien \(\lambda\) yang di
+Berdasarkan output di atas, model terbaik adalah model panel SAR.
 
 \hypertarget{interpretasi-model}{%
 \subsection{Interpretasi Model}\label{interpretasi-model}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{lw\textless{}{-}}\StringTok{ }\KeywordTok{mat2listw}\NormalTok{(ww, }\DataTypeTok{style =}\StringTok{"W"}\NormalTok{)}
+\NormalTok{lw}\OtherTok{\textless{}{-}} \FunctionTok{mat2listw}\NormalTok{(ww, }\AttributeTok{style =}\StringTok{"W"}\NormalTok{)}
 
-\NormalTok{spdep}\OperatorTok{::}\KeywordTok{impacts}\NormalTok{(panel.sar, }\DataTypeTok{listw=}\NormalTok{lw, }\DataTypeTok{time =} \DecValTok{5}\NormalTok{)}
+\NormalTok{spdep}\SpecialCharTok{::}\FunctionTok{impacts}\NormalTok{(panel.sar, }\AttributeTok{listw=}\NormalTok{lw, }\AttributeTok{time =} \DecValTok{5}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 

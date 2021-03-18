@@ -64,6 +64,7 @@
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
 pre.sourceCode { margin: 0; }
 @media screen {
@@ -265,21 +266,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Pada modul ini akan dibahas pemodelan GWR menggunakan package <code>spgwr</code>.</p>
 <div id="eksplorasi-data-1" class="section level2" number="3.1">
 <h2><span class="header-section-number">3.1</span> Eksplorasi Data</h2>
-<div class="sourceCode" id="cb188"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb188-1"><a href="geographically-weighted-regression-gwr.html#cb188-1" aria-hidden="true"></a><span class="kw">library</span>(rgdal)</span>
-<span id="cb188-2"><a href="geographically-weighted-regression-gwr.html#cb188-2" aria-hidden="true"></a>petajawa=<span class="kw">readOGR</span>(<span class="dt">dsn=</span><span class="st">&quot;Jawamap&quot;</span>, <span class="dt">layer=</span><span class="st">&quot;jawa&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb188"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb188-1"><a href="geographically-weighted-regression-gwr.html#cb188-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rgdal)</span>
+<span id="cb188-2"><a href="geographically-weighted-regression-gwr.html#cb188-2" aria-hidden="true" tabindex="-1"></a>petajawa<span class="ot">=</span><span class="fu">readOGR</span>(<span class="at">dsn=</span><span class="st">&quot;Jawamap&quot;</span>, <span class="at">layer=</span><span class="st">&quot;jawa&quot;</span>)</span></code></pre></div>
 <pre><code>## OGR data source with driver: ESRI Shapefile 
-## Source: &quot;D:\Research (eksternal dept)\pelatihan spasial (adj)\modeul 2\Pelatihan-Spasial\Jawamap&quot;, layer: &quot;jawa&quot;
+## Source: &quot;D:\Jobs\Pelatihan Spasial STIS\New folder\Pelatihan-Spasial\Jawamap&quot;, layer: &quot;jawa&quot;
 ## with 119 features
 ## It has 5 fields</code></pre>
-<div class="sourceCode" id="cb190"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb190-1"><a href="geographically-weighted-regression-gwr.html#cb190-1" aria-hidden="true"></a>datajawa=<span class="kw">read.csv</span>(<span class="st">&quot;Pulau Jawa.csv&quot;</span>, <span class="dt">header=</span>T, <span class="dt">sep=</span><span class="st">&quot;;&quot;</span>)</span>
-<span id="cb190-2"><a href="geographically-weighted-regression-gwr.html#cb190-2" aria-hidden="true"></a>petajawa<span class="op">$</span>Kemiskinan&lt;-<span class="st"> </span>datajawa<span class="op">$</span>Kemiskinan</span></code></pre></div>
+<div class="sourceCode" id="cb190"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb190-1"><a href="geographically-weighted-regression-gwr.html#cb190-1" aria-hidden="true" tabindex="-1"></a>datajawa<span class="ot">=</span><span class="fu">read.csv</span>(<span class="st">&quot;Pulau Jawa.csv&quot;</span>, <span class="at">header=</span>T, <span class="at">sep=</span><span class="st">&quot;;&quot;</span>)</span>
+<span id="cb190-2"><a href="geographically-weighted-regression-gwr.html#cb190-2" aria-hidden="true" tabindex="-1"></a>petajawa<span class="sc">$</span>Kemiskinan<span class="ot">&lt;-</span> datajawa<span class="sc">$</span>Kemiskinan</span></code></pre></div>
 <p>Plot berikut ini dapat dimanfaatkan untuk mengeksplorasi hubungan antar peubah.</p>
-<div class="sourceCode" id="cb191"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb191-1"><a href="geographically-weighted-regression-gwr.html#cb191-1" aria-hidden="true"></a>corr&lt;-<span class="kw">cor</span>(datajawa[,<span class="op">-</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>)])</span>
-<span id="cb191-2"><a href="geographically-weighted-regression-gwr.html#cb191-2" aria-hidden="true"></a>corrplot<span class="op">::</span><span class="kw">corrplot</span>(corr, <span class="dt">is.corr=</span>T)</span></code></pre></div>
+<div class="sourceCode" id="cb191"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb191-1"><a href="geographically-weighted-regression-gwr.html#cb191-1" aria-hidden="true" tabindex="-1"></a>corr<span class="ot">&lt;-</span><span class="fu">cor</span>(datajawa[,<span class="sc">-</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>)])</span>
+<span id="cb191-2"><a href="geographically-weighted-regression-gwr.html#cb191-2" aria-hidden="true" tabindex="-1"></a>corrplot<span class="sc">::</span><span class="fu">corrplot</span>(corr, <span class="at">is.corr=</span>T)</span></code></pre></div>
 <p><img src="modul_files/figure-html/unnamed-chunk-71-1.png" width="672" /></p>
 <p>Sebagai ilustrasi, peubah rata-rata lama sekolah akan digunakan untuk memodelkan kemiskinan di pulau Jawa. Sebagai langkah awal, kita akan terlebih dulu memodelkannya menggunakan regresi linear.</p>
-<div class="sourceCode" id="cb192"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb192-1"><a href="geographically-weighted-regression-gwr.html#cb192-1" aria-hidden="true"></a>fit.lm&lt;-<span class="kw">lm</span>(Kemiskinan<span class="op">~</span>Rata.Rata.Lama.Sekolah, <span class="dt">data=</span>datajawa)</span>
-<span id="cb192-2"><a href="geographically-weighted-regression-gwr.html#cb192-2" aria-hidden="true"></a><span class="kw">summary</span>(fit.lm)</span></code></pre></div>
+<div class="sourceCode" id="cb192"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb192-1"><a href="geographically-weighted-regression-gwr.html#cb192-1" aria-hidden="true" tabindex="-1"></a>fit.lm<span class="ot">&lt;-</span><span class="fu">lm</span>(Kemiskinan<span class="sc">~</span>Rata.Rata.Lama.Sekolah, <span class="at">data=</span>datajawa)</span>
+<span id="cb192-2"><a href="geographically-weighted-regression-gwr.html#cb192-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit.lm)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = Kemiskinan ~ Rata.Rata.Lama.Sekolah, data = datajawa)
@@ -299,20 +300,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## Multiple R-squared:  0.5302, Adjusted R-squared:  0.5262 
 ## F-statistic:   132 on 1 and 117 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>Selanjutnya, diagnostik model dilakukan untuk memeriksa pemenuhan asumsi pada model regresi linear.</p>
-<div class="sourceCode" id="cb194"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb194-1"><a href="geographically-weighted-regression-gwr.html#cb194-1" aria-hidden="true"></a>err.lm&lt;-<span class="kw">residuals</span>(fit.lm)</span>
-<span id="cb194-2"><a href="geographically-weighted-regression-gwr.html#cb194-2" aria-hidden="true"></a><span class="kw">shapiro.test</span>(err.lm)</span></code></pre></div>
+<div class="sourceCode" id="cb194"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb194-1"><a href="geographically-weighted-regression-gwr.html#cb194-1" aria-hidden="true" tabindex="-1"></a>err.lm<span class="ot">&lt;-</span><span class="fu">residuals</span>(fit.lm)</span>
+<span id="cb194-2"><a href="geographically-weighted-regression-gwr.html#cb194-2" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(err.lm)</span></code></pre></div>
 <pre><code>## 
 ##  Shapiro-Wilk normality test
 ## 
 ## data:  err.lm
 ## W = 0.98029, p-value = 0.07818</code></pre>
-<div class="sourceCode" id="cb196"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb196-1"><a href="geographically-weighted-regression-gwr.html#cb196-1" aria-hidden="true"></a><span class="kw">par</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
-<span id="cb196-2"><a href="geographically-weighted-regression-gwr.html#cb196-2" aria-hidden="true"></a><span class="kw">hist</span>(err.lm)</span>
-<span id="cb196-3"><a href="geographically-weighted-regression-gwr.html#cb196-3" aria-hidden="true"></a>car<span class="op">::</span><span class="kw">qqPlot</span>(<span class="kw">residuals</span>(fit.lm))</span></code></pre></div>
+<div class="sourceCode" id="cb196"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb196-1"><a href="geographically-weighted-regression-gwr.html#cb196-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb196-2"><a href="geographically-weighted-regression-gwr.html#cb196-2" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(err.lm)</span>
+<span id="cb196-3"><a href="geographically-weighted-regression-gwr.html#cb196-3" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">qqPlot</span>(<span class="fu">residuals</span>(fit.lm))</span></code></pre></div>
 <p><img src="modul_files/figure-html/unnamed-chunk-73-1.png" width="672" /></p>
 <pre><code>## [1]  69 115</code></pre>
-<div class="sourceCode" id="cb198"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb198-1"><a href="geographically-weighted-regression-gwr.html#cb198-1" aria-hidden="true"></a><span class="kw">plot</span>(fit.lm,<span class="dt">which=</span><span class="dv">1</span>)</span>
-<span id="cb198-2"><a href="geographically-weighted-regression-gwr.html#cb198-2" aria-hidden="true"></a>lmtest<span class="op">::</span><span class="kw">bptest</span>(fit.lm)</span></code></pre></div>
+<div class="sourceCode" id="cb198"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb198-1"><a href="geographically-weighted-regression-gwr.html#cb198-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(fit.lm,<span class="at">which=</span><span class="dv">1</span>)</span>
+<span id="cb198-2"><a href="geographically-weighted-regression-gwr.html#cb198-2" aria-hidden="true" tabindex="-1"></a>lmtest<span class="sc">::</span><span class="fu">bptest</span>(fit.lm)</span></code></pre></div>
 <pre><code>## 
 ##  studentized Breusch-Pagan test
 ## 
@@ -320,11 +321,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## BP = 4.7982, df = 1, p-value = 0.02849</code></pre>
 <p><img src="modul_files/figure-html/unnamed-chunk-73-2.png" width="672" /></p>
 <p>Terlihat pada output di atas bahwa sisaan model cenderung memiliki ragam yang tidak konstan. Selanjutnya juga akan diperiksa kebebasan sisaan menggunakan uji moran.</p>
-<div class="sourceCode" id="cb200"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb200-1"><a href="geographically-weighted-regression-gwr.html#cb200-1" aria-hidden="true"></a><span class="kw">library</span>(spdep)</span>
-<span id="cb200-2"><a href="geographically-weighted-regression-gwr.html#cb200-2" aria-hidden="true"></a>w&lt;-<span class="kw">poly2nb</span>(petajawa)</span>
-<span id="cb200-3"><a href="geographically-weighted-regression-gwr.html#cb200-3" aria-hidden="true"></a>ww&lt;-<span class="kw">nb2listw</span>(w, <span class="dt">zero.policy=</span>T)</span>
-<span id="cb200-4"><a href="geographically-weighted-regression-gwr.html#cb200-4" aria-hidden="true"></a></span>
-<span id="cb200-5"><a href="geographically-weighted-regression-gwr.html#cb200-5" aria-hidden="true"></a><span class="kw">lm.morantest</span>(fit.lm, ww, <span class="dt">alternative=</span><span class="st">&quot;two.sided&quot;</span>, <span class="dt">zero.policy =</span> T)</span></code></pre></div>
+<div class="sourceCode" id="cb200"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb200-1"><a href="geographically-weighted-regression-gwr.html#cb200-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(spdep)</span>
+<span id="cb200-2"><a href="geographically-weighted-regression-gwr.html#cb200-2" aria-hidden="true" tabindex="-1"></a>w<span class="ot">&lt;-</span><span class="fu">poly2nb</span>(petajawa)</span>
+<span id="cb200-3"><a href="geographically-weighted-regression-gwr.html#cb200-3" aria-hidden="true" tabindex="-1"></a>ww<span class="ot">&lt;-</span><span class="fu">nb2listw</span>(w, <span class="at">zero.policy=</span>T)</span>
+<span id="cb200-4"><a href="geographically-weighted-regression-gwr.html#cb200-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb200-5"><a href="geographically-weighted-regression-gwr.html#cb200-5" aria-hidden="true" tabindex="-1"></a><span class="fu">lm.morantest</span>(fit.lm, ww, <span class="at">alternative=</span><span class="st">&quot;two.sided&quot;</span>, <span class="at">zero.policy =</span> T)</span></code></pre></div>
 <pre><code>## 
 ##  Global Moran I for regression residuals
 ## 
@@ -339,8 +340,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## Observed Moran I      Expectation         Variance 
 ##       0.38842759      -0.01284003       0.00453256</code></pre>
 <p>Terlihat pada output bahwa terdapat autokorelasi spasial pada sisaan model regresi linier. Dengan mempertimbangkan bahwa sisaan model memiliki ragam yang tidak homogen, serta memiliki autokorelasi spasial, kita selanjutnya dapat mencoba memodelkannya dengan model regresi terboboti geografis atau GWR. Namun pada modul pembelajaran ini, kami akan perlihatkan pula bahwa pada pemodelan regresi spasial pun ternyata tetap menghasilkan sisaan dengan ragam yang heterogen.</p>
-<div class="sourceCode" id="cb202"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb202-1"><a href="geographically-weighted-regression-gwr.html#cb202-1" aria-hidden="true"></a>LM&lt;-<span class="kw">lm.LMtests</span>(fit.lm, ww,<span class="dt">test=</span><span class="kw">c</span>(<span class="st">&quot;LMerr&quot;</span>, <span class="st">&quot;LMlag&quot;</span>,<span class="st">&quot;RLMerr&quot;</span>,<span class="st">&quot;RLMlag&quot;</span>,<span class="st">&quot;SARMA&quot;</span>), <span class="dt">zero.policy=</span>T)</span>
-<span id="cb202-2"><a href="geographically-weighted-regression-gwr.html#cb202-2" aria-hidden="true"></a><span class="kw">summary</span>(LM)</span></code></pre></div>
+<div class="sourceCode" id="cb202"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb202-1"><a href="geographically-weighted-regression-gwr.html#cb202-1" aria-hidden="true" tabindex="-1"></a>LM<span class="ot">&lt;-</span><span class="fu">lm.LMtests</span>(fit.lm, ww,<span class="at">test=</span><span class="fu">c</span>(<span class="st">&quot;LMerr&quot;</span>, <span class="st">&quot;LMlag&quot;</span>,<span class="st">&quot;RLMerr&quot;</span>,<span class="st">&quot;RLMlag&quot;</span>,<span class="st">&quot;SARMA&quot;</span>), <span class="at">zero.policy=</span>T)</span>
+<span id="cb202-2"><a href="geographically-weighted-regression-gwr.html#cb202-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(LM)</span></code></pre></div>
 <pre><code>##  Lagrange multiplier diagnostics for spatial dependence
 ## data:  
 ## model: lm(formula = Kemiskinan ~ Rata.Rata.Lama.Sekolah, data =
@@ -355,24 +356,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## SARMA  32.3033815         2 9.670e-08 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<div class="sourceCode" id="cb204"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb204-1"><a href="geographically-weighted-regression-gwr.html#cb204-1" aria-hidden="true"></a><span class="kw">library</span>(spatialreg)</span>
-<span id="cb204-2"><a href="geographically-weighted-regression-gwr.html#cb204-2" aria-hidden="true"></a>sem&lt;-<span class="kw">errorsarlm</span>(Kemiskinan<span class="op">~</span>Rata.Rata.Lama.Sekolah,<span class="dt">data=</span>datajawa,ww, <span class="dt">zero.policy=</span>T)</span>
-<span id="cb204-3"><a href="geographically-weighted-regression-gwr.html#cb204-3" aria-hidden="true"></a>sar&lt;-<span class="kw">lagsarlm</span>(Kemiskinan<span class="op">~</span>Rata.Rata.Lama.Sekolah,<span class="dt">data=</span>datajawa,ww, <span class="dt">zero.policy=</span>T)</span>
-<span id="cb204-4"><a href="geographically-weighted-regression-gwr.html#cb204-4" aria-hidden="true"></a>gsm&lt;-<span class="kw">sacsarlm</span>(Kemiskinan<span class="op">~</span>Rata.Rata.Lama.Sekolah,<span class="dt">data=</span>datajawa,ww, <span class="dt">zero.policy=</span>T)</span>
-<span id="cb204-5"><a href="geographically-weighted-regression-gwr.html#cb204-5" aria-hidden="true"></a></span>
-<span id="cb204-6"><a href="geographically-weighted-regression-gwr.html#cb204-6" aria-hidden="true"></a><span class="kw">bptest.sarlm</span>(sem)</span></code></pre></div>
+<div class="sourceCode" id="cb204"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb204-1"><a href="geographically-weighted-regression-gwr.html#cb204-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(spatialreg)</span>
+<span id="cb204-2"><a href="geographically-weighted-regression-gwr.html#cb204-2" aria-hidden="true" tabindex="-1"></a>sem<span class="ot">&lt;-</span><span class="fu">errorsarlm</span>(Kemiskinan<span class="sc">~</span>Rata.Rata.Lama.Sekolah,<span class="at">data=</span>datajawa,ww, <span class="at">zero.policy=</span>T)</span>
+<span id="cb204-3"><a href="geographically-weighted-regression-gwr.html#cb204-3" aria-hidden="true" tabindex="-1"></a>sar<span class="ot">&lt;-</span><span class="fu">lagsarlm</span>(Kemiskinan<span class="sc">~</span>Rata.Rata.Lama.Sekolah,<span class="at">data=</span>datajawa,ww, <span class="at">zero.policy=</span>T)</span>
+<span id="cb204-4"><a href="geographically-weighted-regression-gwr.html#cb204-4" aria-hidden="true" tabindex="-1"></a>gsm<span class="ot">&lt;-</span><span class="fu">sacsarlm</span>(Kemiskinan<span class="sc">~</span>Rata.Rata.Lama.Sekolah,<span class="at">data=</span>datajawa,ww, <span class="at">zero.policy=</span>T)</span>
+<span id="cb204-5"><a href="geographically-weighted-regression-gwr.html#cb204-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb204-6"><a href="geographically-weighted-regression-gwr.html#cb204-6" aria-hidden="true" tabindex="-1"></a><span class="fu">bptest.sarlm</span>(sem)</span></code></pre></div>
 <pre><code>## 
 ##  studentized Breusch-Pagan test
 ## 
 ## data:  
 ## BP = 5.6364, df = 1, p-value = 0.01759</code></pre>
-<div class="sourceCode" id="cb206"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb206-1"><a href="geographically-weighted-regression-gwr.html#cb206-1" aria-hidden="true"></a><span class="kw">bptest.sarlm</span>(sar)</span></code></pre></div>
+<div class="sourceCode" id="cb206"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb206-1"><a href="geographically-weighted-regression-gwr.html#cb206-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bptest.sarlm</span>(sar)</span></code></pre></div>
 <pre><code>## 
 ##  studentized Breusch-Pagan test
 ## 
 ## data:  
 ## BP = 4.0536, df = 1, p-value = 0.04408</code></pre>
-<div class="sourceCode" id="cb208"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb208-1"><a href="geographically-weighted-regression-gwr.html#cb208-1" aria-hidden="true"></a><span class="kw">bptest.sarlm</span>(gsm)</span></code></pre></div>
+<div class="sourceCode" id="cb208"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb208-1"><a href="geographically-weighted-regression-gwr.html#cb208-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bptest.sarlm</span>(gsm)</span></code></pre></div>
 <pre><code>## 
 ##  studentized Breusch-Pagan test
 ## 
@@ -382,13 +383,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="basic-gwr" class="section level2" number="3.2">
 <h2><span class="header-section-number">3.2</span> Basic GWR</h2>
 <p>Kita dapat menggunakan fungsi <code>gwr</code> pada package <code>spgwr</code> untuk menyusun model GWR pada R software, seperti pada program berikut ini.</p>
-<div class="sourceCode" id="cb210"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb210-1"><a href="geographically-weighted-regression-gwr.html#cb210-1" aria-hidden="true"></a><span class="kw">library</span>(spgwr)</span></code></pre></div>
-<pre><code>## Warning: package &#39;spgwr&#39; was built under R version 4.0.3</code></pre>
+<div class="sourceCode" id="cb210"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb210-1"><a href="geographically-weighted-regression-gwr.html#cb210-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(spgwr)</span></code></pre></div>
+<pre><code>## Warning: package &#39;spgwr&#39; was built under R version 4.0.4</code></pre>
 <pre><code>## NOTE: This package does not constitute approval of GWR
 ## as a method of spatial analysis; see example(gwr)</code></pre>
-<div class="sourceCode" id="cb213"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb213-1"><a href="geographically-weighted-regression-gwr.html#cb213-1" aria-hidden="true"></a><span class="kw">coordinates</span>(datajawa)&lt;-<span class="kw">c</span>(<span class="st">&quot;Longitude&quot;</span>,<span class="st">&quot;Latitude&quot;</span>)</span>
-<span id="cb213-2"><a href="geographically-weighted-regression-gwr.html#cb213-2" aria-hidden="true"></a>gwr20 &lt;-<span class="st"> </span><span class="kw">gwr</span>(Kemiskinan<span class="op">~</span>Rata.Rata.Lama.Sekolah,<span class="dt">data=</span>datajawa,<span class="dt">bandwidth=</span><span class="dv">20</span>)</span>
-<span id="cb213-3"><a href="geographically-weighted-regression-gwr.html#cb213-3" aria-hidden="true"></a>gwr20</span></code></pre></div>
+<div class="sourceCode" id="cb213"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb213-1"><a href="geographically-weighted-regression-gwr.html#cb213-1" aria-hidden="true" tabindex="-1"></a><span class="fu">coordinates</span>(datajawa)<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="st">&quot;Longitude&quot;</span>,<span class="st">&quot;Latitude&quot;</span>)</span>
+<span id="cb213-2"><a href="geographically-weighted-regression-gwr.html#cb213-2" aria-hidden="true" tabindex="-1"></a>gwr20 <span class="ot">&lt;-</span> <span class="fu">gwr</span>(Kemiskinan<span class="sc">~</span>Rata.Rata.Lama.Sekolah,<span class="at">data=</span>datajawa,<span class="at">bandwidth=</span><span class="dv">20</span>)</span>
+<span id="cb213-3"><a href="geographically-weighted-regression-gwr.html#cb213-3" aria-hidden="true" tabindex="-1"></a>gwr20</span></code></pre></div>
 <pre><code>## Call:
 ## gwr(formula = Kemiskinan ~ Rata.Rata.Lama.Sekolah, data = datajawa, 
 ##     bandwidth = 20)
@@ -399,8 +400,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## X.Intercept.           24.6607 24.6971 24.7366 24.7620 24.8026 24.7340
 ## Rata.Rata.Lama.Sekolah -1.8708 -1.8673 -1.8651 -1.8617 -1.8585 -1.8657</code></pre>
 <p>Kita dapat pula mengganti bandwidth sesuai dengan yang diinginkan. Selanjutnya kita akan bandingkan perbedaan akibat penentuan bandwidth yang berbeda-beda tersebut.</p>
-<div class="sourceCode" id="cb215"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb215-1"><a href="geographically-weighted-regression-gwr.html#cb215-1" aria-hidden="true"></a>gwr3 &lt;-<span class="st"> </span><span class="kw">gwr</span>(Kemiskinan<span class="op">~</span>Rata.Rata.Lama.Sekolah,<span class="dt">data=</span>datajawa, <span class="dt">bandwidth=</span><span class="dv">3</span>)</span>
-<span id="cb215-2"><a href="geographically-weighted-regression-gwr.html#cb215-2" aria-hidden="true"></a>gwr3</span></code></pre></div>
+<div class="sourceCode" id="cb215"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb215-1"><a href="geographically-weighted-regression-gwr.html#cb215-1" aria-hidden="true" tabindex="-1"></a>gwr3 <span class="ot">&lt;-</span> <span class="fu">gwr</span>(Kemiskinan<span class="sc">~</span>Rata.Rata.Lama.Sekolah,<span class="at">data=</span>datajawa, <span class="at">bandwidth=</span><span class="dv">3</span>)</span>
+<span id="cb215-2"><a href="geographically-weighted-regression-gwr.html#cb215-2" aria-hidden="true" tabindex="-1"></a>gwr3</span></code></pre></div>
 <pre><code>## Call:
 ## gwr(formula = Kemiskinan ~ Rata.Rata.Lama.Sekolah, data = datajawa, 
 ##     bandwidth = 3)
@@ -410,8 +411,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##                           Min. 1st Qu.  Median 3rd Qu.    Max.  Global
 ## X.Intercept.           21.8567 23.3823 24.6838 25.4191 26.4774 24.7340
 ## Rata.Rata.Lama.Sekolah -2.0218 -1.8937 -1.8219 -1.7275 -1.6145 -1.8657</code></pre>
-<div class="sourceCode" id="cb217"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb217-1"><a href="geographically-weighted-regression-gwr.html#cb217-1" aria-hidden="true"></a>gwr2 &lt;-<span class="st"> </span><span class="kw">gwr</span>(Kemiskinan<span class="op">~</span>Rata.Rata.Lama.Sekolah,<span class="dt">data=</span>datajawa,<span class="dt">bandwidth=</span><span class="dv">2</span>)</span>
-<span id="cb217-2"><a href="geographically-weighted-regression-gwr.html#cb217-2" aria-hidden="true"></a>gwr2</span></code></pre></div>
+<div class="sourceCode" id="cb217"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb217-1"><a href="geographically-weighted-regression-gwr.html#cb217-1" aria-hidden="true" tabindex="-1"></a>gwr2 <span class="ot">&lt;-</span> <span class="fu">gwr</span>(Kemiskinan<span class="sc">~</span>Rata.Rata.Lama.Sekolah,<span class="at">data=</span>datajawa,<span class="at">bandwidth=</span><span class="dv">2</span>)</span>
+<span id="cb217-2"><a href="geographically-weighted-regression-gwr.html#cb217-2" aria-hidden="true" tabindex="-1"></a>gwr2</span></code></pre></div>
 <pre><code>## Call:
 ## gwr(formula = Kemiskinan ~ Rata.Rata.Lama.Sekolah, data = datajawa, 
 ##     bandwidth = 2)
@@ -421,17 +422,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##                           Min. 1st Qu.  Median 3rd Qu.    Max.  Global
 ## X.Intercept.           19.5961 22.5941 24.3392 25.7094 27.7499 24.7340
 ## Rata.Rata.Lama.Sekolah -2.1862 -1.9058 -1.7441 -1.6570 -1.4305 -1.8657</code></pre>
-<div class="sourceCode" id="cb219"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb219-1"><a href="geographically-weighted-regression-gwr.html#cb219-1" aria-hidden="true"></a>betabw20 &lt;-<span class="st"> </span>gwr20<span class="op">$</span>SDF<span class="op">$</span>Rata.Rata.Lama.Sekolah</span>
-<span id="cb219-2"><a href="geographically-weighted-regression-gwr.html#cb219-2" aria-hidden="true"></a>betabw3 &lt;-<span class="st"> </span>gwr3<span class="op">$</span>SDF<span class="op">$</span>Rata.Rata.Lama.Sekolah</span>
-<span id="cb219-3"><a href="geographically-weighted-regression-gwr.html#cb219-3" aria-hidden="true"></a>betabw2 &lt;-<span class="st"> </span>gwr2<span class="op">$</span>SDF<span class="op">$</span>Rata.Rata.Lama.Sekolah</span>
-<span id="cb219-4"><a href="geographically-weighted-regression-gwr.html#cb219-4" aria-hidden="true"></a><span class="kw">boxplot</span>(betabw20, betabw3, betabw2, <span class="dt">names=</span><span class="kw">c</span>(<span class="st">&quot;bw=20&quot;</span>,<span class="st">&quot;bw=3&quot;</span>,<span class="st">&quot;bw=2&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb219"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb219-1"><a href="geographically-weighted-regression-gwr.html#cb219-1" aria-hidden="true" tabindex="-1"></a>betabw20 <span class="ot">&lt;-</span> gwr20<span class="sc">$</span>SDF<span class="sc">$</span>Rata.Rata.Lama.Sekolah</span>
+<span id="cb219-2"><a href="geographically-weighted-regression-gwr.html#cb219-2" aria-hidden="true" tabindex="-1"></a>betabw3 <span class="ot">&lt;-</span> gwr3<span class="sc">$</span>SDF<span class="sc">$</span>Rata.Rata.Lama.Sekolah</span>
+<span id="cb219-3"><a href="geographically-weighted-regression-gwr.html#cb219-3" aria-hidden="true" tabindex="-1"></a>betabw2 <span class="ot">&lt;-</span> gwr2<span class="sc">$</span>SDF<span class="sc">$</span>Rata.Rata.Lama.Sekolah</span>
+<span id="cb219-4"><a href="geographically-weighted-regression-gwr.html#cb219-4" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(betabw20, betabw3, betabw2, <span class="at">names=</span><span class="fu">c</span>(<span class="st">&quot;bw=20&quot;</span>,<span class="st">&quot;bw=3&quot;</span>,<span class="st">&quot;bw=2&quot;</span>))</span></code></pre></div>
 <p><img src="modul_files/figure-html/unnamed-chunk-80-1.png" width="672" /></p>
 <p>Output di atas memperlihatkan bahwa bandwidth yang lebih besar cenderung menghasilkan penduga koefisien model dengan rentang nilai yang lebih sempit. Sebaliknya, jika bandwidth yang digunakan lebih kecil, maka penduga koefisien model cenderung memiliki rentang nilai yang lebih lebar.</p>
 </div>
 <div id="menentukan-bandwidth-optimal" class="section level2" number="3.3">
 <h2><span class="header-section-number">3.3</span> Menentukan Bandwidth Optimal</h2>
 <p>Penentuan bandwidth yang optimal dapat ditentukan berdasarkan kriteria AIC atau CV. Selain itu, kita juga dapat memilih fungsi pembobot kernel yang ingin digunakan pada pemodelan GWR.</p>
-<div class="sourceCode" id="cb220"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb220-1"><a href="geographically-weighted-regression-gwr.html#cb220-1" aria-hidden="true"></a>bw1 &lt;-<span class="st"> </span><span class="kw">gwr.sel</span>(Kemiskinan<span class="op">~</span>Rata.Rata.Lama.Sekolah,<span class="dt">data=</span>datajawa) <span class="co"># default method is CV</span></span></code></pre></div>
+<div class="sourceCode" id="cb220"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb220-1"><a href="geographically-weighted-regression-gwr.html#cb220-1" aria-hidden="true" tabindex="-1"></a>bw1 <span class="ot">&lt;-</span> <span class="fu">gwr.sel</span>(Kemiskinan<span class="sc">~</span>Rata.Rata.Lama.Sekolah,<span class="at">data=</span>datajawa) <span class="co"># default method is CV</span></span></code></pre></div>
 <pre><code>## Bandwidth: 3.450257 CV score: 946.7623 
 ## Bandwidth: 5.577059 CV score: 985.8033 
 ## Bandwidth: 2.135821 CV score: 877.1735 
@@ -449,9 +450,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## Bandwidth: 0.4076605 CV score: 686.62 
 ## Bandwidth: 0.410114 CV score: 686.6098 
 ## Bandwidth: 0.4101547 CV score: 686.6098</code></pre>
-<div class="sourceCode" id="cb222"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb222-1"><a href="geographically-weighted-regression-gwr.html#cb222-1" aria-hidden="true"></a>gwr01 &lt;-<span class="st"> </span><span class="kw">gwr</span>(Kemiskinan<span class="op">~</span>Rata.Rata.Lama.Sekolah,<span class="dt">data=</span>datajawa,<span class="dt">bandwidth=</span>bw1)</span>
-<span id="cb222-2"><a href="geographically-weighted-regression-gwr.html#cb222-2" aria-hidden="true"></a></span>
-<span id="cb222-3"><a href="geographically-weighted-regression-gwr.html#cb222-3" aria-hidden="true"></a>bw2 &lt;-<span class="st"> </span><span class="kw">gwr.sel</span>(Kemiskinan<span class="op">~</span>Rata.Rata.Lama.Sekolah,<span class="dt">data=</span>datajawa,<span class="dt">method=</span><span class="st">&quot;aic&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb222"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb222-1"><a href="geographically-weighted-regression-gwr.html#cb222-1" aria-hidden="true" tabindex="-1"></a>gwr01 <span class="ot">&lt;-</span> <span class="fu">gwr</span>(Kemiskinan<span class="sc">~</span>Rata.Rata.Lama.Sekolah,<span class="at">data=</span>datajawa,<span class="at">bandwidth=</span>bw1)</span>
+<span id="cb222-2"><a href="geographically-weighted-regression-gwr.html#cb222-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb222-3"><a href="geographically-weighted-regression-gwr.html#cb222-3" aria-hidden="true" tabindex="-1"></a>bw2 <span class="ot">&lt;-</span> <span class="fu">gwr.sel</span>(Kemiskinan<span class="sc">~</span>Rata.Rata.Lama.Sekolah,<span class="at">data=</span>datajawa,<span class="at">method=</span><span class="st">&quot;aic&quot;</span>)</span></code></pre></div>
 <pre><code>## Bandwidth: 3.450257 AIC: 587.2351 
 ## Bandwidth: 5.577059 AIC: 591.8688 
 ## Bandwidth: 2.135821 AIC: 578.5693 
@@ -469,9 +470,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## Bandwidth: 0.5462788 AIC: 558.5307 
 ## Bandwidth: 0.5461974 AIC: 558.5307 
 ## Bandwidth: 0.5462381 AIC: 558.5307</code></pre>
-<div class="sourceCode" id="cb224"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb224-1"><a href="geographically-weighted-regression-gwr.html#cb224-1" aria-hidden="true"></a>gwr02 &lt;-<span class="st"> </span><span class="kw">gwr</span>(Kemiskinan<span class="op">~</span>Rata.Rata.Lama.Sekolah,<span class="dt">data=</span>datajawa,<span class="dt">bandwidth=</span>bw2)</span>
-<span id="cb224-2"><a href="geographically-weighted-regression-gwr.html#cb224-2" aria-hidden="true"></a></span>
-<span id="cb224-3"><a href="geographically-weighted-regression-gwr.html#cb224-3" aria-hidden="true"></a>bwbs1 &lt;-<span class="st"> </span><span class="kw">gwr.sel</span>(Kemiskinan<span class="op">~</span>Rata.Rata.Lama.Sekolah,<span class="dt">data=</span>datajawa,<span class="dt">gweight=</span>gwr.bisquare)</span></code></pre></div>
+<div class="sourceCode" id="cb224"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb224-1"><a href="geographically-weighted-regression-gwr.html#cb224-1" aria-hidden="true" tabindex="-1"></a>gwr02 <span class="ot">&lt;-</span> <span class="fu">gwr</span>(Kemiskinan<span class="sc">~</span>Rata.Rata.Lama.Sekolah,<span class="at">data=</span>datajawa,<span class="at">bandwidth=</span>bw2)</span>
+<span id="cb224-2"><a href="geographically-weighted-regression-gwr.html#cb224-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb224-3"><a href="geographically-weighted-regression-gwr.html#cb224-3" aria-hidden="true" tabindex="-1"></a>bwbs1 <span class="ot">&lt;-</span> <span class="fu">gwr.sel</span>(Kemiskinan<span class="sc">~</span>Rata.Rata.Lama.Sekolah,<span class="at">data=</span>datajawa,<span class="at">gweight=</span>gwr.bisquare)</span></code></pre></div>
 <pre><code>## Bandwidth: 3.450257 CV score: 816.2604 
 ## Bandwidth: 5.577059 CV score: 893.215 
 ## Bandwidth: 2.135821 CV score: 765.5706 
@@ -487,11 +488,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## Bandwidth: 1.357438 CV score: 694.4699 
 ## Bandwidth: 1.357397 CV score: 694.4699 
 ## Bandwidth: 1.357438 CV score: 694.4699</code></pre>
-<div class="sourceCode" id="cb226"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb226-1"><a href="geographically-weighted-regression-gwr.html#cb226-1" aria-hidden="true"></a>gwr03 &lt;-<span class="st"> </span><span class="kw">gwr</span>(Kemiskinan<span class="op">~</span>Rata.Rata.Lama.Sekolah,<span class="dt">data=</span>datajawa,<span class="dt">gweight=</span>gwr.bisquare,</span>
-<span id="cb226-2"><a href="geographically-weighted-regression-gwr.html#cb226-2" aria-hidden="true"></a>    <span class="dt">bandwidth=</span>bwbs1)</span>
-<span id="cb226-3"><a href="geographically-weighted-regression-gwr.html#cb226-3" aria-hidden="true"></a></span>
-<span id="cb226-4"><a href="geographically-weighted-regression-gwr.html#cb226-4" aria-hidden="true"></a>bwbs2 &lt;-<span class="st"> </span><span class="kw">gwr.sel</span>(Kemiskinan<span class="op">~</span>Rata.Rata.Lama.Sekolah,<span class="dt">data=</span>datajawa,</span>
-<span id="cb226-5"><a href="geographically-weighted-regression-gwr.html#cb226-5" aria-hidden="true"></a>                 <span class="dt">gweight=</span>gwr.bisquare,<span class="dt">method=</span><span class="st">&quot;aic&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb226"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb226-1"><a href="geographically-weighted-regression-gwr.html#cb226-1" aria-hidden="true" tabindex="-1"></a>gwr03 <span class="ot">&lt;-</span> <span class="fu">gwr</span>(Kemiskinan<span class="sc">~</span>Rata.Rata.Lama.Sekolah,<span class="at">data=</span>datajawa,<span class="at">gweight=</span>gwr.bisquare,</span>
+<span id="cb226-2"><a href="geographically-weighted-regression-gwr.html#cb226-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">bandwidth=</span>bwbs1)</span>
+<span id="cb226-3"><a href="geographically-weighted-regression-gwr.html#cb226-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb226-4"><a href="geographically-weighted-regression-gwr.html#cb226-4" aria-hidden="true" tabindex="-1"></a>bwbs2 <span class="ot">&lt;-</span> <span class="fu">gwr.sel</span>(Kemiskinan<span class="sc">~</span>Rata.Rata.Lama.Sekolah,<span class="at">data=</span>datajawa,</span>
+<span id="cb226-5"><a href="geographically-weighted-regression-gwr.html#cb226-5" aria-hidden="true" tabindex="-1"></a>                 <span class="at">gweight=</span>gwr.bisquare,<span class="at">method=</span><span class="st">&quot;aic&quot;</span>)</span></code></pre></div>
 <pre><code>## Bandwidth: 3.450257 AIC: 570.608 
 ## Bandwidth: 5.577059 AIC: 580.6548 
 ## Bandwidth: 2.135821 AIC: 564.1267 
@@ -506,15 +507,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## Bandwidth: 1.420399 AIC: 557.6375 
 ## Bandwidth: 1.42044 AIC: 557.6375 
 ## Bandwidth: 1.420399 AIC: 557.6375</code></pre>
-<div class="sourceCode" id="cb228"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb228-1"><a href="geographically-weighted-regression-gwr.html#cb228-1" aria-hidden="true"></a>gwr04 &lt;-<span class="st"> </span><span class="kw">gwr</span>(Kemiskinan<span class="op">~</span>Rata.Rata.Lama.Sekolah,<span class="dt">data=</span>datajawa,<span class="dt">gweight=</span>gwr.bisquare,</span>
-<span id="cb228-2"><a href="geographically-weighted-regression-gwr.html#cb228-2" aria-hidden="true"></a>    <span class="dt">bandwidth=</span>bwbs2)</span></code></pre></div>
+<div class="sourceCode" id="cb228"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb228-1"><a href="geographically-weighted-regression-gwr.html#cb228-1" aria-hidden="true" tabindex="-1"></a>gwr04 <span class="ot">&lt;-</span> <span class="fu">gwr</span>(Kemiskinan<span class="sc">~</span>Rata.Rata.Lama.Sekolah,<span class="at">data=</span>datajawa,<span class="at">gweight=</span>gwr.bisquare,</span>
+<span id="cb228-2"><a href="geographically-weighted-regression-gwr.html#cb228-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">bandwidth=</span>bwbs2)</span></code></pre></div>
 </div>
 <div id="menentukan-model-terbaik" class="section level2" number="3.4">
 <h2><span class="header-section-number">3.4</span> Menentukan Model Terbaik</h2>
 <p>Penentuan model terbaik dapat ditentukan berdasarkan beberapa kriteria tertentu. Fungsi <code>gwr</code> memungkinkan kita untuk mengevaluasi model berdasarkan AIC dan global quasi-<span class="math inline">\(R^2\)</span>, dengan terlebih dulu menambahkan argumen <code>hatmatrix=TRUE</code>.</p>
-<div class="sourceCode" id="cb229"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb229-1"><a href="geographically-weighted-regression-gwr.html#cb229-1" aria-hidden="true"></a>gwr01 &lt;-<span class="st"> </span><span class="kw">gwr</span>(Kemiskinan<span class="op">~</span>Rata.Rata.Lama.Sekolah,<span class="dt">data=</span>datajawa,</span>
-<span id="cb229-2"><a href="geographically-weighted-regression-gwr.html#cb229-2" aria-hidden="true"></a>             <span class="dt">hatmatrix=</span>T, <span class="dt">bandwidth=</span>bw1)</span>
-<span id="cb229-3"><a href="geographically-weighted-regression-gwr.html#cb229-3" aria-hidden="true"></a>gwr01</span></code></pre></div>
+<div class="sourceCode" id="cb229"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb229-1"><a href="geographically-weighted-regression-gwr.html#cb229-1" aria-hidden="true" tabindex="-1"></a>gwr01 <span class="ot">&lt;-</span> <span class="fu">gwr</span>(Kemiskinan<span class="sc">~</span>Rata.Rata.Lama.Sekolah,<span class="at">data=</span>datajawa,</span>
+<span id="cb229-2"><a href="geographically-weighted-regression-gwr.html#cb229-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">hatmatrix=</span>T, <span class="at">bandwidth=</span>bw1)</span>
+<span id="cb229-3"><a href="geographically-weighted-regression-gwr.html#cb229-3" aria-hidden="true" tabindex="-1"></a>gwr01</span></code></pre></div>
 <pre><code>## Call:
 ## gwr(formula = Kemiskinan ~ Rata.Rata.Lama.Sekolah, data = datajawa, 
 ##     bandwidth = bw1, hatmatrix = T)
@@ -537,15 +538,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## Residual sum of squares: 444.673 
 ## Quasi-global R2: 0.7874434</code></pre>
 <p>Fungsi <code>gwr</code> memberikan nilai AIC dengan tiga pendekatan, sehingga kita memperoleh AICc, AICb, dan AICh.</p>
-<div class="sourceCode" id="cb231"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb231-1"><a href="geographically-weighted-regression-gwr.html#cb231-1" aria-hidden="true"></a>gwr01<span class="op">$</span>results<span class="op">$</span>AICc</span></code></pre></div>
+<div class="sourceCode" id="cb231"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb231-1"><a href="geographically-weighted-regression-gwr.html#cb231-1" aria-hidden="true" tabindex="-1"></a>gwr01<span class="sc">$</span>results<span class="sc">$</span>AICc</span></code></pre></div>
 <pre><code>## [1] 569.1585</code></pre>
-<div class="sourceCode" id="cb233"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb233-1"><a href="geographically-weighted-regression-gwr.html#cb233-1" aria-hidden="true"></a>gwr01<span class="op">$</span>results<span class="op">$</span>AICb</span></code></pre></div>
+<div class="sourceCode" id="cb233"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb233-1"><a href="geographically-weighted-regression-gwr.html#cb233-1" aria-hidden="true" tabindex="-1"></a>gwr01<span class="sc">$</span>results<span class="sc">$</span>AICb</span></code></pre></div>
 <pre><code>## [1] 562.1913</code></pre>
-<div class="sourceCode" id="cb235"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb235-1"><a href="geographically-weighted-regression-gwr.html#cb235-1" aria-hidden="true"></a>gwr01<span class="op">$</span>results<span class="op">$</span>AICh</span></code></pre></div>
+<div class="sourceCode" id="cb235"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb235-1"><a href="geographically-weighted-regression-gwr.html#cb235-1" aria-hidden="true" tabindex="-1"></a>gwr01<span class="sc">$</span>results<span class="sc">$</span>AICh</span></code></pre></div>
 <pre><code>## [1] 519.682</code></pre>
 <p>Model terbaik adalah yang memiliki nilai AIC terkecil (bisa juga negatif) dan nilai global quasi-<span class="math inline">\(R^2\)</span> yang terbesar. Namun demikian, kriteria tersebut tidak memberikan informasi inferensia apapun terkait siginifikansi model GWR.</p>
 <p>Beberapa pendekatan uji dapat dilakukan untuk menguji <span class="math inline">\(H_0\)</span> yang menyatakan bahwa model GWR tidak lebih baik daripada model OLS (regresi linier klasik), seperti yang dapat dilihat pada program-program berikut ini.</p>
-<div class="sourceCode" id="cb237"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb237-1"><a href="geographically-weighted-regression-gwr.html#cb237-1" aria-hidden="true"></a><span class="kw">BFC02.gwr.test</span>(gwr01)</span></code></pre></div>
+<div class="sourceCode" id="cb237"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb237-1"><a href="geographically-weighted-regression-gwr.html#cb237-1" aria-hidden="true" tabindex="-1"></a><span class="fu">BFC02.gwr.test</span>(gwr01)</span></code></pre></div>
 <pre><code>## 
 ##  Brunsdon, Fotheringham &amp; Charlton (2002, pp. 91-2) ANOVA
 ## 
@@ -555,7 +556,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## sample estimates:
 ## SS OLS residuals SS GWR residuals 
 ##         982.8726         444.6730</code></pre>
-<div class="sourceCode" id="cb239"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb239-1"><a href="geographically-weighted-regression-gwr.html#cb239-1" aria-hidden="true"></a><span class="kw">BFC99.gwr.test</span>(gwr01)</span></code></pre></div>
+<div class="sourceCode" id="cb239"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb239-1"><a href="geographically-weighted-regression-gwr.html#cb239-1" aria-hidden="true" tabindex="-1"></a><span class="fu">BFC99.gwr.test</span>(gwr01)</span></code></pre></div>
 <pre><code>## 
 ##  Brunsdon, Fotheringham &amp; Charlton (1999) ANOVA
 ## 
@@ -565,7 +566,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## sample estimates:
 ## SS GWR improvement   SS GWR residuals 
 ##           538.1996           444.6730</code></pre>
-<div class="sourceCode" id="cb241"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb241-1"><a href="geographically-weighted-regression-gwr.html#cb241-1" aria-hidden="true"></a><span class="kw">LMZ.F1GWR.test</span>(gwr01)</span></code></pre></div>
+<div class="sourceCode" id="cb241"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb241-1"><a href="geographically-weighted-regression-gwr.html#cb241-1" aria-hidden="true" tabindex="-1"></a><span class="fu">LMZ.F1GWR.test</span>(gwr01)</span></code></pre></div>
 <pre><code>## 
 ##  Leung et al. (2000) F(1) test
 ## 
@@ -575,7 +576,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## sample estimates:
 ## SS OLS residuals SS GWR residuals 
 ##         982.8726         444.6730</code></pre>
-<div class="sourceCode" id="cb243"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb243-1"><a href="geographically-weighted-regression-gwr.html#cb243-1" aria-hidden="true"></a><span class="kw">LMZ.F2GWR.test</span>(gwr01)</span></code></pre></div>
+<div class="sourceCode" id="cb243"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb243-1"><a href="geographically-weighted-regression-gwr.html#cb243-1" aria-hidden="true" tabindex="-1"></a><span class="fu">LMZ.F2GWR.test</span>(gwr01)</span></code></pre></div>
 <pre><code>## 
 ##  Leung et al. (2000) F(2) test
 ## 
@@ -586,7 +587,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##   SS OLS residuals SS GWR improvement 
 ##           982.8726           538.1996</code></pre>
 <p>Berdasarkan output di atas, seluruh uji menunjukkan nilai <span class="math inline">\(p\)</span>-value yang lebih kecil daripada taraf nyata 0.05, artinya <span class="math inline">\(H_0\)</span> dapat ditolak, dan kita dapat menyimpulkan bahwa model GWR lebih baik daripada OLS, pada taraf nyata 5%.</p>
-<div class="sourceCode" id="cb245"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb245-1"><a href="geographically-weighted-regression-gwr.html#cb245-1" aria-hidden="true"></a><span class="kw">LMZ.F3GWR.test</span>(gwr01)</span></code></pre></div>
+<div class="sourceCode" id="cb245"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb245-1"><a href="geographically-weighted-regression-gwr.html#cb245-1" aria-hidden="true" tabindex="-1"></a><span class="fu">LMZ.F3GWR.test</span>(gwr01)</span></code></pre></div>
 <pre><code>## 
 ## Leung et al. (2000) F(3) test
 ## 
@@ -602,7 +603,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="menginterpretasikan-hasil-pemodelan-gwr" class="section level2" number="3.5">
 <h2><span class="header-section-number">3.5</span> Menginterpretasikan Hasil Pemodelan GWR</h2>
 <p>Koefisien model GWR bersifat lokal, sehingga nilai penduga koefisien akan diperoleh pada setiap titik pengamatan. Oleh karenanya, interpretasi model GWR seringkali dilakukan dengan membuat visualisasi dalam bentuk peta, baru kemudian menginterpretasikannya.</p>
-<div class="sourceCode" id="cb247"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb247-1"><a href="geographically-weighted-regression-gwr.html#cb247-1" aria-hidden="true"></a><span class="kw">str</span>(gwr01<span class="op">$</span>SDF)</span></code></pre></div>
+<div class="sourceCode" id="cb247"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb247-1"><a href="geographically-weighted-regression-gwr.html#cb247-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(gwr01<span class="sc">$</span>SDF)</span></code></pre></div>
 <pre><code>## Formal class &#39;SpatialPointsDataFrame&#39; [package &quot;sp&quot;] with 5 slots
 ##   ..@ data       :&#39;data.frame&#39;:  119 obs. of  12 variables:
 ##   .. ..$ sum.w                        : num [1:119] 7.49 14.3 13.86 13.78 13.72 ...
@@ -629,15 +630,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##   ..@ proj4string:Formal class &#39;CRS&#39; [package &quot;sp&quot;] with 1 slot
 ##   .. .. ..@ projargs: chr NA</code></pre>
 <p>Beberapa nilai dapat diperoleh langsung dari output fungsi <code>gwr</code>, yaitu penduga koefisien, hasil prediksi model, serta <em>local</em>-<span class="math inline">\(R^2\)</span>. Selanjutnya, interpretasi dapat disesuaikan dengan konteks penelitian.</p>
-<div class="sourceCode" id="cb249"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb249-1"><a href="geographically-weighted-regression-gwr.html#cb249-1" aria-hidden="true"></a>petajawa<span class="op">$</span>beta&lt;-gwr01<span class="op">$</span>SDF<span class="op">$</span>Rata.Rata.Lama.Sekolah</span>
-<span id="cb249-2"><a href="geographically-weighted-regression-gwr.html#cb249-2" aria-hidden="true"></a>petajawa<span class="op">$</span>pred&lt;-gwr01<span class="op">$</span>SDF<span class="op">$</span>pred</span>
-<span id="cb249-3"><a href="geographically-weighted-regression-gwr.html#cb249-3" aria-hidden="true"></a>petajawa<span class="op">$</span>localR2&lt;-gwr01<span class="op">$</span>SDF<span class="op">$</span>localR2</span>
-<span id="cb249-4"><a href="geographically-weighted-regression-gwr.html#cb249-4" aria-hidden="true"></a></span>
-<span id="cb249-5"><a href="geographically-weighted-regression-gwr.html#cb249-5" aria-hidden="true"></a><span class="kw">spplot</span>(petajawa, <span class="st">&quot;beta&quot;</span>, <span class="dt">main=</span><span class="st">&quot;Penduga Koefisien Model GWR&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb249"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb249-1"><a href="geographically-weighted-regression-gwr.html#cb249-1" aria-hidden="true" tabindex="-1"></a>petajawa<span class="sc">$</span>beta<span class="ot">&lt;-</span>gwr01<span class="sc">$</span>SDF<span class="sc">$</span>Rata.Rata.Lama.Sekolah</span>
+<span id="cb249-2"><a href="geographically-weighted-regression-gwr.html#cb249-2" aria-hidden="true" tabindex="-1"></a>petajawa<span class="sc">$</span>pred<span class="ot">&lt;-</span>gwr01<span class="sc">$</span>SDF<span class="sc">$</span>pred</span>
+<span id="cb249-3"><a href="geographically-weighted-regression-gwr.html#cb249-3" aria-hidden="true" tabindex="-1"></a>petajawa<span class="sc">$</span>localR2<span class="ot">&lt;-</span>gwr01<span class="sc">$</span>SDF<span class="sc">$</span>localR2</span>
+<span id="cb249-4"><a href="geographically-weighted-regression-gwr.html#cb249-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb249-5"><a href="geographically-weighted-regression-gwr.html#cb249-5" aria-hidden="true" tabindex="-1"></a><span class="fu">spplot</span>(petajawa, <span class="st">&quot;beta&quot;</span>, <span class="at">main=</span><span class="st">&quot;Penduga Koefisien Model GWR&quot;</span>)</span></code></pre></div>
 <p><img src="modul_files/figure-html/unnamed-chunk-90-1.png" width="672" /></p>
-<div class="sourceCode" id="cb250"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb250-1"><a href="geographically-weighted-regression-gwr.html#cb250-1" aria-hidden="true"></a><span class="kw">spplot</span>(petajawa, <span class="st">&quot;pred&quot;</span>, <span class="dt">main=</span><span class="st">&quot;Prediksi Kemiskinan&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb250"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb250-1"><a href="geographically-weighted-regression-gwr.html#cb250-1" aria-hidden="true" tabindex="-1"></a><span class="fu">spplot</span>(petajawa, <span class="st">&quot;pred&quot;</span>, <span class="at">main=</span><span class="st">&quot;Prediksi Kemiskinan&quot;</span>)</span></code></pre></div>
 <p><img src="modul_files/figure-html/unnamed-chunk-90-2.png" width="672" /></p>
-<div class="sourceCode" id="cb251"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb251-1"><a href="geographically-weighted-regression-gwr.html#cb251-1" aria-hidden="true"></a><span class="kw">spplot</span>(petajawa, <span class="st">&quot;localR2&quot;</span>, <span class="dt">main=</span><span class="st">&quot;Local R-square&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb251"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb251-1"><a href="geographically-weighted-regression-gwr.html#cb251-1" aria-hidden="true" tabindex="-1"></a><span class="fu">spplot</span>(petajawa, <span class="st">&quot;localR2&quot;</span>, <span class="at">main=</span><span class="st">&quot;Local R-square&quot;</span>)</span></code></pre></div>
 <p><img src="modul_files/figure-html/unnamed-chunk-90-3.png" width="672" /></p>
 </div>
 <div id="sumber-pustaka-2" class="section level2" number="3.6">
