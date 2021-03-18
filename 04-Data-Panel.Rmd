@@ -23,8 +23,10 @@ Sedangkan tahapan dalam pemodelan data panel spasial adalah: (Rakhmi, 2015)
 (1) Eksplorasi Data
 
 (2) Uji ketergantungan spasial, dapat menggunakan uji CD Pesaran dengan hipotesis sebagai berikut:
-$H_0: \rho_{ij}=\rho_{ji}= korelasi(\varepsilon_{it}, \varepsilon_{jt}=0$, untuk $i \ne j$
-$H_1: \rho_{ij}=\rho_{ji} \ne 0$ , untuk beberapa $i \ne j$
+
+> $H_0: \rho_{ij}=\rho_{ji}= korelasi(\varepsilon_{it}, \varepsilon_{jt})=0$, untuk $i \ne j$
+
+> $H_1: \rho_{ij}=\rho_{ji} \ne 0$ , untuk beberapa $i \ne j$
 
 (3) Bila perlu, menguji autokorelasi spasial pada peubah penjelas, dapat menggunakan uji Moran.
 
@@ -39,7 +41,7 @@ $H_1: \rho_{ij}=\rho_{ji} \ne 0$ , untuk beberapa $i \ne j$
 
 ## Ilustrasi: Kemiskinan di Pulau Jawa
 
-Sebagai ilustrasi, modul ini akan membahas studi kasus yang diteliti oleh Rakhmi (2015). Pada ilustrasi ini, kita akan mengamati persentasi kemiskinan di kabupaten dan kota di Pulau Jawa pada tahun 2008-2012, dengan rincian peubah sebagai berikut:
+Sebagai ilustrasi, modul ini akan membahas studi kasus yang diteliti oleh Agusti (2015). Pada ilustrasi ini, kita akan mengamati persentasi kemiskinan di kabupaten dan kota di Pulau Jawa pada tahun 2008-2012, dengan rincian peubah sebagai berikut:
 
 + Y = Persentase Kemiskinan di kabupaten/kota di Pulau Jawa
 
@@ -124,13 +126,6 @@ korelasipertahun
 ```
 
 
-## Identifikasi Pengaruh Individu dan Pengaruh Waktu
-
-```{r}
-a<-scale(data[,5:8]) 
-data1<-cbind(data[,c(3,4)],a)
-head(data1)
-```
 
 ## Identifikasi Keragaman Antar Individu dan Antar Waktu
 
@@ -142,7 +137,15 @@ boxplot(Kemiskinan~Tahun, data=data)
 boxplot(Kemiskinan~KabKot, data=data)
 ```
 
-## Model Gabungan
+## Pemodelan Data Panel
+
+### Model Gabungan
+
+```{r}
+a<-scale(data[,5:8]) 
+data1<-cbind(data[,c(3,4)],a)
+head(data1)
+```
 
 ```{r}
 library(plm)
@@ -170,9 +173,10 @@ plmtest(model.pool,type="bp",effect = "twoways")
 
 Dari hasil di atas, dapat disimpulkan bahwa terdapat pengaruh signifikan yang diakibatkan oleh waktu dan individu. 
 
-## Uji Chow
+### Uji Chow
 
 Untuk mengidentifikasi salah satu di antara model gabungan dan model tetap yang lebih sesuai untuk digunakan, terlebih dulu dibangun model dengan pengaruh tetap. Terdapat empat kemungkinan model yang dapat diidentifikasi melalui uji Chow, yaitu:
+
 (1) jika kita menolak $H_0$ pada pengujian pengaruh spesifik individu dan waktu, maka model yang sesuai adalah model pengaruh tetap komponen sisaan dua arah
 
 (2) jika kita menolak $H_0$ pada pengujian pengaruh spesifik individu, maka model yang sesuai adalah model pengaruh tetap individu
@@ -197,7 +201,7 @@ pFtest(model.fixed, model.pool)
 
 Berdasarkan uji Chow pada output di atas, p-value$<\alpha=0.05$, sehingga dapat disimpulkan bahwa model yang sesuai adalah model pengaruh tetap komponen sisaan dua arah. Selanjutnya, kita masih harus mengidentifikasi lebih lanjut apakah model pengaruh acak lebih sesuai untuk digunakan dibandingkan dengan model pengaruh tetap.
 
-## Uji Hausman
+### Uji Hausman
 
 Pada tahap ini kita akan mengidentifikasi lebih lanjut mengenai kesuaian model antara model dengan pengaruh tetap atau pengaruh acak. 
 ```{r}
@@ -206,10 +210,10 @@ summary(model.random)
 ```
 Hipotesis yang diuji pada uji Hausman adalah:
 
-$H_0: E(u_{it}|x_{k, it})=0$ (model pengaruh acak)
+> $H_0: E(u_{it}|x_{k, it})=0$ (model pengaruh acak)
 
 
-$H_0: E(u_{it}|x_{k, it}) \ne 0$ (model pengaruh tetap)
+> $H_1: E(u_{it}|x_{k, it}) \ne 0$ (model pengaruh tetap)
 
 
 ```{r}
@@ -220,7 +224,7 @@ Terlihat pada output bahwa kita dapat menolak hipotesis nol pada taraf nyata 0.0
 
 $$y_{it}=-1.139669x_{1it}+0.137278x_{2it}-0.058057x_{3it}+\hat{\mu}_i+\varepsilon_{it}$$
 
-## Analisis Spasial
+## Pemodelan Data Panel Spasial
 
 Peta persebaran jumlah penduduk miskin di kabupaten/kota Provinsi Jawa Tengah pada tahun 2015 terlihat pada gambar berikut.
 
@@ -243,7 +247,7 @@ spplot(petajawa, "Kemiskinan", main="Persentase Penduduk Miskin 2012")
 
 ```
 
-## Uji Ketergantungan Spasial pada Data Panel
+### Uji Ketergantungan Spasial pada Data Panel
 
 Seperti yang telah dijelaskan pada bagian awal modul ini, kita dapat menggunakan uji *cross-sectional dependency* (CD) Pesaran untuk mengidentifikasi ketergantungan spasial pada data panel.
 
@@ -263,7 +267,124 @@ rwtest(model.fixed, w=ww)
 
 Terlihat pada output di atas bahwa p-value $<\alpha=0.05$ maka kita dapat menyimpulkan bahwa hipotesis nol ditolak, artinya pada data panel kemiskinan ini terdapat ketergantungan spasial pada peubah responnya. Hal ini mengindikasikan bahwa kemiskinan di suatu kab/kota, selain dipengaruhi oleh peubah penjelas yang dimilikinya, juga dipengaruhi oleh kemiskinan di kab/kota lain.
 
-## Pemodelan Data Panel Spasial
+### Uji Spesifikasi Model
+
+Menurut Salima *et. al,* spesifikasi model pada pemodelan data panel spasial adalah sebagai berikut.
+
+### Standard model: model dengan pengaruh spesifik individu
+
+$y_{it}=x_{it}\beta + z_i\alpha + \varepsilon_{it}$
+
+dimana $z_i\alpha$ merupakan pengaruh spesifik individu.
+
+**Model gabungan**
+
+$y_{it}=x_{it}\beta + \alpha + \varepsilon_{it}$
+
+Model ini tidak memodelkan heterogenitas individu, dan pada kasus ini penduga $\beta$ dan $\alpha$ diperoleh dengan Ordinary Least Squares (OLS).
+
+**Model Pengaruh Tetap**
+
+$y_{it}=x_{it}\beta + \alpha_i + \varepsilon_{it}$
+
+**Model Pengaruh Acak**
+
+$y_{it}=x_{it}\beta + \alpha + u_{it}$
+$u_{it}=\alpha_i + \varepsilon_{it}$
+
+Model ini biasanya diduga dengan Generalized Least Squares (GLS).
+
+### Efek Spasial pada Model Data Panel
+
+**Efek spasial pada model gabungan**
+
+$y_{it}=\rho\sum_{i \ne j} w_{ij} y_{jt} + x_{it}\beta + \sum_{i \ne j} w_{ij} x_{jt} \theta + \alpha + u_{it}$
+
+$u_{it}=\lambda \sum_{i \ne j} w_{ij} u_{jt} + \varepsilon_{it}$
+
+**Efek spasial pada model pengaruh tetap**
+
+(1) Spatial autoregressive model (SAR)
+
+    $y_{it}=\rho\sum_{i \ne j} w_{ij} y_{jt} + x_{it}\beta + \alpha_i + u_{it}$
+
+(2) Spatial error model (SEM)
+     
+    $y_{it}= x_{it}\beta + \alpha_i + u_{it}$
+
+    $u_{it}=\lambda \sum_{i \ne j} w_{ij} u_{jt} + \varepsilon_{it}$
+
+(3) Durbin spatial model (DSM)
+
+    $y_{it}=x_{it}\beta + \sum_{i \ne j} w_{ij} x_{jt} \theta + \alpha_i + u_{it}$
+
+(4) Durbin spatial error model (SDEM)
+
+    $y_{it}= x_{it}\beta + \sum_{i \ne j} w_{ij} x_{jt} \theta + \alpha_i + u_{it}$
+
+    $u_{it}=\lambda \sum_{i \ne j} w_{ij} u_{jt} + \varepsilon_{it}$
+
+(5) Spatial autoregressive lag and error model (SARAR)
+
+    $y_{it}=\rho\sum_{i \ne j} w_{ij} y_{jt} + x_{it}\beta + \alpha_i + u_{it}$
+
+    $u_{it}=\lambda \sum_{i \ne j} m_{ij} u_{jt} + \varepsilon_{it}$
+    
+    dimana $w_{ij}$ dan $m_{ij}$ merupakan pembobot spasial.
+
+**Spatial Error Model-Random Effect**
+
+$y_{it}=\rho\sum_{i \ne j} w_{ij} y_{jt} + x_{it}\beta + \alpha + u_{it}$
+ 
+$u_{it}=\lambda \sum_{i \ne j} w_{ij} u_{jt} + \nu_{it}$
+
+
+
+#### Hausman’s robust test of spatial autocorrelation
+
+Uji ini dilakukan untuk mengidentifikasi kesesuaian model dengan pengaruh tetap atau acak. Hipotesis nol yang diuji adalah: $H_0: E[\alpha|X]=0$. Jika hipotesis ini ditolak, artinya  model yang lebih sesuai adalah model dengan pengaruh tetap.
+
+```{r message=FALSE, warning=FALSE}
+library(splm)
+print(panelhausman<-phtest(Kemiskinan~IPM+PDRB+TPT, data=data1))
+
+print(spat.hausman.SEM<-sphtest(Kemiskinan~IPM+PDRB+TPT, data=data1, listw=mat2listw(ww),spatial.model="error"))
+
+print(spat.hausman.SAR<-sphtest(Kemiskinan~IPM+PDRB+TPT, data=data1, listw=mat2listw(ww),spatial.model="lag"))
+
+```
+
+Terlihat pada output di atas, maka model yang lebih sesuai digunakan adalah model dengan pengaruh tetap.
+
+
+
+#### Uji Spesifikasi untuk Pengaruh Spasial
+
+Fungsi `bsktest` dapat menghitung uji gabungan, marginal, ataupun conditional untuk pengaruh acak dan korelasi galat spasial. Hipotesis yang diuji adalah sebagai berikut. (Milo dan Piras, 2012)
+![](D:/Research (eksternal dept)/pelatihan spasial (adj)/modul dept)/pelatihan spasial (adj)/Modul/hipotesis-lm-splm.PNG)
+
+Untuk model tetap, uji Lagrange dapat dilakukan untuk mengidentifikasi spesifikasi pengaruh spasial pada model.
+
+```{r}
+# Uji 1
+slmtest(Kemiskinan~IPM+PDRB+TPT, data=data1, listw=mat2listw(ww),test="lml", model="within")
+
+# Uji 2
+slmtest(Kemiskinan~IPM+PDRB+TPT, data=data1, listw=mat2listw(ww),test="lme", model="within")
+```
+
+Uji robust dapat dilakukan untuk membantu menentukan spesifikasi model apabila uji sebelumnya, kedua uji untuk model SAR dan SEM sama-sama siginifikan.
+
+```{r}
+# Uji 3
+
+slmtest(Kemiskinan~IPM+PDRB+TPT, data=data1, listw=mat2listw(ww),test="rlml", model="within")
+
+# Uji 4
+
+slmtest(Kemiskinan~IPM+PDRB+TPT, data=data1, listw=mat2listw(ww),test="rlme", model="within")
+```
+
 
 ### Model Panel SAR
 ```{r message=FALSE, warning=FALSE}
@@ -309,22 +430,33 @@ sqrt(sum(panel.gsm$resid^2)/db) ## Standard Error of Regression
 summary(panel.gsm)$rsqr ## Pseudo-R2
 ```
 
-## Menentukan Model Terbaik
+### Menentukan Model Terbaik
 
+Berikut ini adalah ringkasan dari pemodelan yang telah dilakukan pada tahap-tahap sebelumnya:
+```{r echo=FALSE}
+kriteria<-c("SE of Regression", "Pseudo-R2", "p-value of lambda", "p-value of rho")
+kriteria.panelsar<-c(sqrt(sum(panel.sar$resid^2)/db), summary(panel.sar)$rsqr, 5.362e-08, NA)
+kriteria.panelsem<-c(sqrt(sum(panel.sem$resid^2)/db), summary(panel.sem)$rsqr, NA, 9.841e-07)
+kriteria.panelgsm<-c(sqrt(sum(panel.gsm$resid^2)/db), summary(panel.gsm)$rsqr, 2.445e-14, 0.05714)
 
-## Interpretasi Model
+data.frame(Kriteria=kriteria, Panel_SAR=kriteria.panelsar, Panel_SEM=kriteria.panelsem, PANEL_GSM=kriteria.panelgsm)
+```
+Berdasarkan output di atas, model terbaik adalah model panel SAR karena koefisien $\lambda$ yang di
 
-```{r}
+### Interpretasi Model
+
+```{r message=FALSE, warning=FALSE}
 lw<- mat2listw(ww, style ="W")
-sparse.W <- listw2dgCMatrix(lw)
 
-time<-2008:2012
-s.lwstates <- kronecker(diag(time), sparse.W)
-trMatc <- trW(s.lwstates, type="mult")
-
-#set.seed(123)
-#imp <- impacts(panel.gsm, tr = trMatc, R=200)
-#summary(imp, zstats=TRUE, short=T)
-
+spdep::impacts(panel.sar, listw=lw, time = 5)
 ```
 
+
+
+## Sumber Pustaka
+
+Agusti, R. (2015). Pemodelan data panel kemiskinan tak seimbang di pulau Jawa dnegna model spasial durbin [Tesis]. IPB.
+
+Millo, G., & Piras, G. (2012). splm: Spatial panel data models in R. Journal of Statistical Software, 47(1), 1-38.
+
+Salima, B.A., Julie, L., Lionel, V. (2018). Spatial Econometrics on Panel Data. Handbook of spatial analysis–Theory and practical application with R. INSEE Eurostat, Luxembourg, 179-203.
