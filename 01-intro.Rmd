@@ -181,7 +181,7 @@ theDF[,c("first","sports")] #mengakses kolom first dan sports
 
 Untuk mengakses bantuan (help) dari suatu fungsi di R bisa menggunakan fungsi `help` atau operator tanda tanya `?`
 
-```{r}
+```{r eval=FALSE}
 help(lm)
 ?plot
 ```
