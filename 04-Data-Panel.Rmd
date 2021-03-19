@@ -18,7 +18,7 @@ Tahapan yang dapat dilakukan dalam melakukan pemodelan regresi data panel adalah
 
 (5) mengevaluasi kebaikan model
 
-Sedangkan tahapan dalam pemodelan data panel spasial adalah: (Rakhmi, 2015)
+Sedangkan tahapan dalam pemodelan data panel spasial adalah: (Agusti, 2015)
 
 (1) Eksplorasi Data
 
@@ -104,10 +104,11 @@ Scatterplot memperlihatkan bahwa IPM dan PDRB cenderung memiliki hubungan yang b
 
 
 ```{r}
-a=1; korelasipertahun<-NULL;
+a=1; korelasipertahun<-NULL; tahun<-2008:2012
 for (i in 1:5)
 {
-  korelasi<-cor(data[a:(a+4),5:8])[-1,1]
+  datapertahun<-subset(data, data$Tahun==tahun[i])
+  korelasi<-cor(datapertahun[,5:8])[-1,1]
   a=a+5
   korelasipertahun<-cbind(korelasipertahun,korelasi)
 }
@@ -115,7 +116,7 @@ for (i in 1:5)
 colnames(korelasipertahun)<-2008:2012
 
 barplot(korelasipertahun , beside=T, ylim=c(-1,1), col=2:4,main="Korelasi terhadap Y per Tahun")
-legend("bottomright",c("IPM", "PDRB", "TPT"),
+legend("topright",c("IPM", "PDRB", "TPT"),
 fill = 2:4, cex=0.75)
 ```
 
@@ -274,7 +275,7 @@ Terlihat pada output di atas bahwa p-value $<\alpha=0.05$ maka kita dapat menyim
 
 ### Uji Spesifikasi Model
 
-Menurut Salima *et. al,* spesifikasi model pada pemodelan data panel spasial adalah sebagai berikut.
+Menurut Salima *et. al* (2018), spesifikasi model pada pemodelan data panel spasial adalah sebagai berikut.
 
 ### Standard model: model dengan pengaruh spesifik individu
 
@@ -366,6 +367,7 @@ Terlihat pada output di atas, maka model yang lebih sesuai digunakan adalah mode
 #### Uji Spesifikasi untuk Pengaruh Spasial
 
 Fungsi `bsktest` dapat menghitung uji gabungan, marginal, ataupun conditional untuk pengaruh acak dan korelasi galat spasial. Hipotesis yang diuji adalah sebagai berikut. (Milo dan Piras, 2012)
+
 ![](D:/Research (eksternal dept)/pelatihan spasial (adj)/modul dept)/pelatihan spasial (adj)/Modul/hipotesis-lm-splm.PNG)
 
 Untuk model tetap, uji Lagrange dapat dilakukan untuk mengidentifikasi spesifikasi pengaruh spasial pada model.

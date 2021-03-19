@@ -496,7 +496,7 @@ library(sp)
 petajawa=readOGR(dsn="Jawamap", layer="jawa")
 datajawa=read.csv("Pulau Jawa.csv", header=T, sep=";")
 petajawa$Kemiskinan<- datajawa$Kemiskinan
-k=9
+k=119
 colfunc <- colorRampPalette(c("green", "yellow","red"))
 color <- colfunc(k)
 spplot(petajawa, "Kemiskinan", col.regions=color)
