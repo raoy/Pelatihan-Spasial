@@ -68,3 +68,5 @@ model-panel-gsm
 menentukan-model-terbaik-1
 interpretasi-model
 sumber-pustaka-3
+r-markdown
+including-plots
